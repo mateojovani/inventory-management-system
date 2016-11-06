@@ -20,38 +20,38 @@ class RawMaterialsController extends Controller
         return view('rawMaterials.show');
     }
 
-    public function getCategories()
+    public static function getCategories()
     {
-        $this->sql = 'select Itemcategory_name as text, Itemcategory_id as value from itemcategory
+        $sql = 'select Itemcategory_name as text, Itemcategory_id as value from itemcategory
                       where is_for_product = 0 and deleted = 0';
-        $categories = DB::select($this->sql);
+        $categories = DB::select($sql);
 
         return $categories;
     }
 
-    public function getUnities()
+    public static function getUnities()
     {
-        $this->sql = 'select Itemunity_name as text, Itemunity_id as value from itemunity
+        $sql = 'select Itemunity_name as text, Itemunity_id as value from itemunity
                       where is_for_product = 0 and deleted = 0';
-        $unities = DB::select($this->sql);
+        $unities = DB::select($sql);
 
         return $unities;
     }
 
-    public function getTypes()
+    public static function getTypes()
     {
-        $this->sql = 'select itemtype_name as text, itemtype_id as value from itemtype
+        $sql = 'select itemtype_name as text, itemtype_id as value from itemtype
                       where is_for_product = 0 and deleted = 0';
-        $itemtypes = DB::select($this->sql);
+        $itemtypes = DB::select($sql);
 
         return $itemtypes;
     }
 
-    public function getVat()
+    public static function getVat()
     {
-        $this->sql = 'select itemvat_name as text, itemvat_id as value from itemvat
+        $sql = 'select itemvat_name as text, itemvat_id as value from itemvat
                       where deleted = 0';
-        $itemvats = DB::select($this->sql);
+        $itemvats = DB::select($sql);
 
         return $itemvats;
     }
@@ -103,8 +103,10 @@ class RawMaterialsController extends Controller
                     ->select('items.item_code as code', 'items.Item_name as item', 'itemcategory.Itemcategory_name as category', 'itemunity.Itemunity_name as unity', 'items.item_price as price', 'itemtype.itemtype_name as type', 'itemvat.itemvat_name as vat', 'items.Item_id as id')
                     ->where('items.is_product', '0')
                     ->where('items.deleted', '0')
-                    ->where('items.item_name', 'like', '%'.$request->search['value'].'%')
-                    ->orWhere('itemcategory.Itemcategory_name', 'like', '%'.$request->search['value'].'%')
+                    ->where(function($query) use ($request){
+                        $query->where('items.item_name', 'like', '%'.$request->search['value'].'%');
+                        $query->orWhere('itemcategory.Itemcategory_name', 'like', '%'.$request->search['value'].'%');
+                    })
                     ->offset($start)->limit($length+$start)
                     ->orderBy($orderBy, $dir)
                     ->get();
@@ -212,6 +214,20 @@ class RawMaterialsController extends Controller
         {
             $item = Item::find($request->pk);
             $item->update(["deleted" => 1]);
+        }
+    }
+
+    public function addToItemCompound(Request $request)
+    {
+        if($request->ajax())
+        {
+            $data = [];
+            $data['status'] = 200;
+
+            DB::table('itemcompound')
+                ->insert(['id_item_product'=> $request->product, 'id_item_rawmaterial'=> $request->pk, 'quantity'=> $request->quantity]);
+
+            return $data;
         }
     }
 

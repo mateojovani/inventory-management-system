@@ -17,7 +17,13 @@ class ProductsController extends Controller
 
     public function show()
     {
-        return view('products.show');
+        $data = [];
+        $data['categories'] = RawMaterialsController::getCategories();
+        $data['unities'] = RawMaterialsController::getUnities();
+        $data['itemtypes'] = RawMaterialsController::getTypes();
+        $data['itemvats'] = RawMaterialsController::getVat();
+
+        return view('products.show')->with($data);
     }
 
     public function getCategories()
@@ -161,6 +167,8 @@ class ProductsController extends Controller
                     $orderBy = 'type';
                 else if($request->order[0]['column'] == '6')
                     $orderBy = 'vat';
+                else if($request->order[0]['column'] == '7')
+                    $orderBy = 'quantity';
                 else $orderBy = '';
 
                 $dir = $request->order[0]['dir'];
@@ -174,14 +182,14 @@ class ProductsController extends Controller
 
             $this->sql = "select i.item_code as code, i.Item_name as item, ic.Itemcategory_name as category, 
                           iu.Itemunity_name as unity, i.item_price as price, it.itemtype_name as type, iv.itemvat_name as vat,
-                          i.Item_id as id
+                          i.Item_id as id, itemcompound.quantity as quantity
                           FROM items i
                           join itemcategory ic on ic.Itemcategory_id=i.id_itemcategory
                           join itemunity iu on iu.Itemunity_id=i.id_itemunity
                           join itemtype it on it.itemtype_id=i.id_itemtype
                           join itemvat iv on iv.itemvat_id= i.id_vat
-                          where item_id in (
-                          select id_item_rawmaterial from itemcompound where id_item_product = :id and deleted = 0)
+                          join itemcompound on itemcompound.id_item_rawmaterial = i.Item_id and itemcompound.deleted = 0
+                          where itemcompound.id_item_product = :id
                           order by $order";
 
 

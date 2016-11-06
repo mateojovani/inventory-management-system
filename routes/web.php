@@ -27,6 +27,7 @@ Route::post('/raw-materials/add', 'RawMaterialsController@postAdd');
 Route::post('/raw-materials/edit', 'RawMaterialsController@edit');
 Route::post('/raw-materials/delete', 'RawMaterialsController@delete');
 Route::post('/grid/raw-materials', 'RawMaterialsController@showGrid');
+Route::post('/item-compound/add', 'RawMaterialsController@addToItemCompound');
 
 Route::get('/raw-materials/categories', 'RawMaterialsController@getCategories');
 Route::get('/raw-materials/unities', 'RawMaterialsController@getUnities');

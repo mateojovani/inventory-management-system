@@ -12,6 +12,10 @@
     <meta name="author" content="Steelcoders" />
 
     @yield('sources_top')
+    <style>
+        .custom-input{padding: 5px; margin-right: 5px}
+    </style>
+
 </head>
 <body class="page-header-fixed">
 

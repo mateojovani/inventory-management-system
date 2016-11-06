@@ -14,6 +14,7 @@
 <link href="{{URL::asset('assets/plugins/datatables/css/jquery.datatables_themeroller.css')}}" rel="stylesheet" type="text/css"/>
 <link href="{{URL::asset('assets/plugins/x-editable/bootstrap3-editable/css/bootstrap-editable.css')}}" rel="stylesheet" type="text/css">
 <link href="{{URL::asset('assets/plugins/bootstrap-datepicker/css/datepicker3.css')}}" rel="stylesheet" type="text/css"/>
+<link href="{{URL::asset('assets/plugins/toastr/toastr.min.css')}}" rel="stylesheet" type="text/css"/>
 
 <!-- Theme Styles -->
 <link href="{{URL::asset('assets/css/modern.min.css')}}" rel="stylesheet" type="text/css"/>
@@ -42,6 +43,8 @@
 <script src="{{URL::asset('assets/plugins/datatables/js/jquery.datatables.min.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/x-editable/bootstrap3-editable/js/bootstrap-editable.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/typeahead/typeahead.bundle.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/toastr/toastr.min.js')}}"></script>
 <script src="{{URL::asset('assets/js/modern.min.js')}}"></script>
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
