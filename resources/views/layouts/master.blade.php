@@ -105,6 +105,9 @@
 
             <ul class="menu accordion-menu">
                 <li @yield('db')><a href="{{URL::asset('/')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>Dashboard</p></a></li>
+                <li @yield('cf')>
+                    <a href="{{URL::asset('/configure')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-wrench"></span><p>Configure</p></a>
+                </li>
                 <li @yield('rm')>
                     <a href="{{URL::asset('/raw-materials')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-scissors"></span><p>Raw Materials</p></a>
                 </li>

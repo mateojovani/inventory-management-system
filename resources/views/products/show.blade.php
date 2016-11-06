@@ -67,6 +67,7 @@
             <div class="panel panel-white" id="config-panel">
                 <div class="panel-heading">
                     <div class="panel-title">Configure Materials</div>
+                    <button type="button" class="close" id="close-btn"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -174,9 +175,14 @@
     </div>
 
     <script>
-        //config table hide
+        //config hide
         $("#config-panel").hide();
         $("#new-row").hide();
+        $("#close-btn").livequery(function() {
+            $(this).click(function () {
+                $("#config-panel").hide();
+            });
+        });
 
         //datatables
         var tbl = $('#table').DataTable({
@@ -333,13 +339,22 @@
 
         //delete event
         $('#table .delete-btn').livequery(function() {
-            $(this).click(function () {
+            $(this).unbind().click(function () {
                 $.ajax({
                     url: "{{URL::asset('/products/delete')}}",
                     type: "POST",
-                    data: {pk: $(this).attr('data-pk')}
+                    data: {pk: $(this).attr('data-pk')},
+                    success: function (response) {
+                        if(response.status != 200)
+                        {
+                            toastr.error('Product could not be deleted!')
+                        }
+                        else {
+                            toastr.success('Product successfully removed!');
+                            tbl.draw();
+                        }
+                    }
                 });
-                tbl.row($(this).attr('data-pk')).remove().draw();
             });
         });
 
@@ -458,14 +473,22 @@
 
                 //delete event
                 $('#config-table .delete-btn').livequery(function() {
-                    $(this).click(function () {
+                    $(this).unbind().click(function () {
                         $.ajax({
                             url: "{{URL::asset('/product/raw-materials/delete')}}",
                             type: "POST",
                             data: {pk: $(this).attr('data-pk')},
                             success: function (response) {
-                                config_table.draw();
-                                $('html, body').animate({ scrollTop: $('#panel').offset().top }, 'slow');
+                                if(response.status != 200)
+                                {
+                                    toastr.error('Raw material could not be deleted!')
+                                }
+                                else {
+                                    toastr.success('Raw material successfully removed!');
+                                    config_table.draw();
+                                    $('html, body').animate({ scrollTop: $('#panel').offset().top }, 'slow');
+                                }
+
                             }
                         });
                     });

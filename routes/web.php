@@ -20,6 +20,14 @@ Route::get('/login', 'AuthController@getLogin');
 Route::post('/login', 'AuthController@postLogin');
 Route::get('/logout', 'AuthController@getLogout');
 
+#Config
+Route::get('/configure', 'ConfigController@show');
+Route::get('/configure/items', 'ConfigController@getItems');
+Route::post('/grid/categories', 'ConfigController@showCatGrid');
+Route::post('/configure/category/delete', 'ConfigController@deleteCategory');
+Route::post('/configure/category/add', 'ConfigController@addCategory');
+Route::post('/configure/category/edit', 'ConfigController@editCategory');
+
 #RawMaterials
 Route::get('/raw-materials', 'RawMaterialsController@show');
 Route::get('/raw-materials/add', 'RawMaterialsController@showAdd');
@@ -33,7 +41,6 @@ Route::get('/raw-materials/categories', 'RawMaterialsController@getCategories');
 Route::get('/raw-materials/unities', 'RawMaterialsController@getUnities');
 Route::get('/raw-materials/types', 'RawMaterialsController@getTypes');
 Route::get('/raw-materials/vat', 'RawMaterialsController@getVAT');
-
 
 #Products
 Route::get('/products', 'ProductsController@show');

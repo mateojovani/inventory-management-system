@@ -185,9 +185,18 @@
                 $.ajax({
                     url: "{{URL::asset('/raw-materials/delete')}}",
                     type: "POST",
-                    data: {pk: $(this).attr('data-pk')}
+                    data: {pk: $(this).attr('data-pk')},
+                    success: function (response) {
+                        if(response.status != 200)
+                        {
+                            toastr.error('Raw Material could not be deleted!')
+                        }
+                        else {
+                            toastr.success('Raw Material successfully removed!');
+                            tbl.draw();
+                        }
+                    }
                 });
-                tbl.row($(this).attr('data-pk')).remove().draw();
             });
         });
 

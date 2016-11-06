@@ -212,8 +212,21 @@ class RawMaterialsController extends Controller
     {
         if($request->ajax())
         {
+            $response = [];
+            $response['status'] = 200;
+
             $item = Item::find($request->pk);
-            $item->update(["deleted" => 1]);
+
+            DB::transaction(function () use ($item, $request)
+            {
+                $item->update(["deleted" => 1]);
+                DB::table('itemcompound')
+                    ->where('id_item_rawmaterial', $request->pk)
+                    ->update(['deleted' => 1]);
+
+            });
+
+            return $response;
         }
     }
 
@@ -221,13 +234,16 @@ class RawMaterialsController extends Controller
     {
         if($request->ajax())
         {
-            $data = [];
-            $data['status'] = 200;
+            $response = [];
+            $response['status'] = 200;
 
-            DB::table('itemcompound')
-                ->insert(['id_item_product'=> $request->product, 'id_item_rawmaterial'=> $request->pk, 'quantity'=> $request->quantity]);
+            DB::transaction(function () use ($request)
+            {
+                DB::table('itemcompound')
+                    ->insert(['id_item_product'=> $request->product, 'id_item_rawmaterial'=> $request->pk, 'quantity'=> $request->quantity]);
+            });
 
-            return $data;
+            return $response;
         }
     }
 

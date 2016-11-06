@@ -182,7 +182,7 @@ class ProductsController extends Controller
 
             $this->sql = "select i.item_code as code, i.Item_name as item, ic.Itemcategory_name as category, 
                           iu.Itemunity_name as unity, i.item_price as price, it.itemtype_name as type, iv.itemvat_name as vat,
-                          i.Item_id as id, itemcompound.quantity as quantity
+                          itemcompound.itemcompund_id as id, itemcompound.quantity as quantity
                           FROM items i
                           join itemcategory ic on ic.Itemcategory_id=i.id_itemcategory
                           join itemunity iu on iu.Itemunity_id=i.id_itemunity
@@ -282,8 +282,18 @@ class ProductsController extends Controller
     {
         if($request->ajax())
         {
+            $response = [];
+            $response['status'] = 200;
             $item = Item::find($request->pk);
-            $item->update(["deleted" => 1]);
+
+            DB::transaction(function () use ($item, $request){
+                $item->update(["deleted" => 1]);
+                DB::table('itemcompound')
+                    ->where('id_item_product', $request->pk)
+                    ->update(['deleted' => 1]);
+            });
+
+            return $response;
         }
     }
 
@@ -291,8 +301,16 @@ class ProductsController extends Controller
     {
         if($request->ajax())
         {
-            $this->sql = "update itemcompound set deleted = 1 where id_item_rawmaterial = :id";
-            DB::update($this->sql, [":id"=>$request->pk]);
+            $response = [];
+            $response['status'] = 200;
+
+            $sql = "update itemcompound set deleted = 1 where itemcompund_id = :id";
+
+            DB::transaction(function () use ($sql, $request){
+                DB::update($sql, [":id"=>$request->pk]);
+            });
+
+            return $response;
         }
     }
 
