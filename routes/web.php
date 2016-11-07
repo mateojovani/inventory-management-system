@@ -28,6 +28,16 @@ Route::post('/configure/category/delete', 'ConfigController@deleteCategory');
 Route::post('/configure/category/add', 'ConfigController@addCategory');
 Route::post('/configure/category/edit', 'ConfigController@editCategory');
 
+Route::post('/grid/unity', 'ConfigController@showUnityGrid');
+Route::post('/configure/unity/delete', 'ConfigController@deleteUnity');
+Route::post('/configure/unity/add', 'ConfigController@addUnity');
+Route::post('/configure/unity/edit', 'ConfigController@editUnity');
+
+Route::post('/grid/type', 'ConfigController@showTypeGrid');
+Route::post('/configure/type/delete', 'ConfigController@deleteType');
+Route::post('/configure/type/add', 'ConfigController@addType');
+Route::post('/configure/type/edit', 'ConfigController@editType');
+
 #RawMaterials
 Route::get('/raw-materials', 'RawMaterialsController@show');
 Route::get('/raw-materials/add', 'RawMaterialsController@showAdd');
