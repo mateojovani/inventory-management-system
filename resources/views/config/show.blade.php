@@ -40,6 +40,39 @@
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active fade in" id="tab-category">
                                 <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="panel panel-white">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">Add Category</h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="form-horizontal">
+                                                    <div class="form-group">
+                                                        <label for="item-code" class="col-sm-2 control-label">Category Name</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" class="form-control" id="category-name" name="category-name" placeholder="Category Name">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">Item Type</label>
+                                                        <div class="col-sm-10">
+                                                            <select class="form-control m-b-sm" id="category-item" name="category-item">
+                                                                <option value="0">Raw Material</option>
+                                                                <option value="1">Product</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-sm-offset-2 col-sm-10">
+                                                            <button type="submit" class="btn btn-success" id="cat-btn">Add</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="table-responsive col-md-6">
                                         <table id="cat-table" class="display table" style="width: 100%; cellspacing: 0;">
                                             <thead>
@@ -52,35 +85,43 @@
 
                                         </table>
                                     </div>
-                                    <br>
-                                    <div class="col-md-6 form-horizontal" style="border: 1px solid black; padding-top:10px">
-                                        <div class="form-group">
-                                            <label for="item-code" class="col-sm-2 control-label">Category Name</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="category-name" name="category-name" placeholder="Category Name">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="col-sm-2 control-label">Item Type</label>
-                                            <div class="col-sm-10">
-                                                <select class="form-control m-b-sm" id="category-item" name="category-item">
-                                                    <option value="0">Raw Material</option>
-                                                    <option value="1">Product</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="col-sm-offset-2 col-sm-10">
-                                                <button type="submit" class="btn btn-success" id="cat-btn">Add</button>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
 
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="tab-unity">
                                 <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="panel panel-white">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">Add Unity</h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="form-horizontal">
+                                                    <div class="form-group">
+                                                        <label for="item-code" class="col-sm-2 control-label">Unity Name</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" class="form-control" id="unity-name" name="category-name" placeholder="Unity Name">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">Item Type</label>
+                                                        <div class="col-sm-10">
+                                                            <select class="form-control m-b-sm" id="unity-item" name="unity-item">
+                                                                <option value="0">Raw Material</option>
+                                                                <option value="1">Product</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-sm-offset-2 col-sm-10">
+                                                            <button type="submit" class="btn btn-success" id="unity-btn">Add</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="table-responsive col-md-6">
                                         <table id="unity-table" class="display table" style="width: 100%; cellspacing: 0;">
                                             <thead>
@@ -93,34 +134,42 @@
 
                                         </table>
                                     </div>
-                                    <br>
-                                    <div class="col-md-6 form-horizontal" style="border: 1px solid black; padding-top:10px">
-                                        <div class="form-group">
-                                            <label for="item-code" class="col-sm-2 control-label">Unity Name</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="unity-name" name="category-name" placeholder="Unity Name">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="col-sm-2 control-label">Item Type</label>
-                                            <div class="col-sm-10">
-                                                <select class="form-control m-b-sm" id="unity-item" name="unity-item">
-                                                    <option value="0">Raw Material</option>
-                                                    <option value="1">Product</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="col-sm-offset-2 col-sm-10">
-                                                <button type="submit" class="btn btn-success" id="unity-btn">Add</button>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="tab-type">
                                 <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="panel panel-white">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">Add Type</h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="form-horizontal">
+                                                    <div class="form-group">
+                                                        <label for="item-type" class="col-sm-2 control-label">Type Name</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" class="form-control" id="type-name" name="type-name" placeholder="Type Name">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">Item Type</label>
+                                                        <div class="col-sm-10">
+                                                            <select class="form-control m-b-sm" id="type-item" name="type-item">
+                                                                <option value="0">Raw Material</option>
+                                                                <option value="1">Product</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-sm-offset-2 col-sm-10">
+                                                            <button type="submit" class="btn btn-success" id="type-btn">Add</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="table-responsive col-md-6">
                                         <table id="type-table" class="display table" style="width: 100%; cellspacing: 0;">
                                             <thead>
@@ -133,33 +182,53 @@
 
                                         </table>
                                     </div>
-                                    <br>
-                                    <div class="col-md-6 form-horizontal" style="border: 1px solid black; padding-top:10px">
-                                        <div class="form-group">
-                                            <label for="item-type" class="col-sm-2 control-label">Type Name</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="type-name" name="type-name" placeholder="Type Name">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="col-sm-2 control-label">Item Type</label>
-                                            <div class="col-sm-10">
-                                                <select class="form-control m-b-sm" id="type-item" name="type-item">
-                                                    <option value="0">Raw Material</option>
-                                                    <option value="1">Product</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="col-sm-offset-2 col-sm-10">
-                                                <button type="submit" class="btn btn-success" id="type-btn">Add</button>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="tab-vat">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="panel panel-white">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">Add VAT</h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="form-horizontal">
+                                                    <div class="form-group">
+                                                        <label for="item-code" class="col-sm-2 control-label">VAT Name</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" class="form-control" id="vat-name" name="vat-name" placeholder="VAT Name">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">VAT Value</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" class="form-control" id="vat-value" name="vat-value" placeholder="VAT Value (ex. 0.2)">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-sm-offset-2 col-sm-10">
+                                                            <button type="submit" class="btn btn-success" id="vat-btn">Add</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="table-responsive col-md-6">
+                                        <table id="vat-table" class="display table" style="width: 100%; cellspacing: 0;">
+                                            <thead>
+                                            <tr>
+                                                <th>VAT</th>
+                                                <th>Value</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                            </thead>
+
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -170,6 +239,18 @@
     </div>
 
     <script>
+        //editable
+        $.fn.editable.defaults.mode = 'inline';
+        //enable / disable
+        $('#enable').livequery(function() {
+            $(this).click(function () {
+                $('#cat-table .editable').editable('toggleDisabled');
+                $('#unity-table .editable').editable('toggleDisabled');
+                $('#type-table .editable').editable('toggleDisabled');
+                $('#vat-table .editable').editable('toggleDisabled');
+            });
+        });
+
         /* Category */
         //datatables
         var cat_tbl = $('#cat-table').DataTable({
@@ -235,25 +316,14 @@
                     success: function (response) {
                         if(response.status != 200)
                         {
-                            toastr.error('Category could not be deleted!')
+                            toastr.error(response.message)
                         }
                         else {
-                            toastr.success('Category successfully removed!');
+                            toastr.success(response.message);
                             cat_tbl.draw();
                         }
                     }
                 });
-            });
-        });
-
-        //editable
-        $.fn.editable.defaults.mode = 'inline';
-        //enable / disable
-        $('#enable').livequery(function() {
-            $(this).click(function () {
-                $('#cat-table .editable').editable('toggleDisabled');
-                $('#unity-table .editable').editable('toggleDisabled');
-                $('#type-table .editable').editable('toggleDisabled');
             });
         });
 
@@ -515,6 +585,109 @@
                 });
             });
         });
+
+        /* VAT */
+        //datatables
+        var vat_tbl = $('#vat-table').DataTable({
+            bProcessing: true,
+            serverSide: true,
+            bDestroy: true,
+            bFilter: false,
+            bPaginate: false,
+            bInfo : false,
+            ajax: {
+                url: "{{URL::asset('/grid/vat')}}",
+                type: "post"
+            },
+
+            columns: [
+                { "data": "vat" },
+                { "data": "value" },
+                { "data": "id" },
+            ],
+            columnDefs: [
+                {
+                    render: function ( data, type, row ) {
+                        return "<a href='#' data-title='Enter VAT' " +
+                                "data-pk='"+row.id+"' data-type='text' data-name='vat-name' " +
+                                "class='editable'>"+data+"</a>"
+                    },
+                    targets: 0
+                },
+                {
+                    render: function ( data, type, row ) {
+                        return "<a href='#' data-title='Enter Value' " +
+                                "data-pk='"+row.id+"' data-type='text' data-name='vat-value' " +
+                                "class='editable'>"+data+"</a>"
+                    },
+                    targets: 1
+                },
+                {
+                    render: function ( data, type, row ) {
+                        return "<a href='#' data-pk='"+row.id+"' class='delete-btn btn btn-sm btn-danger'>Delete</a>";
+                    },
+                    targets: 2
+                },
+                { orderable: false, "targets": 2 }
+            ]
+        });
+
+        //delete event
+        $('#vat-table .delete-btn').livequery(function() {
+            $(this).unbind().click(function () {
+                $.ajax({
+                    url: "{{URL::asset('/configure/vat/delete')}}",
+                    type: "POST",
+                    data: {pk: $(this).attr('data-pk')},
+                    success: function (response) {
+                        if(response.status != 200)
+                        {
+                            toastr.error('VAT could not be deleted!')
+                        }
+                        else {
+                            toastr.success('VAT successfully removed!');
+                            vat_tbl.draw();
+                        }
+                    }
+                });
+            });
+        });
+
+        $('#vat-table .editable').livequery(function() {
+            $(this).editable({
+                url: "{{URL::asset('/configure/vat/edit')}}",
+                disabled: true,
+                validate: function(value) {
+                    if($.trim(value) == '') {
+                        return 'This field is required';
+                    }
+                }
+            });
+        });
+
+        //submit form
+        $('#vat-btn').unbind().livequery(function() {
+            $(this).click(function () {
+                var name = $('#vat-name').val();
+                var type = $('#vat-value').val();
+                $.ajax({
+                    url: "{{URL::asset('/configure/vat/add')}}",
+                    type: "POST",
+                    data: {name: name, type: type},
+                    success: function (response) {
+                        if(response.status != 200)
+                        {
+                            toastr.error('VAT could not be added!')
+                        }
+                        else {
+                            toastr.success('VAT successfully added!');
+                            vat_tbl.draw();
+                        }
+                    }
+                });
+            });
+        });
+
     </script>
 @endsection
 

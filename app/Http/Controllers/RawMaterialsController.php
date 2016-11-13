@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests, \DB, App\Item, \Redirect;
+use App\Http\Requests, \DB, App\Item, \Redirect, App\Audit;
+
 
 class RawMaterialsController extends Controller
 {
@@ -100,12 +101,14 @@ class RawMaterialsController extends Controller
                     ->leftJoin('itemunity', 'items.id_itemunity', '=', 'itemunity.Itemunity_id')
                     ->leftJoin('itemtype', 'items.id_itemtype', '=', 'itemtype.itemtype_id')
                     ->leftJoin('itemvat', 'items.id_vat', '=', 'itemvat.itemvat_id')
-                    ->select('items.item_code as code', 'items.Item_name as item', 'itemcategory.Itemcategory_name as category', 'itemunity.Itemunity_name as unity', 'items.item_price as price', 'itemtype.itemtype_name as type', 'itemvat.itemvat_name as vat', 'items.Item_id as id')
+                    ->leftJoin('itemquantity_instock', 'items.Item_id', '=', 'itemquantity_instock.id_item')
+                    ->select('items.item_code as code', 'items.Item_name as item', 'itemcategory.Itemcategory_name as category', 'itemunity.Itemunity_name as unity', 'items.item_price as price', 'itemtype.itemtype_name as type', 'itemvat.itemvat_name as vat', 'items.Item_id as id', 'itemquantity_instock.quantity as quantity')
                     ->where('items.is_product', '0')
                     ->where('items.deleted', '0')
                     ->where(function($query) use ($request){
                         $query->where('items.item_name', 'like', '%'.$request->search['value'].'%');
                         $query->orWhere('itemcategory.Itemcategory_name', 'like', '%'.$request->search['value'].'%');
+                        $query->orWhere('items.item_code', 'like', '%'.$request->search['value'].'%');
                     })
                     ->offset($start)->limit($length+$start)
                     ->orderBy($orderBy, $dir)
@@ -119,7 +122,8 @@ class RawMaterialsController extends Controller
                     ->leftJoin('itemunity', 'items.id_itemunity', '=', 'itemunity.Itemunity_id')
                     ->leftJoin('itemtype', 'items.id_itemtype', '=', 'itemtype.itemtype_id')
                     ->leftJoin('itemvat', 'items.id_vat', '=', 'itemvat.itemvat_id')
-                    ->select('items.item_code as code', 'items.Item_name as item', 'itemcategory.Itemcategory_name as category', 'itemunity.Itemunity_name as unity', 'items.item_price as price', 'itemtype.itemtype_name as type', 'itemvat.itemvat_name as vat', 'items.Item_id as id')
+                    ->leftJoin('itemquantity_instock', 'items.Item_id', '=', 'itemquantity_instock.id_item')
+                    ->select('items.item_code as code', 'items.Item_name as item', 'itemcategory.Itemcategory_name as category', 'itemunity.Itemunity_name as unity', 'items.item_price as price', 'itemtype.itemtype_name as type', 'itemvat.itemvat_name as vat', 'items.Item_id as id', 'itemquantity_instock.quantity as quantity')
                     ->where('items.is_product', '0')
                     ->where('items.deleted', '0')
                     ->offset($start)->limit($length+$start)
@@ -163,8 +167,10 @@ class RawMaterialsController extends Controller
         $item->deleted = 0;
         $item->is_product = 0;
 
-        DB::transaction(function () use ($item){
-           $item->save();
+        DB::transaction(function () use ($item, $data){
+            $item->save();
+            DB::table('itemquantity_instock')
+                ->insert(['id_item'=>$item->Item_id, 'id_stockroom'=>1, 'id_furnisher'=>1, 'quantity'=>$data['item-quantity']]);
         });
 
         return Redirect::to('/raw-materials');
@@ -174,37 +180,104 @@ class RawMaterialsController extends Controller
     {
         if($request->ajax())
         {
-            switch($request->name)
+            $response = [];
+            $response['status'] = 200;
+            $response['message'] = "Item edited successfully!";
+
+            //Audit
+            $audit = [];
+            $audit['updated_table'] = 'items';
+
+            try
             {
-                case "item-code":
-                    $item = Item::find($request->pk);
-                    $item->update(["item_code" => $request->value]);
-                    break;
-                case "item-name":
-                    $item = Item::find($request->pk);
-                    $item->update(["Item_name" => $request->value]);
-                    break;
-                case "item-category":
-                    $item = Item::find($request->pk);
-                    $item->update(["id_itemcategory" => $request->value]);
-                    break;
-                case "item-unity":
-                    $item = Item::find($request->pk);
-                    $item->update(["id_itemunity" => $request->value]);
-                    break;
-                case "item-price":
-                    $item = Item::find($request->pk);
-                    $item->update(["item_price" => $request->value]);
-                    break;
-                case "item-type":
-                    $item = Item::find($request->pk);
-                    $item->update(["id_itemtype" => $request->value]);
-                    break;
-                case "item-vat":
-                    $item = Item::find($request->pk);
-                    $item->update(["id_vat" => $request->value]);
-                    break;
+                DB::beginTransaction();
+
+                switch($request->name)
+                {
+                    case "item-code":
+                        $item = Item::find($request->pk);
+                        $old_value = $item->item_code;
+                        $item->update(["item_code" => $request->value]);
+                        $audit['updated_field'] = 'item_code';
+                        $audit['id_record'] = $item->Item_id;
+                        $audit['old_value'] = $old_value;
+                        $audit['new_value'] = $item->item_code;
+                        $audit['updated_description'] = "Item update";
+                        break;
+                    case "item-name":
+                        $item = Item::find($request->pk);
+                        $old_value = $item->Item_name;
+                        $item->update(["Item_name" => $request->value]);
+                        $audit['updated_field'] = 'Item_name';
+                        $audit['id_record'] = $item->Item_id;
+                        $audit['old_value'] = $old_value;
+                        $audit['new_value'] = $item->Item_name;
+                        $audit['updated_description'] = "Item update";
+                        break;
+                    case "item-category":
+                        $item = Item::find($request->pk);
+                        $old_value = $item->id_itemcategory;
+                        $item->update(["id_itemcategory" => $request->value]);
+                        $audit['updated_field'] = 'id_itemcategory';
+                        $audit['id_record'] = $item->Item_id;
+                        $audit['old_value'] = $old_value;
+                        $audit['new_value'] = $item->id_itemcategory;
+                        $audit['updated_description'] = "Item update";
+                        break;
+                    case "item-unity":
+                        $item = Item::find($request->pk);
+                        $old_value = $item->id_itemunity;
+                        $item->update(["id_itemunity" => $request->value]);
+                        $audit['updated_field'] = 'id_itemunity';
+                        $audit['id_record'] = $item->Item_id;
+                        $audit['old_value'] = $old_value;
+                        $audit['new_value'] = $item->id_itemunity;
+                        $audit['updated_description'] = "Item update";
+                        break;
+                    case "item-price":
+                        $item = Item::find($request->pk);
+                        $old_value = $item->item_price;
+                        $item->update(["item_price" => $request->value]);
+                        $audit['updated_field'] = 'item_price';
+                        $audit['id_record'] = $item->Item_id;
+                        $audit['old_value'] = $old_value;
+                        $audit['new_value'] = $item->item_price;
+                        $audit['updated_description'] = "Item update";
+                        break;
+                    case "item-type":
+                        $item = Item::find($request->pk);
+                        $old_value = $item->id_itemtype;
+                        $item->update(["id_itemtype" => $request->value]);
+                        $audit['updated_field'] = 'id_itemtype';
+                        $audit['id_record'] = $item->Item_id;
+                        $audit['old_value'] = $old_value;
+                        $audit['new_value'] = $item->id_itemtype;
+                        $audit['updated_description'] = "Item update";
+                        break;
+                    case "item-vat":
+                        $item = Item::find($request->pk);
+                        $old_value = $item->id_vat;
+                        $item->update(["id_vat" => $request->value]);
+                        $audit['updated_field'] = 'id_vat';
+                        $audit['id_record'] = $item->Item_id;
+                        $audit['old_value'] = $old_value;
+                        $audit['new_value'] = $item->id_vat;
+                        $audit['updated_description'] = "Item update";
+                        break;
+                }
+
+                MainController::audit($audit);
+                DB::commit();
             }
+            catch (\Exception $e)
+            {
+                DB::rollBack();
+                $response['status'] = 500;
+                $response['message'] = "Editing Failed!";
+                return $response;
+            }
+
+            return $response;
         }
     }
 
@@ -214,15 +287,60 @@ class RawMaterialsController extends Controller
         {
             $response = [];
             $response['status'] = 200;
+            $response['message'] = "Raw Material successfully removed!";
 
             $item = Item::find($request->pk);
 
             DB::transaction(function () use ($item, $request)
             {
-                $item->update(["deleted" => 1]);
-                DB::table('itemcompound')
-                    ->where('id_item_rawmaterial', $request->pk)
-                    ->update(['deleted' => 1]);
+                try
+                {
+                    $old_value = 0;
+                    $item->update(["deleted" => 1]);
+                    //Audit
+                    $audit = [];
+                    $audit['updated_table'] = 'items';
+                    $audit['updated_field'] = 'deleted';
+                    $audit['id_record'] = $item->Item_id;
+                    $audit['old_value'] = $old_value;
+                    $audit['new_value'] = $item->deleted;
+                    $audit['updated_description'] = "Item delete";
+                    MainController::audit($audit);
+
+                    //delete itemcompounds
+                    $itemcompounds = DB::table('itemcompound')
+                        ->where('id_item_rawmaterial', $request->pk)
+                        ->where('deleted', 0);
+                    $recordsItemcompounds = $itemcompounds->get();
+                    $itemcompounds->update(['deleted' => 1]);
+                    //Itemcompounds Audit
+                    $audit['updated_table'] = 'itemcompound';
+                    foreach ($recordsItemcompounds as $item)
+                    {
+                        $audit['id_record'] = $item->itemcompound_id;
+                        MainController::audit($audit);
+                    }
+
+                    //delete stock
+                    $itemsStock = DB::table('itemquantity_instock')
+                        ->where('id_item', $request->pk)
+                        ->where('deleted', 0);
+                    $recordsItemsStock = $itemsStock->get();
+                    $itemsStock->update(['deleted' => 1]);
+                    //ItemsStock Audit
+                    $audit['updated_table'] = 'itemquantity_instock';
+                    foreach ($recordsItemsStock as $item)
+                    {
+                        $audit['id_record'] = $item->Itemquantity_instock_id;
+                        MainController::audit($audit);
+                    }
+                }
+                catch(\Exception $e)
+                {
+                    $response['status'] = 500;
+                    $response['message'] = "Raw Material could not be deleted!";
+                    return $response;
+                }
 
             });
 
@@ -236,13 +354,87 @@ class RawMaterialsController extends Controller
         {
             $response = [];
             $response['status'] = 200;
+            $response['message'] = "Raw material added successfully to the table";
 
-            DB::transaction(function () use ($request)
+            $duplicate = DB::table('itemcompound')
+                ->where('id_item_rawmaterial', $request->pk)
+                ->where('id_item_product', $request->product)
+                ->where('deleted', 0)
+                ->count();
+            if($duplicate > 0)
             {
-                DB::table('itemcompound')
-                    ->insert(['id_item_product'=> $request->product, 'id_item_rawmaterial'=> $request->pk, 'quantity'=> $request->quantity]);
+                $response['status'] = 500;
+                $response['message'] = "Item already exists!";
+                return $response;
+            }
+            else if($request->quantity == 0 || $request->quantity == "")
+            {
+                $response['status'] = 500;
+                $response['message'] = "Fill Quantity Field!";
+                return $response;
+            }
+
+            DB::transaction(function () use ($request, $response)
+            {
+                try
+                {
+                    DB::table('itemcompound')
+                        ->insert(['id_item_product'=> $request->product, 'id_item_rawmaterial'=> $request->pk, 'quantity'=> $request->quantity]);
+                }
+                catch (\Exception $e)
+                {
+                    $response['status'] = 500;
+                    $response['message'] = "Raw material could not be added!";
+                    return $response;
+                }
             });
 
+            return $response;
+        }
+    }
+
+    public function editItemCompound(Request $request)
+    {
+        if($request->ajax())
+        {
+            $response = [];
+            $response['status'] = 200;
+            $response['message'] = "Quantity updated successfully!";
+
+            //Audit
+            $audit = [];
+            $audit['updated_table'] = 'itemcompound';
+
+            try
+            {
+                switch($request->name)
+                {
+                    case "item-quantity":
+                        DB::beginTransaction();
+
+                        $item = DB::table('itemcompound')
+                            ->where('itemcompound_id', $request->pk);
+                        $old_value = $item->first()->quantity;
+                        $itemcompound = $item->update(["quantity" => $request->value]);
+
+                        $audit['updated_field'] = 'quantity';
+                        $audit['id_record'] = $item->first()->itemcompound_id;
+                        $audit['old_value'] = $old_value;
+                        $audit['new_value'] = $item->first()->quantity;
+                        $audit['updated_description'] = "Item update";
+                        MainController::audit($audit);
+                        break;
+                }
+            }
+            catch (\Exception $e)
+            {
+                DB::rollback();
+                $response['status'] = 500;
+                $response['message'] = "There went something wrong!";
+                return $response;
+            }
+
+            DB::commit();
             return $response;
         }
     }

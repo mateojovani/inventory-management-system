@@ -42,6 +42,7 @@
                                 <th>Price</th>
                                 <th>Type</th>
                                 <th>VAT</th>
+                                <th>Quantity</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -54,6 +55,7 @@
                                 <th>Price</th>
                                 <th>Type</th>
                                 <th>VAT</th>
+                                <th>Quantity</th>
                                 <th>Actions</th>
                             </tr>
                             </tfoot>
@@ -62,16 +64,72 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!--Config Panel-->
-            <div class="panel panel-white" id="config-panel">
-                <div class="panel-heading">
-                    <div class="panel-title">Configure Materials</div>
-                    <button type="button" class="close" id="close-btn"><span aria-hidden="true">&times;</span></button>
+    <!--modal-->
+    <div class="modal fade bs-example-modal-lg" id="config-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <span class="modal-title" id="myLargeModalLabel">Configure Materials</span>
+                    <span><a href="#" id="enable-conf" class="btn btn-default">Enable Editing</a></span>
+
                 </div>
-                <div class="panel-body">
+                <div class="modal-body">
                     <div class="table-responsive">
                         <table id="config-table" class="display table" style="width: 100%; cellspacing: 0;">
+                            <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Item Name</th>
+                                <th>Quantity</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <!-- get raw material -->
+                    <div class="row">
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#item-modal">Get Existing Item</button>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="form-inline" id="new-row">
+                                <input type="hidden" id="item-pk" name="item-pk">
+                                <input type="hidden" id="product" name="product">
+
+                                <input type="text" class="form-control" id="item-code" name="item-code" placeholder="Code" disabled>
+
+                                <input type="text" class="form-control" id="item-name" name="item-name" placeholder="Item Name" disabled>
+
+                                <input class="form-control" type="text" id="item-quantity" name="item-quantity" placeholder="Quantity">
+
+                                <button type="submit" class="form-control" id="add-btn">Add</button>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bs-example-modal-lg" id="item-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myLargeModalLabel">Raw Materials</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table id="raw-materials-table" class="display table" style="width: 100%; cellspacing: 0;">
                             <thead>
                             <tr>
                                 <th>Code</th>
@@ -88,101 +146,15 @@
 
                         </table>
                     </div>
-                    <hr>
-                    <!-- get raw material -->
-                    <div class="row">
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#item-modal">Get Existing Item</button>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="form-inline" id="new-row">
-                        <input type="hidden" id="item-pk" name="item-pk">
-                        <input type="hidden" id="product" name="product">
-
-                        <input type="text" class="custom-input col-sm-1" id="item-code" name="item-code" placeholder="Code" disabled>
-
-                        <input type="text" class="custom-input col-sm-2" id="item-name" name="item-name" placeholder="Item Name" disabled>
-
-                        <select class="custom-input col-sm-2" id="item-category" name="item-category" disabled>
-                            @foreach($categories as $category)
-                                <option value="{{$category->value}}">{{$category->text}}</option>
-                            @endforeach
-                            </select>
-
-                        <select class="custom-input col-sm-1" id="item-unity" name="item-unity" disabled>
-                            @foreach($unities as $unity)
-                                <option value="{{$unity->value}}">{{$unity->text}}</option>
-                            @endforeach
-                        </select>
-
-                        <input type="text" class="custom-input col-sm-1" id="item-price" name="item-price" placeholder="Price" disabled>
-
-                        <select class="custom-input col-sm-1" id="item-type" name="item-type" disabled>
-                            @foreach($itemtypes as $itemtype)
-                                <option value="{{$itemtype->value}}">{{$itemtype->text}}</option>
-                            @endforeach
-                        </select>
-
-                        <select class="custom-input col-sm-1" id="item-vat" name="item-vat" disabled>
-                            @foreach($itemvats as $itemvat)
-                                <option value="{{$itemvat->value}}">{{$itemvat->text}}</option>
-                            @endforeach
-                        </select>
-
-                        <input class="custom-input col-sm-1" type="text" id="item-quantity" name="item-quantity" placeholder="Quantity">
-
-                        <button type="submit" class="btn btn-success" id="add-btn">Add</button>
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <!--modal-->
-    <div class="modal fade bs-example-modal-lg" id="item-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myLargeModalLabel">Modal title</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="table-responsive">
-                        <table id="raw-materials-table" class="display table" style="width: 100%; cellspacing: 0;">
-                            <thead>
-                            <tr>
-                                <th>Code</th>
-                                <th>Item Name</th>
-                                <th>Category</th>
-                                <th>Unity</th>
-                                <th>Price</th>
-                                <th>Type</th>
-                                <th>VAT</th>
-                                <th>Actions</th>
-                            </tr>
-                            </thead>
-
-                        </table>
-                    </div>
                 </div>
                 <div class="modal-footer">
                 </div>
             </div>
         </div>
     </div>
-
     <script>
         //config hide
-        $("#config-panel").hide();
         $("#new-row").hide();
-        $("#close-btn").livequery(function() {
-            $(this).click(function () {
-                $("#config-panel").hide();
-            });
-        });
 
         //datatables
         var tbl = $('#table').DataTable({
@@ -201,6 +173,7 @@
                 { "data": "price" },
                 { "data": "type" },
                 { "data": "vat" },
+                { "data": "quantity" },
                 { "data": "id" }
             ],
             columnDefs: [
@@ -273,9 +246,9 @@
                         return "<a href='#' data-pk='"+row.id+"' class='config-btn btn btn-sm btn-default'>Config</a> "+
                                 "<a href='#' data-pk='"+row.id+"' class='delete-btn btn btn-sm btn-danger'>Delete</a>";
                     },
-                    targets: 7
+                    targets: 8
                 },
-                { orderable: false, "targets": 7 }
+                { orderable: false, "targets": 8 }
             ]
         });
 
@@ -295,6 +268,7 @@
                 { "data": "price" },
                 { "data": "type" },
                 { "data": "vat" },
+                { "data": "quantity" },
                 { "data": "id" }
             ],
             columnDefs: [
@@ -310,9 +284,9 @@
                                 "data-vat='"+row.vat+"' " +
                                 "class='select-btn btn btn-sm btn-danger'>Select</a>";
                     },
-                    targets: 7
+                    targets: 8
                 },
-                { orderable: false, "targets": 7 }
+                { orderable: false, "targets": 8 }
             ]
         });
 
@@ -320,8 +294,14 @@
         $.fn.editable.defaults.mode = 'inline';
         //enable / disable
         $('#enable').livequery(function() {
-            $(this).click(function () {
+            $(this).unbind().click(function () {
                 $('#table .editable').editable('toggleDisabled');
+            });
+        });
+
+        $('#enable-conf').livequery(function() {
+            $(this).unbind().click(function () {
+                $('#config-table .editable').editable('toggleDisabled');
             });
         });
 
@@ -332,6 +312,36 @@
                 validate: function(value) {
                     if($.trim(value) == '') {
                         return 'This field is required';
+                    }
+                },
+                success: function(response) {
+                    if(response.status != 200)
+                    {
+                        toastr.error(response.message);
+                    }
+                    else {
+                        toastr.success(response.message);
+                    }
+                }
+            });
+        });
+
+        $('#config-table .editable').livequery(function() {
+            $(this).editable({
+                url: "{{URL::asset('/item-compound/edit')}}",
+                disabled: true,
+                validate: function(value) {
+                    if($.trim(value) == '') {
+                        return 'This field is required';
+                    }
+                },
+                success: function(response) {
+                    if(response.status != 200)
+                    {
+                        toastr.error(response.message);
+                    }
+                    else {
+                        toastr.success(response.message);
                     }
                 }
             });
@@ -347,10 +357,10 @@
                     success: function (response) {
                         if(response.status != 200)
                         {
-                            toastr.error('Product could not be deleted!')
+                            toastr.error(response.message)
                         }
                         else {
-                            toastr.success('Product successfully removed!');
+                            toastr.success(response.message);
                             tbl.draw();
                         }
                     }
@@ -398,10 +408,9 @@
         //config table
         $('#table .config-btn').livequery(function() {
             $(this).click(function () {
-                $('html, body').animate({ scrollTop: $('#config-panel').offset().top }, 'slow');
-                $("#config-panel").show();
+                $("#config-modal").modal('toggle');
                 $("#product").val($(this).attr('data-pk'));
-                console.log($("#product").val());
+                //console.log($("#product").val());
                 var config_table = $('#config-table').DataTable({
                     bProcessing: true,
                     serverSide: true,
@@ -418,22 +427,25 @@
                     columns: [
                         { "data": "code" },
                         { "data": "item" },
-                        { "data": "category" },
-                        { "data": "unity" },
-                        { "data": "price" },
-                        { "data": "type" },
-                        { "data": "vat" },
                         { "data": "quantity" },
                         { "data": "id" }
                     ],
                     columnDefs: [
                         {
                             render: function ( data, type, row ) {
+                                return "<a href='#' data-title='Enter Item Quantity' " +
+                                        "data-pk='"+row.id+"' data-type='text' " +
+                                        "data-name='item-quantity' class='editable'>"+data+"</a>"
+                            },
+                            targets: 2
+                        },
+                        {
+                            render: function ( data, type, row ) {
                                 return "<a href='#' data-pk='"+row.id+"' class='delete-btn btn btn-sm btn-danger'>Delete</a>";
                             },
-                            targets: 8
+                            targets: 3
                         },
-                        { orderable: false, "targets": 8 }
+                        { orderable: false, "targets": 3 }
                     ]
                 });
 
@@ -443,13 +455,6 @@
                         var data = {};
                         data.pk = $("#item-pk").val();
                         data.product = $("#product").val();
-                        data.code = $("#item-code").val();
-                        data.item = $("#item-name").val();
-                        data.category = $("#item-category").val();
-                        data.unity = $("#item-unity").val();
-                        data.price = $("#item-price").val();
-                        data.type = $("#item-type").val();
-                        data.vat = $("#item-vat").val();
                         data.quantity = $("#item-quantity").val();
 
                         $.ajax({
@@ -459,10 +464,10 @@
                             success: function (response) {
                                 if(response.status != 200)
                                 {
-                                    toastr.error('Raw material could not be added!')
+                                    toastr.error(response.message)
                                 }
                                 else{
-                                    toastr.success('Raw material added successfully to the table');
+                                    toastr.success(response.message);
                                     config_table.draw();
                                     $("#new-row").hide();
                                 }
@@ -481,14 +486,12 @@
                             success: function (response) {
                                 if(response.status != 200)
                                 {
-                                    toastr.error('Raw material could not be deleted!')
+                                    toastr.error(response.message);
                                 }
                                 else {
-                                    toastr.success('Raw material successfully removed!');
+                                    toastr.success(response.message);
                                     config_table.draw();
-                                    $('html, body').animate({ scrollTop: $('#panel').offset().top }, 'slow');
                                 }
-
                             }
                         });
                     });

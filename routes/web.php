@@ -38,6 +38,12 @@ Route::post('/configure/type/delete', 'ConfigController@deleteType');
 Route::post('/configure/type/add', 'ConfigController@addType');
 Route::post('/configure/type/edit', 'ConfigController@editType');
 
+Route::post('/grid/vat', 'ConfigController@showVATGrid');
+Route::post('/configure/vat/delete', 'ConfigController@deleteVAT');
+Route::post('/configure/vat/add', 'ConfigController@addVAT');
+Route::post('/configure/vat/edit', 'ConfigController@editVAT');
+
+
 #RawMaterials
 Route::get('/raw-materials', 'RawMaterialsController@show');
 Route::get('/raw-materials/add', 'RawMaterialsController@showAdd');
@@ -46,6 +52,7 @@ Route::post('/raw-materials/edit', 'RawMaterialsController@edit');
 Route::post('/raw-materials/delete', 'RawMaterialsController@delete');
 Route::post('/grid/raw-materials', 'RawMaterialsController@showGrid');
 Route::post('/item-compound/add', 'RawMaterialsController@addToItemCompound');
+Route::post('/item-compound/edit', 'RawMaterialsController@editItemCompound');
 
 Route::get('/raw-materials/categories', 'RawMaterialsController@getCategories');
 Route::get('/raw-materials/unities', 'RawMaterialsController@getUnities');

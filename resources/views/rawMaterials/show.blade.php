@@ -40,6 +40,7 @@
                                 <th>Price</th>
                                 <th>Type</th>
                                 <th>VAT</th>
+                                <th>Quantity</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -52,6 +53,7 @@
                                 <th>Price</th>
                                 <th>Type</th>
                                 <th>VAT</th>
+                                <th>Quantity</th>
                                 <th>Actions</th>
                             </tr>
                             </tfoot>
@@ -81,6 +83,7 @@
                 { "data": "price" },
                 { "data": "type" },
                 { "data": "vat" },
+                { "data": "quantity" },
                 { "data": "id" }
             ],
             columnDefs: [
@@ -152,9 +155,9 @@
                     render: function ( data, type, row ) {
                         return "<a href='#' data-pk='"+row.id+"' class='delete-btn btn btn-sm btn-danger'>Delete</a>";
                     },
-                    targets: 7
+                    targets: 8
                 },
-                { orderable: false, "targets": 7 }
+                { orderable: false, "targets": 8 }
             ]
         });
 
@@ -175,6 +178,15 @@
                     if($.trim(value) == '') {
                         return 'This field is required';
                     }
+                },
+                success: function(response) {
+                    if(response.status != 200)
+                    {
+                        toastr.error(response.message);
+                    }
+                    else {
+                        toastr.success(response.message);
+                    }
                 }
             });
         });
@@ -189,10 +201,10 @@
                     success: function (response) {
                         if(response.status != 200)
                         {
-                            toastr.error('Raw Material could not be deleted!')
+                            toastr.error(response.message)
                         }
                         else {
-                            toastr.success('Raw Material successfully removed!');
+                            toastr.success(response.message);
                             tbl.draw();
                         }
                     }

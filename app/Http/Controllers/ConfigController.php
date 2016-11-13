@@ -73,12 +73,42 @@ class ConfigController extends Controller
         {
             $response = [];
             $response['status'] = 200;
+            $response['message'] = 'Category successfully removed!';
 
-            DB::transaction(function () use ($request)
+            //can delete?
+            $stop = MainController::checkRestrictions($request->pk, 'itemcategory');
+            if($stop)
             {
-                DB::table('itemcategory')
-                    ->where('Itemcategory_id', $request->pk)
-                    ->update(['deleted' => 1]);
+                $response['status'] = 500;
+                $response['message'] = 'Category cannot be deleted!';
+                return $response;
+            }
+
+            //Audit
+            $audit = [];
+            $audit['updated_table'] = 'itemcategory';
+            $audit['updated_field'] = 'deleted';
+            $audit['id_record'] =$request->pk;
+            $audit['old_value'] = 0;
+            $audit['new_value'] = 1;
+            $audit['updated_description'] = "Category delete";
+
+            DB::transaction(function () use ($request, $audit)
+            {
+                try
+                {
+                    DB::table('itemcategory')
+                        ->where('Itemcategory_id', $request->pk)
+                        ->update(['deleted' => 1]);
+                    MainController::audit($audit);
+                }
+                catch(\Exception $e)
+                {
+                    $response['status'] = 500;
+                    $response['message'] = 'Category could not be deleted!';
+                    return $response;
+                }
+
             });
 
             return $response;
@@ -311,6 +341,103 @@ class ConfigController extends Controller
                     DB::table('itemtype')
                         ->where('itemtype_id', $request->pk)
                         ->update(["is_for_product" => $request->value]);
+                    break;
+            }
+        }
+    }
+
+    #VAT
+
+    public function showVATGrid(Request $request)
+    {
+        if($request->ajax())
+        {
+            $records = DB::table('itemvat')->where('deleted', '0')->count();
+
+            #server order
+            if($request->order[0]['column'] != '')
+            {
+                if($request->order[0]['column'] == '0')
+                    $orderBy = 'vat';
+                else if($request->order[0]['column'] == '1')
+                    $orderBy = 'value';
+
+                $dir = $request->order[0]['dir'];
+            }
+            else
+            {
+                $orderBy = '';
+                $dir = 'desc';
+            }
+
+            $items = DB::table('itemvat')
+                ->select('itemvat.itemvat_name as vat', 'itemvat.vat_value as value', 'itemvat.itemvat_id as id')
+                ->where('itemvat.deleted', '0')
+                ->orderBy($orderBy, $dir)
+                ->get();
+
+
+            $json_data = array(
+                "draw"            => $request->draw,
+                "recordsTotal"    => $records,
+                "recordsFiltered" => $records,
+                "data"            => $items
+            );
+            return $json_data;
+
+        }
+    }
+
+    public function deleteVAT(Request $request)
+    {
+        if($request->ajax())
+        {
+            $response = [];
+            $response['status'] = 200;
+
+            DB::transaction(function () use ($request)
+            {
+                DB::table('itemvat')
+                    ->where('itemvat_id', $request->pk)
+                    ->update(['deleted' => 1]);
+            });
+
+            return $response;
+        }
+    }
+
+    public function addVAT(Request $request)
+    {
+        if($request->ajax())
+        {
+            $response = [];
+            $response['status'] = 200;
+
+            DB::transaction(function () use ($request)
+            {
+                DB::table('itemvat')
+                    ->insert(['itemvat_name' => $request->name, 'vat_value' => $request->type]);
+            });
+
+            return $response;
+        }
+    }
+
+    public function editVAT(Request $request)
+    {
+        if($request->ajax())
+        {
+            switch($request->name)
+            {
+                case "vat-name":
+                    DB::table('itemvat')
+                        ->where('itemvat_id', $request->pk)
+                        ->update(["itemvat_name" => $request->value]);
+                    break;
+                case "vat-value":
+                    DB::table('itemvat')
+                        ->where('itemvat_id', $request->pk)
+                        ->update(["vat_value" => $request->value]);
                     break;
             }
         }
