@@ -12,6 +12,8 @@
 */
 
 Route::get('/', 'MainController@showHome');
+Route::get('/profile', 'MainController@showProfile');
+Route::post('/profile', 'MainController@editProfile');
 
 #Auth
 Route::get('/register', 'AuthController@getRegister');
@@ -73,3 +75,17 @@ Route::get('/products/categories', 'ProductsController@getCategories');
 Route::get('/products/unities', 'ProductsController@getUnities');
 Route::get('/products/types', 'ProductsController@getTypes');
 Route::get('/products/vat', 'ProductsController@getVAT');
+
+#Clients
+Route::get('/clients', 'ClientsController@show');
+Route::post('/grid/clients', 'ClientsController@showGrid');
+Route::post('/clients/add', 'ClientsController@add');
+Route::post('/clients/delete', 'ClientsController@delete');
+Route::post('/clients/edit', 'ClientsController@edit');
+
+#Furnishers
+Route::get('/furnishers', 'FurnishersController@show');
+Route::post('/grid/furnishers', 'FurnishersController@showGrid');
+Route::post('/furnishers/add', 'FurnishersController@add');
+Route::post('/furnishers/delete', 'FurnishersController@delete');
+Route::post('/furnishers/edit', 'FurnishersController@edit');

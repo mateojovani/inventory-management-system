@@ -17,6 +17,9 @@ class VerifyCsrfToken extends BaseVerifier
         '/products/*',
         '/product/*',
         '/item-compound/*',
-        '/configure/*'
+        '/configure/*',
+        '/clients/*',
+        '/furnishers/*',
+        '/profile'
     ];
 }

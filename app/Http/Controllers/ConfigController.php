@@ -10,6 +10,7 @@ class ConfigController extends Controller
 {
     public function __construct()
     {
+        parent::__construct();
         $this->middleware('auth');
     }
 
@@ -22,7 +23,7 @@ class ConfigController extends Controller
 
     public function show()
     {
-        return view('config.show');
+        return view($this->lang.'/config.show');
     }
 
     #Category
@@ -32,6 +33,8 @@ class ConfigController extends Controller
         if($request->ajax())
         {
             $records = DB::table('itemcategory')->where('deleted', '0')->count();
+            $start = $request->start;
+            $length = $request->length;
 
             #server order
             if($request->order[0]['column'] != '')
@@ -52,6 +55,7 @@ class ConfigController extends Controller
             $items = DB::table('itemcategory')
                 ->select('itemcategory.Itemcategory_name as category', 'itemcategory.is_for_product as item', 'itemcategory.Itemcategory_id as id')
                 ->where('itemcategory.deleted', '0')
+                ->offset($start)->limit($length+$start)
                 ->orderBy($orderBy, $dir)
                 ->get();
 
@@ -73,7 +77,8 @@ class ConfigController extends Controller
         {
             $response = [];
             $response['status'] = 200;
-            $response['message'] = 'Category successfully removed!';
+           // $response['message'] = 'Category successfully removed!';
+
 
             //can delete?
             $stop = MainController::checkRestrictions($request->pk, 'itemcategory');
@@ -121,11 +126,22 @@ class ConfigController extends Controller
         {
             $response = [];
             $response['status'] = 200;
+            $response['message'] = 'Category successfully added!';
 
             DB::transaction(function () use ($request)
             {
-                DB::table('itemcategory')
-                    ->insert(['Itemcategory_name' => $request->name, 'is_for_product' => $request->type, 'id_itemcategory' => 0]);
+                try
+                {
+                    DB::table('itemcategory')
+                        ->insert(['Itemcategory_name' => $request->name, 'is_for_product' => $request->type, 'id_itemcategory' => 0]);
+                }
+                catch (\Exception $e)
+                {
+                    $response['status'] = 500;
+                    $response['message'] = 'Category could not be added!';
+                    return $response;
+                }
+
             });
 
             return $response;
@@ -136,9 +152,19 @@ class ConfigController extends Controller
     {
         if($request->ajax())
         {
+            //Audit
+            $audit = [];
+            $audit['updated_table'] = 'itemcategory';
+            $audit['id_record'] =$request->pk;
+            $audit['updated_description'] = "Category update";
+
             switch($request->name)
             {
                 case "category":
+                    $audit['updated_field'] = 'Itemcategory_name';
+                    $audit['old_value'] = 0;
+                    $audit['new_value'] = $request->value;
+
                     DB::table('itemcategory')
                         ->where('Itemcategory_id', $request->pk)
                         ->update(["Itemcategory_name" => $request->value]);
@@ -159,6 +185,8 @@ class ConfigController extends Controller
         if($request->ajax())
         {
             $records = DB::table('itemunity')->where('deleted', '0')->count();
+            $start = $request->start;
+            $length = $request->length;
 
             #server order
             if($request->order[0]['column'] != '')
@@ -180,6 +208,7 @@ class ConfigController extends Controller
                 ->select('itemunity.Itemunity_name as unity', 'itemunity.is_for_product as item', 'itemunity.Itemunity_id as id')
                 ->where('itemunity.deleted', '0')
                 ->orderBy($orderBy, $dir)
+                ->offset($start)->limit($length+$start)
                 ->get();
 
 
@@ -256,6 +285,8 @@ class ConfigController extends Controller
         if($request->ajax())
         {
             $records = DB::table('itemtype')->where('deleted', '0')->count();
+            $start = $request->start;
+            $length = $request->length;
 
             #server order
             if($request->order[0]['column'] != '')
@@ -276,6 +307,7 @@ class ConfigController extends Controller
             $items = DB::table('itemtype')
                 ->select('itemtype.itemtype_name as type', 'itemtype.is_for_product as item', 'itemtype.itemtype_id as id')
                 ->where('itemtype.deleted', '0')
+                ->offset($start)->limit($length+$start)
                 ->orderBy($orderBy, $dir)
                 ->get();
 
@@ -353,6 +385,8 @@ class ConfigController extends Controller
         if($request->ajax())
         {
             $records = DB::table('itemvat')->where('deleted', '0')->count();
+            $start = $request->start;
+            $length = $request->length;
 
             #server order
             if($request->order[0]['column'] != '')
@@ -373,6 +407,7 @@ class ConfigController extends Controller
             $items = DB::table('itemvat')
                 ->select('itemvat.itemvat_name as vat', 'itemvat.vat_value as value', 'itemvat.itemvat_id as id')
                 ->where('itemvat.deleted', '0')
+                ->offset($start)->limit($length+$start)
                 ->orderBy($orderBy, $dir)
                 ->get();
 

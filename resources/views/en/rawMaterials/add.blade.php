@@ -1,11 +1,11 @@
-@extends('layouts.master')
+@extends('en.layouts.master')
 
 @section('title')
     Add Raw Material
 @endsection
 
 @section('sources_top')
-    @include('layouts._sources_top')
+    @include('en.layouts._sources_tbl_top')
 @endsection
 
 @section('rm')
@@ -22,7 +22,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="col-md-8"><br>
-                        {!! Form::open(['url' => '/raw-materials/add', 'class' => 'form-horizontal']) !!}
+                        <div class="form-horizontal">
                             <div class="form-group">
                                 <label for="item-code" class="col-sm-2 control-label">Item Code</label>
                                 <div class="col-sm-10">
@@ -44,7 +44,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Item Category</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control m-b-sm" name="item-category">
+                                    <select class="form-control m-b-sm" name="item-category" id="item-category">
                                         @foreach($categories as $category)
                                             <option value="{{$category->value}}">{{$category->text}}</option>
                                         @endforeach
@@ -54,7 +54,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Item Unity</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control m-b-sm" name="item-unity">
+                                    <select class="form-control m-b-sm" name="item-unity" id="item-unity">
                                         @foreach($unities as $unity)
                                             <option value="{{$unity->value}}">{{$unity->text}}</option>
                                         @endforeach
@@ -64,7 +64,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Item Type</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control m-b-sm" name="item-type">
+                                    <select class="form-control m-b-sm" name="item-type" id="item-type">
                                         @foreach($itemtypes as $itemtype)
                                             <option value="{{$itemtype->value}}">{{$itemtype->text}}</option>
                                         @endforeach
@@ -74,14 +74,14 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">VAT</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control m-b-sm" name="item-vat">
+                                    <select class="form-control m-b-sm" name="item-vat" id="item-vat">
                                         @foreach($itemvats as $itemvat)
                                             <option value="{{$itemvat->value}}">{{$itemvat->text}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
-                             <div class="form-group">
+                            <div class="form-group">
                                 <label for="item-quantity" class="col-sm-2 control-label">Quantity</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="item-quantity" name="item-quantity" placeholder="Quantity">
@@ -89,18 +89,50 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
-                                    <button type="submit" class="btn btn-success">Add</button>
+                                    <button type="submit" class="btn btn-success" id="save-btn">Add</button>
                                 </div>
                             </div>
-                        {!! Form::close() !!}
+                        </div>
                     </div>
 
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        //submit form
+        $('#save-btn').livequery(function() {
+            $(this).unbind().click(function () {
+                var data = {};
+                data.code = $("#item-code").val();
+                data.name = $("#item-name").val();
+                data.price = $("#item-price").val();
+                data.category = $("#item-category").val();
+                data.unity = $("#item-unity").val();
+                data.type = $("#item-type").val();
+                data.vat = $("#item-vat").val();
+                data.quantity = $("#item-quantity").val();
+
+                $.ajax({
+                    url: "{{URL::asset('/raw-materials/add')}}",
+                    type: "POST",
+                    data: data,
+                    success: function (response) {
+                        if(response.status != 200)
+                        {
+                            toastr.error(response.message);
+                        }
+                        else{
+                            toastr.success(response.message);
+                            window.location.href = "{{URL::asset('/raw-materials')}}";
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 @endsection
 
 @section('sources_bottom')
-    @include('layouts._sources_bottom')
 @endsection

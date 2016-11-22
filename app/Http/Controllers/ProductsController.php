@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests, \DB, App\Item, \Redirect;
+use App\Http\Requests, \DB, App\Item, \Redirect, \Validator;
 
 class ProductsController extends Controller
 {
@@ -12,12 +12,13 @@ class ProductsController extends Controller
 
     public function __construct()
     {
+        parent::__construct();
         $this->middleware('auth');
     }
 
     public function show()
     {
-        return view('products.show');
+        return view($this->lang.'/products.show');
     }
 
     public function getCategories()
@@ -201,30 +202,63 @@ class ProductsController extends Controller
         $data['itemtypes'] = $this->getTypes();
         $data['itemvats'] = $this->getVat();
 
-        return view('products.add')->with($data);
+        return view($this->lang.'/products.add')->with($data);
     }
 
     public function postAdd(Request $request)
     {
+        $response = [];
+        $response['status'] = 200;
+        $response['message'] = "Product added successfuly!";
         $data = $request->all();
+
+        //validation
+        $validator = Validator::make($data, [
+            'code' => 'required|digits_between:1,20',
+            'name' => 'required',
+            'price' => 'required|digits_between:1,10',
+            'quantity' => 'required|digits_between:1,20',
+        ]);
+
+        if($validator->fails())
+        {
+            $message = "";
+            foreach ($validator->errors()->all() as $error)
+            {
+                $message = $message.$error."<br>";
+            }
+            $response['status'] = 500;
+            $response['message'] = $message;
+            return $response;
+        }
+
         $item = new Item();
-        $item->item_code = $data['item-code'];
-        $item->Item_name = $data['item-name'];
-        $item->id_itemcategory = $data['item-category'];
-        $item->id_itemunity = $data['item-unity'];
-        $item->item_price = $data['item-price'];
-        $item->id_vat = $data['item-vat'];
-        $item->id_itemtype = $data['item-type'];
+        $item->item_code = $data['code'];
+        $item->Item_name = $data['name'];
+        $item->id_itemcategory = $data['category'];
+        $item->id_itemunity = $data['unity'];
+        $item->item_price = $data['price'];
+        $item->id_vat = $data['vat'];
+        $item->id_itemtype = $data['type'];
         $item->deleted = 0;
         $item->is_product = 1;
 
-        DB::transaction(function () use ($item, $data){
-           $item->save();
-           DB::table('itemquantity_instock')
-               ->insert(['id_item'=>$item->Item_id, 'id_stockroom'=>1, 'id_furnisher'=>1, 'quantity'=>$data['item-quantity']]);
-        });
+        try
+        {
+            DB::beginTransaction();
+            $item->save();
+            DB::table('itemquantity_instock')
+                ->insert(['id_item'=>$item->Item_id, 'id_stockroom'=>1, 'id_furnisher'=>1, 'quantity'=>$data['quantity']]);
+            DB::commit();
+        }
+        catch(\Exception $e)
+        {
+            DB::rollBack();
+            $response['status'] = 500;
+            $response['message'] = "Product couldn't be added!";
+        }
 
-        return Redirect::to('/products');
+        return $response;
     }
 
     public function edit(Request $request)
@@ -248,6 +282,13 @@ class ProductsController extends Controller
                     case "item-code":
                         $item = Item::find($request->pk);
                         $old_value = $item->item_code;
+                        $validator = Validator::make($request->all(), ['value' => 'required|digits_between:1,20']);
+                        if($validator->fails())
+                        {
+                            $response['status'] = 500;
+                            $response['message'] = $validator->errors()->all();
+                            return $response;
+                        }
                         $item->update(["item_code" => $request->value]);
                         $audit['updated_field'] = 'item_code';
                         $audit['id_record'] = $item->Item_id;
@@ -288,6 +329,13 @@ class ProductsController extends Controller
                     case "item-price":
                         $item = Item::find($request->pk);
                         $old_value = $item->item_price;
+                        $validator = Validator::make($request->all(), ['value' => 'required|digits_between:1,10']);
+                        if($validator->fails())
+                        {
+                            $response['status'] = 500;
+                            $response['message'] = $validator->errors()->all();
+                            return $response;
+                        }
                         $item->update(["item_price" => $request->value]);
                         $audit['updated_field'] = 'item_price';
                         $audit['id_record'] = $item->Item_id;
@@ -325,7 +373,6 @@ class ProductsController extends Controller
                 DB::rollBack();
                 $response['status'] = 500;
                 $response['message'] = "Editing Failed!";
-                return $response;
             }
 
             return $response;

@@ -105,14 +105,20 @@
 
             <ul class="menu accordion-menu">
                 <li @yield('db')><a href="{{URL::asset('/')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>Dashboard</p></a></li>
-                <li @yield('cf')>
-                    <a href="{{URL::asset('/configure')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-wrench"></span><p>Configure</p></a>
-                </li>
                 <li @yield('rm')>
                     <a href="{{URL::asset('/raw-materials')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-scissors"></span><p>Raw Materials</p></a>
                 </li>
                 <li @yield('pr')>
                     <a href="{{URL::asset('/products')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-book"></span><p>Products</p></a>
+                </li>
+                <li @yield('cf')>
+                    <a href="{{URL::asset('/configure')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-wrench"></span><p>Configure</p></a>
+                </li>
+                <li @yield('cl')>
+                    <a href="{{URL::asset('/clients')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Clients</p></a>
+                </li>
+                <li @yield('fu')>
+                    <a href="{{URL::asset('/furnishers')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-sort-by-attributes-alt"></span><p>Furnishers</p></a>
                 </li>
             </ul>
         </div><!-- Page Sidebar Inner -->

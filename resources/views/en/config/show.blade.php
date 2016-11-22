@@ -1,11 +1,11 @@
-@extends('layouts.master')
+@extends('en.layouts.master')
 
 @section('title')
-    Raw Materials
+    Configure System
 @endsection
 
 @section('sources_top')
-    @include('layouts._sources_tbl_top')
+    @include('en.layouts._sources_tbl_top')
 @endsection
 
 @section('cf')
@@ -258,8 +258,8 @@
             serverSide: true,
             bDestroy: true,
             bFilter: false,
-            bPaginate: false,
-            bInfo : false,
+            pageLength: 5,
+            bLengthChange: false,
             ajax: {
                 url: "{{URL::asset('/grid/categories')}}",
                 type: "post"
@@ -335,6 +335,16 @@
                     if($.trim(value) == '') {
                         return 'This field is required';
                     }
+                },
+                success: function(response) {
+                    if(response.status != 200)
+                    {
+                        toastr.error(response.message);
+                        return "";
+                    }
+                    else {
+                        toastr.success(response.message);
+                    }
                 }
             });
         });
@@ -369,8 +379,8 @@
             serverSide: true,
             bDestroy: true,
             bFilter: false,
-            bPaginate: false,
-            bInfo : false,
+            pageLength: 5,
+            bLengthChange: false,
             ajax: {
                 url: "{{URL::asset('/grid/unity')}}",
                 type: "post"
@@ -447,6 +457,16 @@
                     if($.trim(value) == '') {
                         return 'This field is required';
                     }
+                },
+                success: function(response) {
+                    if(response.status != 200)
+                    {
+                        toastr.error(response.message);
+                        return "";
+                    }
+                    else {
+                        toastr.success(response.message);
+                    }
                 }
             });
         });
@@ -481,8 +501,8 @@
             serverSide: true,
             bDestroy: true,
             bFilter: false,
-            bPaginate: false,
-            bInfo : false,
+            pageLength: 5,
+            bLengthChange: false,
             ajax: {
                 url: "{{URL::asset('/grid/type')}}",
                 type: "post"
@@ -559,6 +579,16 @@
                     if($.trim(value) == '') {
                         return 'This field is required';
                     }
+                },
+                success: function(response) {
+                    if(response.status != 200)
+                    {
+                        toastr.error(response.message);
+                        return "";
+                    }
+                    else {
+                        toastr.success(response.message);
+                    }
                 }
             });
         });
@@ -593,8 +623,8 @@
             serverSide: true,
             bDestroy: true,
             bFilter: false,
-            bPaginate: false,
-            bInfo : false,
+            pageLength: 5,
+            bLengthChange: false,
             ajax: {
                 url: "{{URL::asset('/grid/vat')}}",
                 type: "post"
@@ -660,6 +690,16 @@
                 validate: function(value) {
                     if($.trim(value) == '') {
                         return 'This field is required';
+                    }
+                },
+                success: function(response) {
+                    if(response.status != 200)
+                    {
+                        toastr.error(response.message);
+                        return "";
+                    }
+                    else {
+                        toastr.success(response.message);
                     }
                 }
             });

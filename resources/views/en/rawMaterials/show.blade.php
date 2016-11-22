@@ -1,11 +1,11 @@
-@extends('layouts.master')
+@extends('en.layouts.master')
 
 @section('title')
     Raw Materials
 @endsection
 
 @section('sources_top')
-    @include('layouts._sources_tbl_top')
+    @include('en.layouts._sources_tbl_top')
 @endsection
 
 @section('rm')
@@ -183,8 +183,10 @@
                     if(response.status != 200)
                     {
                         toastr.error(response.message);
+                        return "";
                     }
-                    else {
+                    else
+                    {
                         toastr.success(response.message);
                     }
                 }

@@ -11,12 +11,12 @@ class AuthController extends Controller
 {
     public function getLogin()
     {
-        return view('authenticate.login');
+        return view($this->lang.'/authenticate.login');
     }
 
     public function getRegister()
     {
-        return view('authenticate.register');
+        return view($this->lang.'/authenticate.register');
     }
 
     public function postRegister(Request $request)

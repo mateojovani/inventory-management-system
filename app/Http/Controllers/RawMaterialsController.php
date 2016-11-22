@@ -4,21 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests, \DB, App\Item, \Redirect, App\Audit;
+use App\Http\Requests, \DB, App\Item, \Redirect, \Validator;
 
 
 class RawMaterialsController extends Controller
 {
-    private $sql;
 
     public function __construct()
     {
+        parent::__construct();
         $this->middleware('auth');
     }
 
     public function show()
     {
-        return view('rawMaterials.show');
+        return view($this->lang.'/rawMaterials.show');
     }
 
     public static function getCategories()
@@ -35,7 +35,7 @@ class RawMaterialsController extends Controller
         $sql = 'select Itemunity_name as text, Itemunity_id as value from itemunity
                       where is_for_product = 0 and deleted = 0';
         $unities = DB::select($sql);
-
+        
         return $unities;
     }
 
@@ -150,30 +150,63 @@ class RawMaterialsController extends Controller
         $data['itemtypes'] = $this->getTypes();
         $data['itemvats'] = $this->getVat();
 
-        return view('rawMaterials.add')->with($data);
+        return view($this->lang.'/rawMaterials.add')->with($data);
     }
 
     public function postAdd(Request $request)
     {
+        $response = [];
+        $response['status'] = 200;
+        $response['message'] = "Raw Material added successfuly!";
         $data = $request->all();
+
+        //validation
+        $validator = Validator::make($data, [
+            'code' => 'required|digits_between:1,20',
+            'name' => 'required',
+            'price' => 'required|digits_between:1,10',
+            'quantity' => 'required|digits_between:1,20',
+        ]);
+
+        if($validator->fails())
+        {
+            $message = "";
+            foreach ($validator->errors()->all() as $error)
+            {
+                $message = $message.$error."<br>";
+            }
+            $response['status'] = 500;
+            $response['message'] = $message;
+            return $response;
+        }
+
         $item = new Item();
-        $item->item_code = $data['item-code'];
-        $item->Item_name = $data['item-name'];
-        $item->id_itemcategory = $data['item-category'];
-        $item->id_itemunity = $data['item-unity'];
-        $item->item_price = $data['item-price'];
-        $item->id_vat = $data['item-vat'];
-        $item->id_itemtype = $data['item-type'];
+        $item->item_code = $data['code'];
+        $item->Item_name = $data['name'];
+        $item->id_itemcategory = $data['category'];
+        $item->id_itemunity = $data['unity'];
+        $item->item_price = $data['price'];
+        $item->id_vat = $data['vat'];
+        $item->id_itemtype = $data['type'];
         $item->deleted = 0;
         $item->is_product = 0;
 
-        DB::transaction(function () use ($item, $data){
+        try
+        {
+            DB::beginTransaction();
             $item->save();
             DB::table('itemquantity_instock')
-                ->insert(['id_item'=>$item->Item_id, 'id_stockroom'=>1, 'id_furnisher'=>1, 'quantity'=>$data['item-quantity']]);
-        });
+                ->insert(['id_item'=>$item->Item_id, 'id_stockroom'=>1, 'id_furnisher'=>1, 'quantity'=>$data['quantity']]);
+            DB::commit();
+        }
+        catch(\Exception $e)
+        {
+            DB::rollBack();
+            $response['status'] = 500;
+            $response['message'] = "Raw material couldn't be added!";
+        }
 
-        return Redirect::to('/raw-materials');
+        return $response;
     }
 
     public function edit(Request $request)
@@ -197,6 +230,13 @@ class RawMaterialsController extends Controller
                     case "item-code":
                         $item = Item::find($request->pk);
                         $old_value = $item->item_code;
+                        $validator = Validator::make($request->all(), ['value' => 'required|digits_between:1,20']);
+                        if($validator->fails())
+                        {
+                            $response['status'] = 500;
+                            $response['message'] = $validator->errors()->all();
+                            return $response;
+                        }
                         $item->update(["item_code" => $request->value]);
                         $audit['updated_field'] = 'item_code';
                         $audit['id_record'] = $item->Item_id;
@@ -237,6 +277,13 @@ class RawMaterialsController extends Controller
                     case "item-price":
                         $item = Item::find($request->pk);
                         $old_value = $item->item_price;
+                        $validator = Validator::make($request->all(), ['value' => 'required|digits_between:1,10']);
+                        if($validator->fails())
+                        {
+                            $response['status'] = 500;
+                            $response['message'] = $validator->errors()->all();
+                            return $response;
+                        }
                         $item->update(["item_price" => $request->value]);
                         $audit['updated_field'] = 'item_price';
                         $audit['id_record'] = $item->Item_id;
@@ -415,6 +462,13 @@ class RawMaterialsController extends Controller
                         $item = DB::table('itemcompound')
                             ->where('itemcompound_id', $request->pk);
                         $old_value = $item->first()->quantity;
+                        $validator = Validator::make($request->all(), ['value' => 'required|digits_between:1,20']);
+                        if($validator->fails())
+                        {
+                            $response['status'] = 500;
+                            $response['message'] = $validator->errors()->all();
+                            return $response;
+                        }
                         $itemcompound = $item->update(["quantity" => $request->value]);
 
                         $audit['updated_field'] = 'quantity';
