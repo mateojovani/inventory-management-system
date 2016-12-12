@@ -10,7 +10,6 @@ class ConfigController extends Controller
 {
     public function __construct()
     {
-        parent::__construct();
         $this->middleware('auth');
     }
 
@@ -23,7 +22,7 @@ class ConfigController extends Controller
 
     public function show()
     {
-        return view($this->lang.'/config.show');
+        return view('config.show');
     }
 
     #Category
@@ -75,19 +74,9 @@ class ConfigController extends Controller
     {
         if($request->ajax())
         {
-            $response = [];
-            $response['status'] = 200;
-           // $response['message'] = 'Category successfully removed!';
-
-
             //can delete?
             $stop = MainController::checkRestrictions($request->pk, 'itemcategory');
-            if($stop)
-            {
-                $response['status'] = 500;
-                $response['message'] = 'Category cannot be deleted!';
-                return $response;
-            }
+            if($stop) return getResponse(500, 142);
 
             //Audit
             $audit = [];
@@ -109,14 +98,12 @@ class ConfigController extends Controller
                 }
                 catch(\Exception $e)
                 {
-                    $response['status'] = 500;
-                    $response['message'] = 'Category could not be deleted!';
-                    return $response;
+                    return getResponse(500, 500);
                 }
 
             });
 
-            return $response;
+            return getResponse(200, 106);
         }
     }
 
@@ -124,9 +111,7 @@ class ConfigController extends Controller
     {
         if($request->ajax())
         {
-            $response = [];
-            $response['status'] = 200;
-            $response['message'] = 'Category successfully added!';
+            if($request->name == '') return getResponse(500, 141);
 
             DB::transaction(function () use ($request)
             {
@@ -137,14 +122,12 @@ class ConfigController extends Controller
                 }
                 catch (\Exception $e)
                 {
-                    $response['status'] = 500;
-                    $response['message'] = 'Category could not be added!';
-                    return $response;
+                    return getResponse(500, 500);
                 }
 
             });
 
-            return $response;
+            return getResponse(200, 105);
         }
     }
 
@@ -155,26 +138,46 @@ class ConfigController extends Controller
             //Audit
             $audit = [];
             $audit['updated_table'] = 'itemcategory';
-            $audit['id_record'] =$request->pk;
+            $audit['id_record'] = $request->pk;
             $audit['updated_description'] = "Category update";
 
-            switch($request->name)
+            try
             {
-                case "category":
-                    $audit['updated_field'] = 'Itemcategory_name';
-                    $audit['old_value'] = 0;
-                    $audit['new_value'] = $request->value;
+                DB::beginTransaction();
 
-                    DB::table('itemcategory')
-                        ->where('Itemcategory_id', $request->pk)
-                        ->update(["Itemcategory_name" => $request->value]);
-                    break;
-                case "name":
-                    DB::table('itemcategory')
-                        ->where('Itemcategory_id', $request->pk)
-                        ->update(["is_for_product" => $request->value]);
-                    break;
+                switch($request->name)
+                {
+                    case "category":
+                        $audit['updated_field'] = 'Itemcategory_name';
+                        $audit['new_value'] = $request->value;
+                        $item = DB::table('itemcategory')
+                            ->where('Itemcategory_id', $request->pk);
+
+                        $audit['old_value'] = $item->first()->Itemcategory_name;
+
+                        $item->update(["Itemcategory_name" => $request->value]);
+                        break;
+                    case "name":
+                        $audit['updated_field'] = 'is_for_product';
+                        $item =  DB::table('itemcategory')
+                            ->where('Itemcategory_id', $request->pk);
+                        $audit['old_value'] = $item->first()->is_for_product;
+                        $audit['new_value'] = $request->value;
+
+                        $item->update(["is_for_product" => $request->value]);
+                        break;
+                }
+
+                MainController::audit($audit);
+                DB::commit();
             }
+            catch(\Exception $e)
+            {
+                DB::rollBack();
+                return getResponse(500, 200);
+            }
+
+            return getResponse(200, 201);
         }
     }
 
@@ -225,19 +228,39 @@ class ConfigController extends Controller
 
     public function deleteUnity(Request $request)
     {
+        //can delete?
+        $stop = MainController::checkRestrictions($request->pk, 'itemunity');
+        if($stop) return getResponse(500, 142);
+
+        //Audit
+        $audit = [];
+        $audit['updated_table'] = 'itemunity';
+        $audit['updated_field'] = 'deleted';
+        $audit['id_record'] =$request->pk;
+        $audit['old_value'] = 0;
+        $audit['new_value'] = 1;
+        $audit['updated_description'] = "Unity delete";
+
         if($request->ajax())
         {
-            $response = [];
-            $response['status'] = 200;
 
-            DB::transaction(function () use ($request)
+            DB::transaction(function () use ($request, $audit)
             {
-                DB::table('itemunity')
-                    ->where('Itemunity_id', $request->pk)
-                    ->update(['deleted' => 1]);
+                try
+                {
+                    DB::table('itemunity')
+                        ->where('Itemunity_id', $request->pk)
+                        ->update(['deleted' => 1]);
+                    MainController::audit($audit);
+                }
+                catch(\Exception $e)
+                {
+                    return getResponse(500, 500);
+                }
+
             });
 
-            return $response;
+            return getResponse(200, 110);
         }
     }
 
@@ -245,16 +268,24 @@ class ConfigController extends Controller
     {
         if($request->ajax())
         {
-            $response = [];
-            $response['status'] = 200;
+
+            if($request->name == '') return getResponse(500, 141);
 
             DB::transaction(function () use ($request)
             {
-                DB::table('itemunity')
-                    ->insert(['Itemunity_name' => $request->name, 'is_for_product' => $request->type]);
+                try
+                {
+                    DB::table('itemunity')
+                        ->insert(['Itemunity_name' => $request->name, 'is_for_product' => $request->type]);
+                }
+                catch(\Exception $e)
+                {
+                    return getResponse(500, 500);
+                }
+
             });
 
-            return $response;
+            return getResponse(200, 111);
         }
     }
 
@@ -262,19 +293,47 @@ class ConfigController extends Controller
     {
         if($request->ajax())
         {
-            switch($request->name)
+            //Audit
+            $audit = [];
+            $audit['updated_table'] = 'itemunity';
+            $audit['id_record'] =$request->pk;
+            $audit['updated_description'] = "Unity update";
+
+            try
             {
-                case "unity":
-                    DB::table('itemunity')
-                        ->where('Itemunity_id', $request->pk)
-                        ->update(["Itemunity_name" => $request->value]);
-                    break;
-                case "name":
-                    DB::table('itemunity')
-                        ->where('Itemunity_id', $request->pk)
-                        ->update(["is_for_product" => $request->value]);
-                    break;
+                DB::beginTransaction();
+
+                switch($request->name)
+                {
+                    case "unity":
+                        $audit['updated_field'] = 'Itemunity_name';
+                        $audit['new_value'] = $request->value;
+                        $item = DB::table('itemunity')
+                            ->where('Itemunity_id', $request->pk);
+                        $audit['old_value'] = $item->first()->Itemunity_name;
+
+                        $item->update(["Itemunity_name" => $request->value]);
+                        break;
+                    case "name":
+                        $audit['updated_field'] = 'is_for_product';
+                        $audit['new_value'] = $request->value;
+                        $item = DB::table('itemunity')
+                            ->where('Itemunity_id', $request->pk);
+                        $audit['old_value'] = $item->first()->is_for_product;
+
+                        $item->update(["is_for_product" => $request->value]);
+                        break;
+                }
+                MainController::audit($audit);
+                DB::commit();
             }
+            catch(\Exception $e)
+            {
+                DB::rollBack();
+                return getResponse(500, 500);
+            }
+
+            return getResponse(200, 202);
         }
     }
 
@@ -327,17 +386,36 @@ class ConfigController extends Controller
     {
         if($request->ajax())
         {
-            $response = [];
-            $response['status'] = 200;
+            //can delete?
+            $stop = MainController::checkRestrictions($request->pk, 'itemtype');
+            if($stop) return getResponse(500, 142);
 
-            DB::transaction(function () use ($request)
+            //Audit
+            $audit = [];
+            $audit['updated_table'] = 'itemtype';
+            $audit['updated_field'] = 'deleted';
+            $audit['id_record'] =$request->pk;
+            $audit['old_value'] = 0;
+            $audit['new_value'] = 1;
+            $audit['updated_description'] = "Type delete";
+
+            DB::transaction(function () use ($request, $audit)
             {
-                DB::table('itemtype')
-                    ->where('itemtype_id', $request->pk)
-                    ->update(['deleted' => 1]);
+                try
+                {
+                    DB::table('itemtype')
+                        ->where('itemtype_id', $request->pk)
+                        ->update(['deleted' => 1]);
+                    MainController::audit($audit);
+                }
+                catch (\Exception $e)
+                {
+                    return getResponse(500, 500);
+                }
+
             });
 
-            return $response;
+            return getResponse(200, 114);
         }
     }
 
@@ -345,16 +423,21 @@ class ConfigController extends Controller
     {
         if($request->ajax())
         {
-            $response = [];
-            $response['status'] = 200;
-
+            if($request->name == '') return getResponse(500, 141);
             DB::transaction(function () use ($request)
             {
-                DB::table('itemtype')
-                    ->insert(['itemtype_name' => $request->name, 'is_for_product' => $request->type]);
+                try
+                {
+                    DB::table('itemtype')
+                        ->insert(['itemtype_name' => $request->name, 'is_for_product' => $request->type]);
+                }
+                catch (\Exception $e)
+                {
+                    return getResponse(500, 500);
+                }
             });
 
-            return $response;
+            return getResponse(200, 113);
         }
     }
 
@@ -362,19 +445,47 @@ class ConfigController extends Controller
     {
         if($request->ajax())
         {
-            switch($request->name)
+
+            //Audit
+            $audit = [];
+            $audit['updated_table'] = 'itemtype';
+            $audit['id_record'] =$request->pk;
+            $audit['updated_description'] = "Type update";
+
+            try
             {
-                case "type":
-                    DB::table('itemtype')
-                        ->where('itemtype_id', $request->pk)
-                        ->update(["itemtype_name" => $request->value]);
-                    break;
-                case "name":
-                    DB::table('itemtype')
-                        ->where('itemtype_id', $request->pk)
-                        ->update(["is_for_product" => $request->value]);
-                    break;
+                DB::beginTransaction();
+                switch($request->name)
+                {
+                    case "type":
+                        $audit['updated_field'] = 'itemtype_name';
+                        $audit['new_value'] = $request->value;
+                        $item = DB::table('itemtype')
+                            ->where('itemtype_id', $request->pk);
+                        $audit['old_value'] = $item->first()->itemtype_name;
+
+                        $item->update(["itemtype_name" => $request->value]);
+                        break;
+                    case "name":
+                        $audit['updated_field'] = 'is_for_product';
+                        $audit['new_value'] = $request->value;
+                        $item = DB::table('itemtype')
+                            ->where('itemtype_id', $request->pk);
+                        $audit['old_value'] = $item->first()->is_for_product;
+
+                        $item->update(["is_for_product" => $request->value]);
+                        break;
+                }
+                MainController::audit($audit);
+                DB::commit();
             }
+            catch(\Exception $e)
+            {
+                DB::rollBack();
+                return getResponse(500, 500);
+            }
+
+            return getResponse(200, 203);
         }
     }
 
@@ -427,17 +538,37 @@ class ConfigController extends Controller
     {
         if($request->ajax())
         {
-            $response = [];
-            $response['status'] = 200;
+            //can delete?
+            $stop = MainController::checkRestrictions($request->pk, 'itemvat');
+            if($stop) return getResponse(500, 142);
 
-            DB::transaction(function () use ($request)
+            //Audit
+            $audit = [];
+            $audit['updated_table'] = 'itemvat';
+            $audit['updated_field'] = 'deleted';
+            $audit['id_record'] =$request->pk;
+            $audit['old_value'] = 0;
+            $audit['new_value'] = 1;
+            $audit['updated_description'] = "VAT delete";
+
+            DB::transaction(function () use ($request, $audit)
             {
-                DB::table('itemvat')
-                    ->where('itemvat_id', $request->pk)
-                    ->update(['deleted' => 1]);
+                try
+                {
+                    DB::table('itemvat')
+                        ->where('itemvat_id', $request->pk)
+                        ->update(['deleted' => 1]);
+                    MainController::audit($audit);
+
+                }
+                catch(\Exception $e)
+                {
+                    return getResponse(500, 500);
+                }
+
             });
 
-            return $response;
+            return getResponse(200, 118);
         }
     }
 
@@ -445,16 +576,22 @@ class ConfigController extends Controller
     {
         if($request->ajax())
         {
-            $response = [];
-            $response['status'] = 200;
-
+            if($request->name == '' || $request->type == '') return getResponse(500, 141);
             DB::transaction(function () use ($request)
             {
-                DB::table('itemvat')
-                    ->insert(['itemvat_name' => $request->name, 'vat_value' => $request->type]);
+                try
+                {
+                    DB::table('itemvat')
+                        ->insert(['itemvat_name' => $request->name, 'vat_value' => $request->type]);
+                }
+                catch(\Exception $e)
+                {
+                    return getResponse(500, 500);
+                }
+
             });
 
-            return $response;
+            return getResponse(200, 117);
         }
     }
 
@@ -462,19 +599,49 @@ class ConfigController extends Controller
     {
         if($request->ajax())
         {
-            switch($request->name)
+
+            //Audit
+            $audit = [];
+            $audit['updated_table'] = 'itemvat';
+            $audit['id_record'] = $request->pk;
+            $audit['updated_description'] = "VAT update";
+
+            try
             {
-                case "vat-name":
-                    DB::table('itemvat')
-                        ->where('itemvat_id', $request->pk)
-                        ->update(["itemvat_name" => $request->value]);
-                    break;
-                case "vat-value":
-                    DB::table('itemvat')
-                        ->where('itemvat_id', $request->pk)
-                        ->update(["vat_value" => $request->value]);
-                    break;
+                DB::beginTransaction();
+
+                switch($request->name)
+                {
+                    case "vat-name":
+                        $audit['updated_field'] = 'itemvat_name';
+                        $audit['new_value'] = $request->value;
+                        $item = DB::table('itemvat')
+                            ->where('itemvat_id', $request->pk);
+                        $audit['old_value'] = $item->first()->itemvat_name;
+
+                        $item->update(["itemvat_name" => $request->value]);
+                        break;
+                    case "vat-value":
+                        $audit['updated_field'] = 'itemtype_name';
+                        $audit['new_value'] = $request->value;
+                        $item = DB::table('itemvat')
+                            ->where('itemvat_id', $request->pk);
+                        $audit['old_value'] = $item->first()->vat_value;
+
+                        $item->update(["vat_value" => $request->value]);
+                        break;
+                }
+
+                MainController::audit($audit);
+                DB::commit();
             }
+            catch (\Exception $e)
+            {
+                DB::rollBack();
+                return getResponse(500, 500);
+            }
+
+            return getResponse(200, 204);
         }
     }
 }

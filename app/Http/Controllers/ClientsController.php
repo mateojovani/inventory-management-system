@@ -10,13 +10,12 @@ class ClientsController extends Controller
 {
     public function __construct()
     {
-        parent::__construct();
         $this->middleware('auth');
     }
 
     public function show()
     {
-        return view($this->lang.'/clients.show');
+        return view('clients.show');
     }
 
     public function showGrid(Request $request)
@@ -93,11 +92,8 @@ class ClientsController extends Controller
     {
         if($request->ajax())
         {
-            $response = [];
-            $response['status'] = 200;
-            $response['message'] = "Client was created!";
-
             $data = $request->all();
+            if($data['client_name'] == '') return getResponse(500, 141);
             $client = new Client();
             $client->client_name = $data['client_name'];
             $client->client_address = $data['client_address'];
@@ -114,11 +110,10 @@ class ClientsController extends Controller
             catch(\Exception $e)
             {
                 DB::rollBack();
-                $response['status'] = 500;
-                $response['message'] = "Client was not created!";
+                return getResponse(500, 500);
             }
 
-            return $response;
+            return getResponse(200, 300);
         }
 
     }
@@ -127,9 +122,6 @@ class ClientsController extends Controller
     {
         if($request->ajax())
         {
-            $response = [];
-            $response['status'] = 200;
-            $response['message'] = "Client successfully removed!";
 
             $client = Client::find($request->pk);
             DB::transaction(function () use ($client, $request)
@@ -151,13 +143,12 @@ class ClientsController extends Controller
                 }
                 catch(\Exception $e)
                 {
-                    $response['status'] = 500;
-                    $response['message'] = "Client could not be deleted!";
+                    return getResponse(500, 500);
                 }
 
             });
 
-            return $response;
+            return getResponse(200, 301);
         }
     }
 
@@ -165,10 +156,6 @@ class ClientsController extends Controller
     {
         if($request->ajax())
         {
-            $response = [];
-            $response['status'] = 200;
-            $response['message'] = "Client edited successfully!";
-
             //Audit
             $audit = [];
             $audit['updated_table'] = 'clients';
@@ -176,60 +163,49 @@ class ClientsController extends Controller
             try
             {
                 DB::beginTransaction();
+                $client = Client::find($request->pk);
 
                 switch($request->name)
                 {
                     case "client":
-                        $client = Client::find($request->pk);
                         $old_value = $client->client_name;
                         $client->update(["client_name" => $request->value]);
                         $audit['updated_field'] = 'client_name';
-                        $audit['id_record'] = $client->Client_id;
-                        $audit['old_value'] = $old_value;
                         $audit['new_value'] = $client->client_name;
                         $audit['updated_description'] = "Client update";
                         break;
                     case "address":
-                        $client = Client::find($request->pk);
                         $old_value = $client->client_address;
                         $client->update(["client_address" => $request->value]);
                         $audit['updated_field'] = 'client_address';
-                        $audit['id_record'] = $client->Client_id;
-                        $audit['old_value'] = $old_value;
                         $audit['new_value'] = $client->client_address;
                         $audit['updated_description'] = "Client update";
                         break;
                     case "email":
-                        $client = Client::find($request->pk);
                         $old_value = $client->client_email;
                         $client->update(["client_email" => $request->value]);
                         $audit['updated_field'] = 'client_email';
-                        $audit['id_record'] = $client->Client_id;
-                        $audit['old_value'] = $old_value;
                         $audit['new_value'] = $client->client_email;
                         $audit['updated_description'] = "Client update";
                         break;
                     case "phone":
-                        $client = Client::find($request->pk);
                         $old_value = $client->client_phone;
                         $client->update(["client_phone" => $request->value]);
                         $audit['updated_field'] = 'client_phone';
-                        $audit['id_record'] = $client->Client_id;
-                        $audit['old_value'] = $old_value;
                         $audit['new_value'] = $client->client_phone;
                         $audit['updated_description'] = "Client update";
                         break;
                     case "mobile":
-                        $client = Client::find($request->pk);
                         $old_value = $client->client_mobile;
                         $client->update(["client_mobile" => $request->value]);
                         $audit['updated_field'] = 'client_mobile';
-                        $audit['id_record'] = $client->Client_id;
-                        $audit['old_value'] = $old_value;
                         $audit['new_value'] = $client->client_mobile;
                         $audit['updated_description'] = "Client update";
                         break;
                 }
+
+                $audit['id_record'] = $client->Client_id;
+                $audit['old_value'] = $old_value;
 
                 MainController::audit($audit);
                 DB::commit();
@@ -237,11 +213,11 @@ class ClientsController extends Controller
             catch (\Exception $e)
             {
                 DB::rollBack();
-                $response['status'] = 500;
-                $response['message'] = "Editing Failed!";
+                return getResponse(500, 500);
             }
 
-            return $response;
+            return getResponse(200, 205);
         }
     }
+
 }

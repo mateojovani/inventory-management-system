@@ -20,6 +20,7 @@ class VerifyCsrfToken extends BaseVerifier
         '/configure/*',
         '/clients/*',
         '/furnishers/*',
-        '/profile'
+        '/profile',
+        '/login'
     ];
 }

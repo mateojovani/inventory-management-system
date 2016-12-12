@@ -9,46 +9,35 @@ return [
     |
     */
 
-    'context' => 'Raw Materials',
+    'context' => 'Materialet',
 
     'form' => [
 
-        'add_material' => 'Add Raw Material',
-        'code' => 'Item Code',
-        'name' => 'Item Name',
-        'price' => 'Price',
-        'category' => 'Item Category',
-        'unity' => 'Item Unity',
-        'type' => 'Item Type',
-        'vat' => 'VAT',
-        'quantity' => 'Quantity',
-        'add' => 'Add'
+        'add_material' => 'Shto Material',
+        'code' => 'Kodi i materialit',
+        'name' => 'Emri',
+        'price' => '&Ccedil;mimi',
+        'category' => 'Kategoria',
+        'unity' => 'Nj&euml;sia',
+        'type' => 'Tipi',
+        'vat' => 'Taksa',
+        'quantity' => 'Sasia',
+        'add' => 'Shto'
 
     ],
 
     'table' => [
 
-        'code' => 'Code',
-        'name' => 'Item Name',
-        'price' => 'Price',
-        'category' => 'Category',
-        'unity' => 'Unity',
-        'type' => 'Type',
-        'vat' => 'VAT',
-        'quantity' => 'Quantity'
-
-    ],
-
-    'modals' =>[
-
-        'configure_materials' => 'Configure Materials',
-        'existing' => 'Get Existing Item',
-        'add' => 'Add'
+        'code' => 'Kodi',
+        'name' => 'Emri',
+        'price' => '&Ccedil;mimi',
+        'category' => 'Kategoria',
+        'unity' => 'Nj&euml;sia',
+        'type' => 'Tipi',
+        'vat' => 'Taksa',
+        'quantity' => 'Sasia',
 
     ]
-
-
-
 
 
 ];

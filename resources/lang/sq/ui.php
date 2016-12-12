@@ -11,29 +11,38 @@ return [
 
     'side_menu' => [
 
-        'dashboard' => 'Dashboard',
-        'raw_materials' => 'Raw Materials',
-        'products' => 'Products',
-        'configure' => 'Configure',
-        'clients' => 'Clients',
-        'furnishers' => 'Furnishers'
+        'dashboard' => 'Kreu',
+        'raw_materials' => 'Materialet',
+        'products' => 'Produktet',
+        'configure' => 'Konfigurime',
+        'clients' => 'Klient&euml;t',
+        'furnishers' => 'Prodhuesit',
+        'entrysheet' => 'Flet&euml; Hyrje'
 
     ],
 
-    'enable_btn' => 'Enable Editing',
+    'enable_btn' => 'Lejo Editimin',
 
     'datatables' => [
 
-        'actions' => 'Actions',
-        'delete' => 'Delete',
-        'config' => 'Config',
-        'select' => 'Select'
+        'actions' => 'Veprimet',
+        'delete' => 'Fshi',
+        'config' => 'Konfiguro',
+        'select' => 'Zgjidh',
+
+        'length' => '_MENU_ rekorde p&euml;r faqe',
+        'zero_records' => 'Nuk ka rekorde p&euml;r t&euml; paraqitur',
+        'info' => 'Faqja _PAGE_ nga _PAGES_',
+        'info_empty' => 'Nuk ka rekorde',
+        'search' => "K&euml;rko: ",
+        'previous' => 'P&euml;rpara',
+        'next' => 'Pas'
 
     ],
 
     'editable' => [
 
-        'required' => 'This field is required'
+        'required' => 'Kjo fushe eshte e detyruar'
 
     ]
 

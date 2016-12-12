@@ -9,14 +9,14 @@ return [
     |
     */
 
-    'context' => 'Configure Items',
+    'context' => 'Konfiguro Element&euml;t',
 
     'tabs' => [
 
-        'categories' => 'Categories',
-        'unity' => 'Unity',
-        'types' => 'Types',
-        'vat' => 'VAT',
+        'categories' => 'Kategorit&euml;',
+        'unity' => 'Nj&euml;sit&euml;',
+        'types' => 'Tipet',
+        'vat' => 'Taksa',
 
     ],
 
@@ -24,15 +24,15 @@ return [
 
         'form' => [
 
-            'add_category' => 'Add Category',
-            'name' => 'Category Name',
-            'type' => 'Item Type',
-            'add' => 'Add',
+            'add_category' => 'Shto Kategori',
+            'name' => 'Emri i Kategoris&euml;',
+            'type' => 'Tipi',
+            'add' => 'Shto',
 
         ],
 
-        'name' => 'Category',
-        'item' => 'Item'
+        'name' => 'Kategoria',
+        'item' => 'Tipi'
 
     ],
 
@@ -40,15 +40,15 @@ return [
 
         'form' => [
 
-            'add_unity' => 'Add Unity',
-            'name' => 'Unity Name',
-            'type' => 'Item Type',
-            'add' => 'Add',
+            'add_unity' => 'Shto Nj&euml;si',
+            'name' => 'Emri i Nj&euml;sis&euml;',
+            'type' => 'Tipi',
+            'add' => 'Shto',
 
         ],
 
-        'name' => 'Unity',
-        'item' => 'Item'
+        'name' => 'Nj&euml;sia',
+        'item' => 'Tipi'
 
     ],
 
@@ -56,15 +56,15 @@ return [
 
         'form' => [
 
-            'add_type' => 'Add Type',
-            'name' => 'Type Name',
-            'type' => 'Item Type',
-            'add' => 'Add',
+            'add_type' => 'Shto Tip',
+            'name' => 'Emri i Tipit',
+            'type' => 'Tipi i elementit',
+            'add' => 'Shto',
 
         ],
 
-        'name' => 'Type',
-        'item' => 'Item'
+        'name' => 'Tipi',
+        'item' => 'Elementi'
 
     ],
 
@@ -72,16 +72,16 @@ return [
 
         'form' => [
 
-            'add_vat' => 'Add VAT',
-            'name' => 'VAT Name',
-            'value' => 'VAT Value',
-            'value_placeholder' => 'VAT Value (ex. 0.2)',
-            'add' => 'Add',
+            'add_vat' => 'Shto Taks&euml;',
+            'name' => 'Emri i Taks&euml;s',
+            'value' => 'Vlera e Taks&euml;s',
+            'value_placeholder' => 'Vlera (psh. 0.2)',
+            'add' => 'Shto',
 
         ],
 
-        'name' => 'VAT',
-        'item' => 'Value'
+        'name' => 'Taksa',
+        'item' => 'Vlera'
 
     ],
 

@@ -5,18 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use Validator, Redirect, App\User, Auth;
+use Validator, Redirect, App\User, Auth, \App;
 
 class AuthController extends Controller
 {
     public function getLogin()
     {
-        return view($this->lang.'/authenticate.login');
+        return view('authenticate.login');
     }
 
     public function getRegister()
     {
-        return view($this->lang.'/authenticate.register');
+        return view('authenticate.register');
     }
 
     public function postRegister(Request $request)
@@ -47,11 +47,24 @@ class AuthController extends Controller
 
     public function postLogin(Request $request)
     {
-        if(Auth::attempt(['username'=>$request->username, 'password'=>$request->password]))
+        if($request->ajax())
         {
-            return Redirect::to('/');
+            //set language
+            if($request->lang == 'en_US')
+                session(['lang' => 'en', 'lang_detail'=>'en_US']);
+            else if($request->lang == 'sq_AL')
+                session(['lang' => 'sq', 'lang_detail'=>'sq_AL']);
+            else session(['lang' => 'en', 'lang_detail'=>'en_US']);
+
+            $this->lang = session('lang');
+
+            //response
+
+            if(Auth::attempt(['username'=>$request->username, 'password'=>$request->password]))
+                return getResponse(200);
+            else return getResponse(500, 100);
         }
-        else return Redirect::to('/login')->withErrors(['Can not Authenticate!']);
+
     }
 
     public function getLogout()

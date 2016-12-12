@@ -22,6 +22,7 @@
   <link href="assets/plugins/waves/waves.min.css" rel="stylesheet" type="text/css"/>
   <link href="assets/plugins/switchery/switchery.min.css" rel="stylesheet" type="text/css"/>
   <link href="assets/plugins/3d-bold-navigation/css/style.css" rel="stylesheet" type="text/css"/>
+  <link href="assets/plugins/toastr/toastr.min.css" rel="stylesheet" type="text/css"/>
   <link href="assets/plugins/bootstrap-formhelpers/bootstrap-formhelpers.min.css" rel="stylesheet" type="text/css"/>
 
   <!-- Theme Styles -->
@@ -48,20 +49,18 @@
         <div class="col-md-3 center">
           <div class="login-box">
             <a href="{{URL::asset('/')}}" class="logo-name text-lg text-center">Inventory</a>
-            <p class="text-center m-t-md">Create an account</p>
-            {!! Form::open(['url' => '/login', 'class' => 'm-t-md']) !!}
+            <p class="text-center m-t-md">Login</p>
+
             <div class="form-group">
-              <input type="text" class="form-control" name="username" placeholder="Username" required>
+              <input type="text" class="form-control" name="username" placeholder="Username" id="username" required>
             </div>
             <div class="form-group">
-              <input type="password" class="form-control" name="password" placeholder="Password" required>
+              <input type="password" class="form-control" name="password" placeholder="Password" id="password" required>
             </div>
-            <div class="bfh-selectbox bfh-languages" data-name="lang" data-language="en_US" data-available="en_US,sq_AL" data-flags="true">
+            <div class="bfh-selectbox bfh-languages" id="lang" data-name="lang" data-language="en_US" data-available="en_US,sq_AL" data-flags="true">
             </div>
-            <button type="submit" class="btn btn-success btn-block m-t-xs">Login</button>
-            <p class="text-center m-t-xs text-sm">Do not have an account?</p>
-            <a href="{{URL::asset('/register')}}" class="btn btn-default btn-block m-t-md">Create an account</a>
-            {!! Form::close() !!}
+            <button type="submit" class="btn btn-success btn-block m-t-xs" id="login-btn">Login</button>
+
 
             <p class="text-center m-t-xs text-sm">2016 &copy; Inventory.</p>
           </div>
@@ -87,8 +86,31 @@
 <script src="assets/plugins/offcanvasmenueffects/js/classie.js"></script>
 <script src="assets/plugins/offcanvasmenueffects/js/main.js"></script>
 <script src="assets/plugins/waves/waves.min.js"></script>
+<script src="assets/plugins/toastr/toastr.min.js"></script>
 <script src="assets/plugins/3d-bold-navigation/js/main.js"></script>
 <script src="assets/js/modern.min.js"></script>
 
+<script>
+  $('#login-btn').click(function () {
+      $.ajax({
+        url: "{{URL::asset('/login')}}",
+        type: "POST",
+        data: {
+          username: $('#username').val(),
+          password: $('#password').val(),
+          lang: $("input[name='lang']").val()
+        },
+        success: function (response) {
+          if(response.status != 200)
+          {
+            toastr.error(response.message)
+          }
+          else {
+             location.href = "/";
+          }
+        }
+      });
+  });
+</script>
 </body>
 </html>

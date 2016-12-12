@@ -51,50 +51,20 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a href="javascript:void(0);" class="waves-effect waves-button waves-classic show-search"><i class="fa fa-search"></i></a>
+                            <a href="javascript:void(0);" class="waves-effect waves-button waves-classic">
+                                <span class="bfh-languages" data-language="{{session('lang_detail')}}" data-flags="true"></span>
+                            </a>
                         </li>
 
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown"><i class="fa fa-bell"></i><span class="badge badge-success pull-right">3</span></a>
-                            <ul class="dropdown-menu title-caret dropdown-lg" role="menu">
-                                <li><p class="drop-title">You have 3 pending tasks !</p></li>
-                                <li class="dropdown-menu-list slimscroll tasks">
-                                    <ul class="list-unstyled">
-                                        <li>
-                                            <a href="#">
-                                                <div class="task-icon badge badge-success"><i class="icon-user"></i></div>
-                                                <span class="badge badge-roundless badge-default pull-right">1min ago</span>
-                                                <p class="task-details">New user registered.</p>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="task-icon badge badge-danger"><i class="icon-energy"></i></div>
-                                                <span class="badge badge-roundless badge-default pull-right">24min ago</span>
-                                                <p class="task-details">Database error.</p>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="task-icon badge badge-info"><i class="icon-heart"></i></div>
-                                                <span class="badge badge-roundless badge-default pull-right">1h ago</span>
-                                                <p class="task-details">Reached 24k likes</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="drop-all"><a href="#" class="text-center">All Tasks</a></li>
+                            <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown">
+                                <span class="user-name">{{Auth::user()->username}}<i class="fa fa-angle-down"></i></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-list" role="menu">
+                                <li role="presentation"><a href="{{URL::asset('/profile')}}"><i class="fa fa-user"></i>Profile</a></li>
+                                <li role="presentation"><a href="{{URL::asset('/logout')}}"><i class="fa fa-sign-out m-r-xs"></i>Log out</a></li>
                             </ul>
                         </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown">
-                                    <span class="user-name">{{Auth::user()->username}}<i class="fa fa-angle-down"></i></span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-list" role="menu">
-                                    <li role="presentation"><a href="{{URL::asset('/profile')}}"><i class="fa fa-user"></i>Profile</a></li>
-                                    <li role="presentation"><a href="{{URL::asset('/logout')}}"><i class="fa fa-sign-out m-r-xs"></i>Log out</a></li>
-                                </ul>
-                            </li>
                     </ul><!-- Nav -->
                 </div><!-- Top Menu -->
             </div>
@@ -104,21 +74,24 @@
         <div class="page-sidebar-inner slimscroll">
 
             <ul class="menu accordion-menu">
-                <li @yield('db')><a href="{{URL::asset('/')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>Dashboard</p></a></li>
+                <li @yield('db')><a href="{{URL::asset('/')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>{{trans('ui.side_menu.dashboard')}}</p></a></li>
                 <li @yield('rm')>
-                    <a href="{{URL::asset('/raw-materials')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-scissors"></span><p>Raw Materials</p></a>
+                    <a href="{{URL::asset('/raw-materials')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-scissors"></span><p>{{trans('ui.side_menu.raw_materials')}}</p></a>
                 </li>
                 <li @yield('pr')>
-                    <a href="{{URL::asset('/products')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-book"></span><p>Products</p></a>
+                    <a href="{{URL::asset('/products')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-book"></span><p>{{trans('ui.side_menu.products')}}</p></a>
                 </li>
                 <li @yield('cf')>
-                    <a href="{{URL::asset('/configure')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-wrench"></span><p>Configure</p></a>
+                    <a href="{{URL::asset('/configure')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-wrench"></span><p>{{trans('ui.side_menu.configure')}}</p></a>
                 </li>
                 <li @yield('cl')>
-                    <a href="{{URL::asset('/clients')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Clients</p></a>
+                    <a href="{{URL::asset('/clients')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>{{trans('ui.side_menu.clients')}}</p></a>
                 </li>
                 <li @yield('fu')>
-                    <a href="{{URL::asset('/furnishers')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-sort-by-attributes-alt"></span><p>Furnishers</p></a>
+                    <a href="{{URL::asset('/furnishers')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-sort-by-attributes-alt"></span><p>{{trans('ui.side_menu.furnishers')}}</p></a>
+                </li>
+                <li @yield('en')>
+                    <a href="{{URL::asset('/entrysheet')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-list-alt"></span><p>{{trans('ui.side_menu.entrysheet')}}</p></a>
                 </li>
             </ul>
         </div><!-- Page Sidebar Inner -->

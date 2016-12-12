@@ -10,13 +10,12 @@ class FurnishersController extends Controller
 {
     public function __construct()
     {
-        parent::__construct();
         $this->middleware('auth');
     }
 
     public function show()
     {
-        return view($this->lang.'/furnishers.show');
+        return view('furnishers.show');
     }
 
     public function showGrid(Request $request)
@@ -93,12 +92,9 @@ class FurnishersController extends Controller
     {
         if($request->ajax())
         {
-            $response = [];
-            $response['status'] = 200;
-            $response['message'] = "Furnisher was created!";
-
             $data = $request->all();
-            $furnisher = new furnisher();
+            if($data['furnisher_name'] == '') return getResponse(500, 141);
+            $furnisher = new Furnisher();
             $furnisher->furnisher_name = $data['furnisher_name'];
             $furnisher->furnisher_address = $data['furnisher_address'];
             $furnisher->furnisher_email = $data['furnisher_email'];
@@ -114,11 +110,10 @@ class FurnishersController extends Controller
             catch(\Exception $e)
             {
                 DB::rollBack();
-                $response['status'] = 500;
-                $response['message'] = "Furnisher was not created!";
+                return getResponse(500, 500);
             }
 
-            return $response;
+            return getResponse(200, 302);
         }
 
     }
@@ -127,10 +122,6 @@ class FurnishersController extends Controller
     {
         if($request->ajax())
         {
-            $response = [];
-            $response['status'] = 200;
-            $response['message'] = "Furnisher successfully removed!";
-
             $furnisher = Furnisher::find($request->pk);
             DB::transaction(function () use ($furnisher, $request)
             {
@@ -151,13 +142,12 @@ class FurnishersController extends Controller
                 }
                 catch(\Exception $e)
                 {
-                    $response['status'] = 500;
-                    $response['message'] = "Furnisher could not be deleted!";
+                    return getResponse(500, 500);
                 }
 
             });
 
-            return $response;
+            return getResponse(200, 303);
         }
     }
 
@@ -165,10 +155,6 @@ class FurnishersController extends Controller
     {
         if($request->ajax())
         {
-            $response = [];
-            $response['status'] = 200;
-            $response['message'] = "Furnisher edited successfully!";
-
             //Audit
             $audit = [];
             $audit['updated_table'] = 'furnishers';
@@ -176,16 +162,14 @@ class FurnishersController extends Controller
             try
             {
                 DB::beginTransaction();
+                $furnisher = Furnisher::find($request->pk);
 
                 switch($request->name)
                 {
                     case "furnisher":
-                        $furnisher = Furnisher::find($request->pk);
                         $old_value = $furnisher->furnisher_name;
                         $furnisher->update(["furnisher_name" => $request->value]);
                         $audit['updated_field'] = 'furnisher_name';
-                        $audit['id_record'] = $furnisher->Furnisher_id;
-                        $audit['old_value'] = $old_value;
                         $audit['new_value'] = $furnisher->furnisher_name;
                         $audit['updated_description'] = "Furnisher update";
                         break;
@@ -194,8 +178,6 @@ class FurnishersController extends Controller
                         $old_value = $furnisher->furnisher_address;
                         $furnisher->update(["furnisher_address" => $request->value]);
                         $audit['updated_field'] = 'furnisher_address';
-                        $audit['id_record'] = $furnisher->Furnisher_id;
-                        $audit['old_value'] = $old_value;
                         $audit['new_value'] = $furnisher->furnisher_address;
                         $audit['updated_description'] = "Furnisher update";
                         break;
@@ -204,8 +186,6 @@ class FurnishersController extends Controller
                         $old_value = $furnisher->furnisher_email;
                         $furnisher->update(["furnisher_email" => $request->value]);
                         $audit['updated_field'] = 'furnisher_email';
-                        $audit['id_record'] = $furnisher->Furnisher_id;
-                        $audit['old_value'] = $old_value;
                         $audit['new_value'] = $furnisher->furnisher_email;
                         $audit['updated_description'] = "Furnisher update";
                         break;
@@ -214,8 +194,6 @@ class FurnishersController extends Controller
                         $old_value = $furnisher->furnisher_phone;
                         $furnisher->update(["furnisher_phone" => $request->value]);
                         $audit['updated_field'] = 'furnisher_phone';
-                        $audit['id_record'] = $furnisher->Furnisher_id;
-                        $audit['old_value'] = $old_value;
                         $audit['new_value'] = $furnisher->furnisher_phone;
                         $audit['updated_description'] = "Furnisher update";
                         break;
@@ -224,24 +202,23 @@ class FurnishersController extends Controller
                         $old_value = $furnisher->furnisher_mobile;
                         $furnisher->update(["furnisher_mobile" => $request->value]);
                         $audit['updated_field'] = 'furnisher_mobile';
-                        $audit['id_record'] = $furnisher->Furnisher_id;
-                        $audit['old_value'] = $old_value;
                         $audit['new_value'] = $furnisher->furnisher_mobile;
                         $audit['updated_description'] = "Furnisher update";
                         break;
                 }
 
+                $audit['id_record'] = $furnisher->Furnisher_id;
+                $audit['old_value'] = $old_value;
                 MainController::audit($audit);
                 DB::commit();
             }
             catch (\Exception $e)
             {
                 DB::rollBack();
-                $response['status'] = 500;
-                $response['message'] = "Editing Failed!";
+                return getResponse(500, 500);
             }
 
-            return $response;
+            return getResponse(200, 206);
         }
     }
 }

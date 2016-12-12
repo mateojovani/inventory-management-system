@@ -12,19 +12,18 @@ class MainController extends Controller
 
     public function __construct()
     {
-        parent::__construct();
         $this->middleware('auth');
     }
 
     public function showHome()
     {
-        return view($this->lang.'/home');
+        return view('home');
     }
 
     public function showProfile()
     {
         $user = Auth::user();
-        return view($this->lang.'/profile')->with('user', $user);
+        return view('profile')->with('user', $user);
     }
 
     public function editProfile(Request $request)
@@ -122,11 +121,35 @@ class MainController extends Controller
 
     public static function checkRestrictions($id, $table)
     {
-        //category restrictions | influence on items
+        //ex. category restrictions | influence on items
         switch ($table)
         {
             case 'itemcategory':
                 $items = Item::where('id_itemcategory', $id)
+                    ->where('deleted', 0)
+                    ->count();
+                if($items > 0)
+                    return true;
+                break;
+
+            case 'itemunity':
+                $items = Item::where('id_itemunity', $id)
+                    ->where('deleted', 0)
+                    ->count();
+                if($items > 0)
+                    return true;
+                break;
+
+            case 'itemtype':
+                $items = Item::where('id_itemtype', $id)
+                    ->where('deleted', 0)
+                    ->count();
+                if($items > 0)
+                    return true;
+                break;
+
+            case 'itemvat':
+                $items = Item::where('id_vat', $id)
                     ->where('deleted', 0)
                     ->count();
                 if($items > 0)

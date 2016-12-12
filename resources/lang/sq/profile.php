@@ -9,17 +9,17 @@ return [
     |
     */
 
-    'context' => 'Profile',
-    'modify' => 'Modify Credentials',
-    'name' => 'Name',
+    'context' => 'Profili',
+    'modify' => 'Modifiko T&euml; Dh&euml;nat',
+    'name' => 'Emri',
     'username' => 'Username',
-    'address' => 'Address',
+    'address' => 'Adresa',
     'email' => 'Email',
-    'phone' => 'Phone',
-    'mobile' => 'Mobile',
-    'change_pass' => 'Change Password',
-    'new_pass' => 'New Password',
-    'confirm' => 'Confirm Password',
-    'save' => 'Save'
+    'phone' => 'Telefon',
+    'mobile' => 'Cel',
+    'change_pass' => 'Nd&euml;rro Fjal&euml;kalim',
+    'new_pass' => 'Fjal&euml;kalim i Ri',
+    'confirm' => 'Konfirmo Fjal&euml;kalimin',
+    'save' => 'Ruaj'
 
 ];

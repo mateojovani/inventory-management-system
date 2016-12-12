@@ -1,11 +1,11 @@
-@extends('en.layouts.master')
+@extends('layouts.master')
 
 @section('title')
-    Add Product
+    {{trans('products.form.add_product')}}
 @endsection
 
 @section('sources_top')
-    @include('en.layouts._sources_tbl_top')
+    @include('layouts._sources_tbl_top')
 @endsection
 
 @section('pr')
@@ -17,32 +17,32 @@
         <div class="col-md-12">
             <div class="panel">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Add Product</h3>
+                    <h3 class="panel-title">{{trans('products.form.add_product')}}</h3>
                     <hr>
                 </div>
                 <div class="panel-body">
                     <div class="col-md-8"><br>
                         <div class="form-horizontal">
                             <div class="form-group">
-                                <label for="item-code" class="col-sm-2 control-label">Item Code</label>
+                                <label for="item-code" class="col-sm-2 control-label">{{trans('products.form.code')}}</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="item-code" name="item-code" placeholder="Item Code">
+                                    <input type="text" class="form-control" id="item-code" name="item-code" placeholder="{{trans('products.form.code')}}">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="item-name" class="col-sm-2 control-label">Item Name</label>
+                                <label for="item-name" class="col-sm-2 control-label">{{trans('products.form.name')}}</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="item-name" name="item-name" placeholder="Item Name">
+                                    <input type="text" class="form-control" id="item-name" name="item-name" placeholder="{{trans('products.form.name')}}">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="item-price" class="col-sm-2 control-label">Price</label>
+                                <label for="item-price" class="col-sm-2 control-label">{{trans('products.form.price')}}</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="item-price" name="item-price" placeholder="Price">
+                                    <input type="text" class="form-control" id="item-price" name="item-price" placeholder="{{trans('products.form.price')}}">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">Item Category</label>
+                                <label class="col-sm-2 control-label">{{trans('products.form.category')}}</label>
                                 <div class="col-sm-10">
                                     <select class="form-control m-b-sm" name="item-category" id="item-category">
                                         @foreach($categories as $category)
@@ -52,7 +52,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">Item Unity</label>
+                                <label class="col-sm-2 control-label">{{trans('products.form.unity')}}</label>
                                 <div class="col-sm-10">
                                     <select class="form-control m-b-sm" name="item-unity" id="item-unity">
                                         @foreach($unities as $unity)
@@ -62,7 +62,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">Item Type</label>
+                                <label class="col-sm-2 control-label">{{trans('products.form.type')}}</label>
                                 <div class="col-sm-10">
                                     <select class="form-control m-b-sm" name="item-type" id="item-type">
                                         @foreach($itemtypes as $itemtype)
@@ -72,7 +72,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">VAT</label>
+                                <label class="col-sm-2 control-label">{{trans('products.form.vat')}}</label>
                                 <div class="col-sm-10">
                                     <select class="form-control m-b-sm" name="item-vat" id="item-vat">
                                         @foreach($itemvats as $itemvat)
@@ -82,14 +82,14 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="item-quantity" class="col-sm-2 control-label">Quantity</label>
+                                <label for="item-quantity" class="col-sm-2 control-label">{{trans('products.form.quantity')}}</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="item-quantity" name="item-quantity" placeholder="Quantity">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-10">
-                                    <button type="submit" class="btn btn-success" id="save-btn">Add</button>
+                                    <button type="submit" class="btn btn-success" id="save-btn">{{trans('products.form.add')}}</button>
                                 </div>
                             </div>
                         </div>

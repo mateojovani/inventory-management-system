@@ -1,11 +1,11 @@
-@extends('en.layouts.master')
+@extends('layouts.master')
 
 @section('title')
-    Furnishers
+    {{trans('title.furnishers')}}
 @endsection
 
 @section('sources_top')
-    @include('en.layouts._sources_tbl_top')
+    @include('layouts._sources_tbl_top')
 @endsection
 
 @section('fu')
@@ -19,9 +19,9 @@
             <div class="panel">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="panel-title col-sm-8">Furnishers</div>
+                        <div class="panel-title col-sm-8">{{trans('furnishers.context')}}</div>
                         <div class="col-sm-4 text-right">
-                            <a href="#" id="enable" class="btn btn-default">Enable Editing</a>
+                            <a href="#" id="enable" class="btn btn-default">{{trans('ui.enable_btn')}}</a>
                         </div>
                     </div>
                 </div>
@@ -33,47 +33,47 @@
         <div class="col-md-4">
             <div class="panel panel-white">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Add Furnisher</h3>
+                    <h3 class="panel-title">{{trans('furnishers.form.add_furnisher')}}</h3>
                 </div>
                 <div class="panel-body">
                     <div class="form-horizontal">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Name</label>
+                            <label class="col-sm-2 control-label">{{trans('furnishers.form.name_label')}}</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="furnisher-name" name="furnisher-name" placeholder="Furnisher Name">
+                                <input type="text" class="form-control" id="furnisher-name" name="furnisher-name" placeholder="{{trans('furnishers.form.name_placeholder')}}">
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Address</label>
+                            <label class="col-sm-2 control-label">{{trans('furnishers.form.address')}}</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="furnisher-address" name="furnisher-address" placeholder="Address">
+                                <input type="text" class="form-control" id="furnisher-address" name="furnisher-address" placeholder="{{trans('furnishers.form.address')}}">
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Email</label>
+                            <label class="col-sm-2 control-label">{{trans('furnishers.form.email')}}</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="furnisher-email" name="furnisher-email" placeholder="Email">
+                                <input type="text" class="form-control" id="furnisher-email" name="furnisher-email" placeholder="{{trans('furnishers.form.email')}}">
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Phone</label>
+                            <label class="col-sm-2 control-label">{{trans('furnishers.form.phone')}}</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="furnisher-phone" name="furnisher-phone" placeholder="Phone">
+                                <input type="text" class="form-control" id="furnisher-phone" name="furnisher-phone" placeholder="{{trans('furnishers.form.phone')}}">
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Mobile</label>
+                            <label class="col-sm-2 control-label">{{trans('furnishers.form.mobile')}}</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="furnisher-mobile" name="furnisher-mobile" placeholder="Mobile">
+                                <input type="text" class="form-control" id="furnisher-mobile" name="furnisher-mobile" placeholder="{{trans('furnishers.form.mobile')}}">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-success" id="add-btn">Add</button>
+                                <button type="submit" class="btn btn-success" id="add-btn">{{trans('furnishers.form.add')}}</button>
                             </div>
                         </div>
                     </div>
@@ -88,12 +88,12 @@
                         <table id="table" class="display table" style="width: 100%; cellspacing: 0;">
                             <thead>
                             <tr>
-                                <th>Furnisher</th>
-                                <th>Address</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Mobile</th>
-                                <th>Actions</th>
+                                <th>{{trans('furnishers.context')}}</th>
+                                <th>{{trans('furnishers.form.address')}}</th>
+                                <th>{{trans('furnishers.form.email')}}</th>
+                                <th>{{trans('furnishers.form.phone')}}</th>
+                                <th>{{trans('furnishers.form.mobile')}}</th>
+                                <th>{{trans('ui.datatables.actions')}}</th>
                             </tr>
                             </thead>
 
@@ -164,12 +164,24 @@
                 },
                 {
                     render: function ( data, type, row ) {
-                        return "<a href='#' data-pk='"+row.id+"' class='delete-btn btn btn-sm btn-danger'>Delete</a>";
+                        return "<a href='#' data-pk='"+row.id+"' class='delete-btn btn btn-sm btn-danger'>{{trans('ui.datatables.delete')}}</a>";
                     },
                     targets: 5
                 },
                 { orderable: false, "targets": 5 }
-            ]
+            ],
+
+            language: {
+                lengthMenu: "{{trans('ui.datatables.length')}}",
+                zeroRecords: "{{trans('ui.datatables.zero_records')}}",
+                info: "{{trans('ui.datatables.info')}}",
+                infoEmpty: "{{trans('ui.datatables.info_empty')}}",
+                search: "{{trans('ui.datatables.search')}}",
+                paginate: {
+                    previous: "{{trans('ui.datatables.previous')}}",
+                    next: "{{trans('ui.datatables.next')}}"
+                }
+            }
         });
 
         //editable
@@ -187,7 +199,7 @@
                 disabled: true,
                 validate: function(value) {
                     if($.trim(value) == '') {
-                        return 'This field is required';
+                        return "{{trans('ui.editable.required')}}";
                     }
                 },
                 success: function(response) {

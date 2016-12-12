@@ -9,7 +9,7 @@ return [
     |
     */
 
-    'context' => 'Oops ! Something went wrong',
-    'description' => 'We can\'t find the page you\'re looking for. Return '
+    'context' => 'Ups ! Dicka shkoi keq',
+    'description' => 'Faqja e kerkuar nuk ekziston! Kthehuni '
 
 ];

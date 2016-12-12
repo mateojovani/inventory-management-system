@@ -12,13 +12,12 @@ class ProductsController extends Controller
 
     public function __construct()
     {
-        parent::__construct();
         $this->middleware('auth');
     }
 
     public function show()
     {
-        return view($this->lang.'/products.show');
+        return view('products.show');
     }
 
     public function getCategories()
@@ -202,7 +201,7 @@ class ProductsController extends Controller
         $data['itemtypes'] = $this->getTypes();
         $data['itemvats'] = $this->getVat();
 
-        return view($this->lang.'/products.add')->with($data);
+        return view('products.add')->with($data);
     }
 
     public function postAdd(Request $request)

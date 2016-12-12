@@ -3,7 +3,7 @@
 <head>
 
     <!-- Title -->
-    <title>Error | 404</title>
+    <title>{{trans('title.404')}}</title>
 
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <meta charset="UTF-8">
@@ -51,8 +51,8 @@
                 <div class="col-md-4 center">
                     <h1 class="text-xxl text-primary text-center">404</h1>
                     <div class="details">
-                        <h3>Oops ! Something went wrong</h3>
-                        <p>We can't find the page you're looking for. Return <a href="{{URL::asset('/')}}">Home</a>.</p>
+                        <h3>{{trans('404.context')}}</h3>
+                        <p>{{trans('404.description')}}<a href="{{URL::asset('/')}}">Home</a>.</p>
                     </div>
                 </div>
             </div><!-- Row -->

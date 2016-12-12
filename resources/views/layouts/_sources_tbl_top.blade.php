@@ -15,6 +15,9 @@
 <link href="{{URL::asset('assets/plugins/x-editable/bootstrap3-editable/css/bootstrap-editable.css')}}" rel="stylesheet" type="text/css">
 <link href="{{URL::asset('assets/plugins/bootstrap-datepicker/css/datepicker3.css')}}" rel="stylesheet" type="text/css"/>
 <link href="{{URL::asset('assets/plugins/toastr/toastr.min.css')}}" rel="stylesheet" type="text/css"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.5.3/css/bootstrap-slider.min.css" rel="stylesheet" type="text/css"/>
+<link href="{{URL::asset('assets/plugins/bootstrap-formhelpers/bootstrap-formhelpers.min.css')}}" rel="stylesheet" type="text/css"/>
+
 
 <!-- Theme Styles -->
 <link href="{{URL::asset('assets/css/modern.min.css')}}" rel="stylesheet" type="text/css"/>
@@ -27,10 +30,12 @@
 <!-- Javascripts -->
 <script src="{{URL::asset('assets/plugins/jquery/jquery-2.1.3.min.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/jquery/jquery.livequery.min.js')}}"></script>
-<script src="{{URL::asset('assets/plugins/jquery-ui/jquery-ui.min.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/pace-master/pace.min.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/jquery-blockui/jquery.blockui.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/bootstrap/js/bootstrap.min.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/bootstrap-formhelpers/bootstrap-formhelpers.min.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/bootstrap-formhelpers/bootstrap-formhelpers-languages.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/bootstrap-formhelpers/bootstrap-formhelpers-countries.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/switchery/switchery.min.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/uniform/jquery.uniform.min.js')}}"></script>
@@ -45,6 +50,8 @@
 <script src="{{URL::asset('assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/typeahead/typeahead.bundle.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/toastr/toastr.min.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.5.3/bootstrap-slider.min.js"></script>
+<script src="{{URL::asset('assets/plugins/jquery-ui/jquery-ui.min.js')}}"></script>
 <script src="{{URL::asset('assets/js/modern.min.js')}}"></script>
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->

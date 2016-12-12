@@ -4,16 +4,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | products.show.blade.php
+    | rawMaterials.show.blade.php
     |--------------------------------------------------------------------------
     |
     */
 
-    'context' => 'Products',
+    'context' => 'Raw Materials',
 
     'form' => [
 
-        'add_product' => 'Add Product',
+        'add_material' => 'Add Raw Material',
         'code' => 'Item Code',
         'name' => 'Item Name',
         'price' => 'Price',
@@ -37,18 +37,7 @@ return [
         'vat' => 'VAT',
         'quantity' => 'Quantity'
 
-    ],
-
-    'modals' =>[
-
-        'configure_materials' => 'Configure Materials',
-        'existing' => 'Get Existing Item',
-        'add' => 'Add'
-
     ]
-
-
-
 
 
 ];

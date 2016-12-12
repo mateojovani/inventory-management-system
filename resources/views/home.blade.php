@@ -1,11 +1,11 @@
-@extends('en.layouts.master')
+@extends('layouts.master')
 
 @section('title')
     Home
 @endsection
 
 @section('sources_top')
-    @include('en.layouts._sources_top')
+    @include('layouts._sources_top')
 @endsection
 
 @section('db')
@@ -17,5 +17,5 @@
 @endsection
 
 @section('sources_bottom')
-    @include('en.layouts._sources_bottom')
+    @include('layouts._sources_bottom')
 @endsection

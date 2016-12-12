@@ -9,18 +9,18 @@ return [
     |
     */
 
-    'context' => 'Furnishers',
+    'context' => 'Prodhuesit',
 
     'form' => [
 
-        'add_furnisher' => 'Add Furnisher',
-        'name_label' => 'Name',
-        'name_placeholder' => 'Furnisher Name',
-        'address' => 'Address',
+        'add_furnisher' => 'Shto Prodhues',
+        'name_label' => 'Emri',
+        'name_placeholder' => 'Emri i Prodhuesit',
+        'address' => 'Adresa',
         'email' => 'Email',
-        'phone' => 'Phone',
-        'mobile' => 'Mobile',
-        'add' => 'Add'
+        'phone' => 'Telefon',
+        'mobile' => 'Cel',
+        'add' => 'Shto'
 
     ],
 

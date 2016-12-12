@@ -13,6 +13,7 @@
 <link href="{{URL::asset('assets/plugins/weather-icons-master/css/weather-icons.min.css')}}" rel="stylesheet" type="text/css"/>
 <link href="{{URL::asset('assets/plugins/metrojs/MetroJs.min.css')}}" rel="stylesheet" type="text/css"/>
 <link href="{{URL::asset('assets/plugins/toastr/toastr.min.css')}}" rel="stylesheet" type="text/css"/>
+<link href="{{URL::asset('assets/plugins/bootstrap-formhelpers/bootstrap-formhelpers.min.css')}}" rel="stylesheet" type="text/css"/>
 
 <!-- Theme Styles -->
 <link href="{{URL::asset('assets/css/modern.css')}}" rel="stylesheet" type="text/css"/>

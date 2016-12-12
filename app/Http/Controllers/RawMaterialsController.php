@@ -10,15 +10,26 @@ use App\Http\Requests, \DB, App\Item, \Redirect, \Validator;
 class RawMaterialsController extends Controller
 {
 
+    #custom error messages
+
     public function __construct()
     {
-        parent::__construct();
         $this->middleware('auth');
     }
 
     public function show()
     {
-        return view($this->lang.'/rawMaterials.show');
+        return view('rawMaterials.show');
+    }
+
+    public function validationResponse()
+    {
+         $messages = [
+            'required' => getResponse(500, 'required')['message'],
+            'digits_between' => getResponse(500, 'digits_between')['message'],
+        ];
+
+        return $messages;
     }
 
     public static function getCategories()
@@ -61,7 +72,12 @@ class RawMaterialsController extends Controller
     {
         if($request->ajax())
         {
-            $records = Item::where('is_product', '0')->where('deleted', '0')->count();
+            //show partial grid
+            if($request->has('selected'))
+                $unWantedKeys = explode(',', $request->selected);
+            else $unWantedKeys = [];
+
+            $records = Item::where('is_product', '0')->where('deleted', '0')->whereNotIn('Item_id', $unWantedKeys)->count();
 
             $start = $request->start;
             $length = $request->length;
@@ -110,6 +126,7 @@ class RawMaterialsController extends Controller
                         $query->orWhere('itemcategory.Itemcategory_name', 'like', '%'.$request->search['value'].'%');
                         $query->orWhere('items.item_code', 'like', '%'.$request->search['value'].'%');
                     })
+                    ->whereNotIn('Item_id', $unWantedKeys)
                     ->offset($start)->limit($length+$start)
                     ->orderBy($orderBy, $dir)
                     ->get();
@@ -126,6 +143,7 @@ class RawMaterialsController extends Controller
                     ->select('items.item_code as code', 'items.Item_name as item', 'itemcategory.Itemcategory_name as category', 'itemunity.Itemunity_name as unity', 'items.item_price as price', 'itemtype.itemtype_name as type', 'itemvat.itemvat_name as vat', 'items.Item_id as id', 'itemquantity_instock.quantity as quantity')
                     ->where('items.is_product', '0')
                     ->where('items.deleted', '0')
+                    ->whereNotIn('Item_id', $unWantedKeys)
                     ->offset($start)->limit($length+$start)
                     ->orderBy($orderBy, $dir)
                     ->get();
@@ -150,14 +168,11 @@ class RawMaterialsController extends Controller
         $data['itemtypes'] = $this->getTypes();
         $data['itemvats'] = $this->getVat();
 
-        return view($this->lang.'/rawMaterials.add')->with($data);
+        return view('rawMaterials.add')->with($data);
     }
 
     public function postAdd(Request $request)
     {
-        $response = [];
-        $response['status'] = 200;
-        $response['message'] = "Raw Material added successfuly!";
         $data = $request->all();
 
         //validation
@@ -166,7 +181,7 @@ class RawMaterialsController extends Controller
             'name' => 'required',
             'price' => 'required|digits_between:1,10',
             'quantity' => 'required|digits_between:1,20',
-        ]);
+        ], $this->validationResponse());
 
         if($validator->fails())
         {
@@ -202,21 +217,16 @@ class RawMaterialsController extends Controller
         catch(\Exception $e)
         {
             DB::rollBack();
-            $response['status'] = 500;
-            $response['message'] = "Raw material couldn't be added!";
+            return getResponse(500, 500);
         }
 
-        return $response;
+        return getResponse(200, 400);
     }
 
     public function edit(Request $request)
     {
         if($request->ajax())
         {
-            $response = [];
-            $response['status'] = 200;
-            $response['message'] = "Item edited successfully!";
-
             //Audit
             $audit = [];
             $audit['updated_table'] = 'items';
@@ -230,7 +240,7 @@ class RawMaterialsController extends Controller
                     case "item-code":
                         $item = Item::find($request->pk);
                         $old_value = $item->item_code;
-                        $validator = Validator::make($request->all(), ['value' => 'required|digits_between:1,20']);
+                        $validator = Validator::make($request->all(), ['value' => 'required|digits_between:1,20'], $this->validationResponse());
                         if($validator->fails())
                         {
                             $response['status'] = 500;
@@ -277,7 +287,7 @@ class RawMaterialsController extends Controller
                     case "item-price":
                         $item = Item::find($request->pk);
                         $old_value = $item->item_price;
-                        $validator = Validator::make($request->all(), ['value' => 'required|digits_between:1,10']);
+                        $validator = Validator::make($request->all(), ['value' => 'required|digits_between:1,10'], $this->validationResponse());
                         if($validator->fails())
                         {
                             $response['status'] = 500;
@@ -319,12 +329,10 @@ class RawMaterialsController extends Controller
             catch (\Exception $e)
             {
                 DB::rollBack();
-                $response['status'] = 500;
-                $response['message'] = "Editing Failed!";
-                return $response;
+               return getResponse(500, 500);
             }
 
-            return $response;
+            return getResponse(200, 401);
         }
     }
 
@@ -332,10 +340,6 @@ class RawMaterialsController extends Controller
     {
         if($request->ajax())
         {
-            $response = [];
-            $response['status'] = 200;
-            $response['message'] = "Raw Material successfully removed!";
-
             $item = Item::find($request->pk);
 
             DB::transaction(function () use ($item, $request)
@@ -384,14 +388,12 @@ class RawMaterialsController extends Controller
                 }
                 catch(\Exception $e)
                 {
-                    $response['status'] = 500;
-                    $response['message'] = "Raw Material could not be deleted!";
-                    return $response;
+                   return getResponse(500, 500);
                 }
 
             });
 
-            return $response;
+            return getResponse(200, 402);
         }
     }
 
@@ -399,10 +401,6 @@ class RawMaterialsController extends Controller
     {
         if($request->ajax())
         {
-            $response = [];
-            $response['status'] = 200;
-            $response['message'] = "Raw material added successfully to the table";
-
             $duplicate = DB::table('itemcompound')
                 ->where('id_item_rawmaterial', $request->pk)
                 ->where('id_item_product', $request->product)
@@ -410,18 +408,14 @@ class RawMaterialsController extends Controller
                 ->count();
             if($duplicate > 0)
             {
-                $response['status'] = 500;
-                $response['message'] = "Item already exists!";
-                return $response;
+               return getResponse(500, 404);
             }
             else if($request->quantity == 0 || $request->quantity == "")
             {
-                $response['status'] = 500;
-                $response['message'] = "Fill Quantity Field!";
-                return $response;
+                getResponse(500, 141);
             }
 
-            DB::transaction(function () use ($request, $response)
+            DB::transaction(function () use ($request)
             {
                 try
                 {
@@ -430,13 +424,11 @@ class RawMaterialsController extends Controller
                 }
                 catch (\Exception $e)
                 {
-                    $response['status'] = 500;
-                    $response['message'] = "Raw material could not be added!";
-                    return $response;
+                   return getResponse(500, 500);
                 }
             });
 
-            return $response;
+            return getResponse(200, 403);
         }
     }
 
@@ -444,10 +436,6 @@ class RawMaterialsController extends Controller
     {
         if($request->ajax())
         {
-            $response = [];
-            $response['status'] = 200;
-            $response['message'] = "Quantity updated successfully!";
-
             //Audit
             $audit = [];
             $audit['updated_table'] = 'itemcompound';
@@ -483,13 +471,11 @@ class RawMaterialsController extends Controller
             catch (\Exception $e)
             {
                 DB::rollback();
-                $response['status'] = 500;
-                $response['message'] = "There went something wrong!";
-                return $response;
+                return getResponse(500, 500);
             }
 
             DB::commit();
-            return $response;
+            return getResponse(200, 405);
         }
     }
 

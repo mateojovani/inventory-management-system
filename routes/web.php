@@ -89,3 +89,6 @@ Route::post('/grid/furnishers', 'FurnishersController@showGrid');
 Route::post('/furnishers/add', 'FurnishersController@add');
 Route::post('/furnishers/delete', 'FurnishersController@delete');
 Route::post('/furnishers/edit', 'FurnishersController@edit');
+
+#Entrysheet
+Route::get('/entrysheet', 'EntryController@show');

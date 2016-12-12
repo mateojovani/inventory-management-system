@@ -9,12 +9,13 @@ return [
     |
     */
 
-    'clients' => 'Clients',
-    'configure' => 'Configure System',
-    '404' => 'Error | 404',
-    'furnishers' => 'Furnishers',
-    'products' => 'Products',
-    'materials' => 'Raw Materials',
-
+    'clients' => 'Klient&euml;t',
+    'configure' => 'Konfiguro Sistemin',
+    '404' => 'Gabim| 404',
+    'furnishers' => 'Prodhuesit',
+    'products' => 'Produktet',
+    'materials' => 'Materialet',
+    'profile' => 'Profili',
+    'entrysheet' => 'Flet&euml; Hyrje',
 
 ];

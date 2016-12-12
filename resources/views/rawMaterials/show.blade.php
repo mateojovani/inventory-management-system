@@ -1,11 +1,11 @@
-@extends('en.layouts.master')
+@extends('layouts.master')
 
 @section('title')
-    Raw Materials
+    {{trans('title.materials')}}
 @endsection
 
 @section('sources_top')
-    @include('en.layouts._sources_tbl_top')
+    @include('layouts._sources_tbl_top')
 @endsection
 
 @section('rm')
@@ -19,10 +19,10 @@
             <div class="panel">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="panel-title col-sm-8">Raw Materials</div>
+                        <div class="panel-title col-sm-8">{{trans('materials.context')}}</div>
                         <div class="col-sm-4 text-right">
-                            <a href="#" id="enable" class="btn btn-default">Enable Editing</a>&nbsp;
-                            <a href="{{URL::asset('raw-materials/add')}}" class="btn btn-info">Add</a>
+                            <a href="#" id="enable" class="btn btn-default">{{trans('ui.enable_btn')}}</a>&nbsp;
+                            <a href="{{URL::asset('raw-materials/add')}}" class="btn btn-info">{{trans('materials.form.add')}}</a>
                         </div>
                     </div>
                 </div>
@@ -33,28 +33,28 @@
                         <table id="table" class="display table" style="width: 100%; cellspacing: 0;">
                             <thead>
                             <tr>
-                                <th>Code</th>
-                                <th>Item Name</th>
-                                <th>Category</th>
-                                <th>Unity</th>
-                                <th>Price</th>
-                                <th>Type</th>
-                                <th>VAT</th>
-                                <th>Quantity</th>
-                                <th>Actions</th>
+                                <th>{{trans('materials.table.code')}}</th>
+                                <th>{{trans('materials.table.name')}}</th>
+                                <th>{{trans('materials.table.category')}}</th>
+                                <th>{{trans('materials.table.unity')}}</th>
+                                <th>{{trans('materials.table.price')}}</th>
+                                <th>{{trans('materials.table.type')}}</th>
+                                <th>{{trans('materials.table.vat')}}</th>
+                                <th>{{trans('materials.table.quantity')}}</th>
+                                <th>{{trans('ui.datatables.actions')}}</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
-                                <th>Code</th>
-                                <th>Item Name</th>
-                                <th>Category</th>
-                                <th>Unity</th>
-                                <th>Price</th>
-                                <th>Type</th>
-                                <th>VAT</th>
-                                <th>Quantity</th>
-                                <th>Actions</th>
+                                <th>{{trans('materials.table.code')}}</th>
+                                <th>{{trans('materials.table.name')}}</th>
+                                <th>{{trans('materials.table.category')}}</th>
+                                <th>{{trans('materials.table.unity')}}</th>
+                                <th>{{trans('materials.table.price')}}</th>
+                                <th>{{trans('materials.table.type')}}</th>
+                                <th>{{trans('materials.table.vat')}}</th>
+                                <th>{{trans('materials.table.quantity')}}</th>
+                                <th>{{trans('ui.datatables.actions')}}</th>
                             </tr>
                             </tfoot>
 
@@ -153,12 +153,24 @@
                 },
                 {
                     render: function ( data, type, row ) {
-                        return "<a href='#' data-pk='"+row.id+"' class='delete-btn btn btn-sm btn-danger'>Delete</a>";
+                        return "<a href='#' data-pk='"+row.id+"' class='delete-btn btn btn-sm btn-danger'>{{trans('ui.datatables.delete')}}</a>";
                     },
                     targets: 8
                 },
                 { orderable: false, "targets": 8 }
-            ]
+            ],
+
+            language: {
+                lengthMenu: "{{trans('ui.datatables.length')}}",
+                zeroRecords: "{{trans('ui.datatables.zero_records')}}",
+                info: "{{trans('ui.datatables.info')}}",
+                infoEmpty: "{{trans('ui.datatables.info_empty')}}",
+                search: "{{trans('ui.datatables.search')}}",
+                paginate: {
+                    previous: "{{trans('ui.datatables.previous')}}",
+                    next: "{{trans('ui.datatables.next')}}"
+                }
+            }
         });
 
         //editable
@@ -176,7 +188,7 @@
                 disabled: true,
                 validate: function(value) {
                     if($.trim(value) == '') {
-                        return 'This field is required';
+                        return "{{trans('ui.editable.required')}}";
                     }
                 },
                 success: function(response) {

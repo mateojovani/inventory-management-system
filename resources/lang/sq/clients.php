@@ -9,18 +9,18 @@ return [
     |
     */
 
-    'context' => 'Clients',
+    'context' => 'Klient&euml;t',
 
     'form' => [
 
-        'add_client' => 'Add Client',
-        'name_label' => 'Name',
-        'name_placeholder' => 'Client Name',
-        'address' => 'Address',
+        'add_client' => 'Shto Klient',
+        'name_label' => 'Emri',
+        'name_placeholder' => 'Emri i Klientit',
+        'address' => 'Adresa',
         'email' => 'Email',
-        'phone' => 'Phone',
-        'mobile' => 'Mobile',
-        'add' => 'Add'
+        'phone' => 'Telefon',
+        'mobile' => 'Cel',
+        'add' => 'Shto'
 
     ],
 

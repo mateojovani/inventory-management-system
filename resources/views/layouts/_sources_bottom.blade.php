@@ -4,6 +4,9 @@
 <script src="{{URL::asset('assets/plugins/pace-master/pace.min.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/jquery-blockui/jquery.blockui.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/bootstrap/js/bootstrap.min.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/bootstrap-formhelpers/bootstrap-formhelpers.min.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/bootstrap-formhelpers/bootstrap-formhelpers-languages.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/bootstrap-formhelpers/bootstrap-formhelpers-countries.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/switchery/switchery.min.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/uniform/jquery.uniform.min.js')}}"></script>

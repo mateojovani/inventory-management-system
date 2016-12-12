@@ -1,11 +1,11 @@
-@extends('en.layouts.master')
+@extends('layouts.master')
 
 @section('title')
-    Products
+    {{trans('title.products')}}
 @endsection
 
 @section('sources_top')
-    @include('en.layouts._sources_tbl_top')
+    @include('layouts._sources_tbl_top')
 @endsection
 
 @section('pr')
@@ -21,10 +21,10 @@
             <div class="panel">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="panel-title col-sm-8">Products</div>
+                        <div class="panel-title col-sm-8">{{trans('products.context')}}</div>
                         <div class="col-sm-4 text-right">
-                            <a href="#" id="enable" class="btn btn-default">Enable Editing</a>&nbsp;
-                            <a href="{{URL::asset('products/add')}}" class="btn btn-info">Add</a>
+                            <a href="#" id="enable" class="btn btn-default">{{trans('ui.enable_btn')}}</a>&nbsp;
+                            <a href="{{URL::asset('products/add')}}" class="btn btn-info">{{trans('products.form.add')}}</a>
                         </div>
                     </div>
                 </div>
@@ -35,28 +35,28 @@
                         <table id="table" class="display table" style="width: 100%; cellspacing: 0;">
                             <thead>
                             <tr>
-                                <th>Code</th>
-                                <th>Item Name</th>
-                                <th>Category</th>
-                                <th>Unity</th>
-                                <th>Price</th>
-                                <th>Type</th>
-                                <th>VAT</th>
-                                <th>Quantity</th>
-                                <th>Actions</th>
+                                <th>{{trans('products.table.code')}}</th>
+                                <th>{{trans('products.table.name')}}</th>
+                                <th>{{trans('products.table.category')}}</th>
+                                <th>{{trans('products.table.unity')}}</th>
+                                <th>{{trans('products.table.price')}}</th>
+                                <th>{{trans('products.table.type')}}</th>
+                                <th>{{trans('products.table.vat')}}</th>
+                                <th>{{trans('products.table.quantity')}}</th>
+                                <th>{{trans('ui.datatables.actions')}}</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
-                                <th>Code</th>
-                                <th>Item Name</th>
-                                <th>Category</th>
-                                <th>Unity</th>
-                                <th>Price</th>
-                                <th>Type</th>
-                                <th>VAT</th>
-                                <th>Quantity</th>
-                                <th>Actions</th>
+                                <th>{{trans('products.table.code')}}</th>
+                                <th>{{trans('products.table.name')}}</th>
+                                <th>{{trans('products.table.category')}}</th>
+                                <th>{{trans('products.table.unity')}}</th>
+                                <th>{{trans('products.table.price')}}</th>
+                                <th>{{trans('products.table.type')}}</th>
+                                <th>{{trans('products.table.vat')}}</th>
+                                <th>{{trans('products.table.quantity')}}</th>
+                                <th>{{trans('ui.datatables.actions')}}</th>
                             </tr>
                             </tfoot>
 
@@ -73,8 +73,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <span class="modal-title" id="myLargeModalLabel">Configure Materials</span>
-                    <span><a href="#" id="enable-conf" class="btn btn-default">Enable Editing</a></span>
+                    <span class="modal-title" id="myLargeModalLabel">{{trans('products.modals.configure_materials')}}</span>
+                    <span><a href="#" id="enable-conf" class="btn btn-default">{{trans('ui.enable_btn')}}</a></span>
 
                 </div>
                 <div class="modal-body">
@@ -82,10 +82,10 @@
                         <table id="config-table" class="display table" style="width: 100%; cellspacing: 0;">
                             <thead>
                             <tr>
-                                <th>Code</th>
-                                <th>Item Name</th>
-                                <th>Quantity</th>
-                                <th>Actions</th>
+                                <th>{{trans('products.table.code')}}</th>
+                                <th>{{trans('products.table.name')}}</th>
+                                <th>{{trans('products.table.quantity')}}</th>
+                                <th>{{trans('ui.datatables.actions')}}</th>
                             </tr>
                             </thead>
 
@@ -96,20 +96,20 @@
                     <!-- get raw material -->
                     <div class="row">
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#item-modal">Get Existing Item</button>
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#item-modal">{{trans('products.modals.existing')}}</button>
                         </div>
                         <div class="col-md-10">
                             <div class="form-inline" id="new-row">
                                 <input type="hidden" id="item-pk" name="item-pk">
                                 <input type="hidden" id="product" name="product">
 
-                                <input type="text" class="form-control" id="item-code" name="item-code" placeholder="Code" disabled>
+                                <input type="text" class="form-control" id="item-code" name="item-code" placeholder="{{trans('products.table.code')}}" disabled>
 
-                                <input type="text" class="form-control" id="item-name" name="item-name" placeholder="Item Name" disabled>
+                                <input type="text" class="form-control" id="item-name" name="item-name" placeholder="{{trans('products.table.name')}}" disabled>
 
-                                <input class="form-control" type="text" id="item-quantity" name="item-quantity" placeholder="Quantity">
+                                <input class="form-control" type="text" id="item-quantity" name="item-quantity" placeholder="{{trans('products.table.quantity')}}">
 
-                                <button type="submit" class="form-control" id="add-btn">Add</button>
+                                <button type="submit" class="form-control" id="add-btn">{{trans('products.modals.add')}}</button>
 
                             </div>
                         </div>
@@ -125,22 +125,22 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myLargeModalLabel">Raw Materials</h4>
+                    <h4 class="modal-title" id="myLargeModalLabel">{{trans('materials.context')}}</h4>
                 </div>
                 <div class="modal-body">
                     <div class="table-responsive">
                         <table id="raw-materials-table" class="display table" style="width: 100%; cellspacing: 0;">
                             <thead>
                             <tr>
-                                <th>Code</th>
-                                <th>Item Name</th>
-                                <th>Category</th>
-                                <th>Unity</th>
-                                <th>Price</th>
-                                <th>Type</th>
-                                <th>VAT</th>
-                                <th>Quantity</th>
-                                <th>Actions</th>
+                                <th></th>
+                                <th>{{trans('materials.table.name')}}</th>
+                                <th>{{trans('materials.table.category')}}</th>
+                                <th>{{trans('materials.table.unity')}}</th>
+                                <th>{{trans('materials.table.price')}}</th>
+                                <th>{{trans('materials.table.type')}}</th>
+                                <th>{{trans('materials.table.vat')}}</th>
+                                <th>{{trans('materials.table.quantity')}}</th>
+                                <th>{{trans('ui.datatables.actions')}}</th>
                             </tr>
                             </thead>
 
@@ -243,13 +243,25 @@
                 },
                 {
                     render: function ( data, type, row ) {
-                        return "<a href='#' data-pk='"+row.id+"' class='config-btn btn btn-sm btn-default'>Config</a> "+
-                                "<a href='#' data-pk='"+row.id+"' class='delete-btn btn btn-sm btn-danger'>Delete</a>";
+                        return "<a href='#' data-pk='"+row.id+"' class='config-btn btn btn-sm btn-default'>{{trans('ui.datatables.config')}}</a> "+
+                                "<a href='#' data-pk='"+row.id+"' class='delete-btn btn btn-sm btn-danger'>{{trans('ui.datatables.delete')}}</a>";
                     },
                     targets: 8
                 },
                 { orderable: false, "targets": 8 }
-            ]
+            ],
+
+            language: {
+                lengthMenu: "{{trans('ui.datatables.length')}}",
+                zeroRecords: "{{trans('ui.datatables.zero_records')}}",
+                info: "{{trans('ui.datatables.info')}}",
+                infoEmpty: "{{trans('ui.datatables.info_empty')}}",
+                search: "{{trans('ui.datatables.search')}}",
+                paginate: {
+                    previous: "{{trans('ui.datatables.previous')}}",
+                    next: "{{trans('ui.datatables.next')}}"
+                }
+            }
         });
 
         var rm_tbl = $('#raw-materials-table').DataTable({
@@ -282,12 +294,24 @@
                                 "data-unity='"+row.unity+"' " +
                                 "data-type='"+row.type+"' " +
                                 "data-vat='"+row.vat+"' " +
-                                "class='select-btn btn btn-sm btn-danger'>Select</a>";
+                                "class='select-btn btn btn-sm btn-danger'>{{trans('ui.datatables.select')}}</a>";
                     },
                     targets: 8
                 },
                 { orderable: false, "targets": 8 }
-            ]
+            ],
+
+            language: {
+                lengthMenu: "{{trans('ui.datatables.length')}}",
+                zeroRecords: "{{trans('ui.datatables.zero_records')}}",
+                info: "{{trans('ui.datatables.info')}}",
+                infoEmpty: "{{trans('ui.datatables.info_empty')}}",
+                search: "{{trans('ui.datatables.search')}}",
+                paginate: {
+                    previous: "{{trans('ui.datatables.previous')}}",
+                    next: "{{trans('ui.datatables.next')}}"
+                }
+            }
         });
 
         //editable
@@ -311,7 +335,7 @@
                 disabled: true,
                 validate: function(value) {
                     if($.trim(value) == '') {
-                        return 'This field is required';
+                        return "{{trans('ui.editable.required')}}";
                     }
                 },
                 success: function(response) {
@@ -333,7 +357,7 @@
                 disabled: true,
                 validate: function(value) {
                     if($.trim(value) == '') {
-                        return 'This field is required';
+                        return "{{trans('ui.editable.required')}}";
                     }
                 },
                 success: function(response) {
@@ -443,12 +467,24 @@
                         },
                         {
                             render: function ( data, type, row ) {
-                                return "<a href='#' data-pk='"+row.id+"' class='delete-btn btn btn-sm btn-danger'>Delete</a>";
+                                return "<a href='#' data-pk='"+row.id+"' class='delete-btn btn btn-sm btn-danger'>{{trans('ui.datatables.delete')}}</a>";
                             },
                             targets: 3
                         },
                         { orderable: false, "targets": 3 }
-                    ]
+                    ],
+
+                    language: {
+                        lengthMenu: "{{trans('ui.datatables.length')}}",
+                        zeroRecords: "{{trans('ui.datatables.zero_records')}}",
+                        info: "{{trans('ui.datatables.info')}}",
+                        infoEmpty: "{{trans('ui.datatables.info_empty')}}",
+                        search: "{{trans('ui.datatables.search')}}",
+                        paginate: {
+                            previous: "{{trans('ui.datatables.previous')}}",
+                            next: "{{trans('ui.datatables.next')}}"
+                        }
+                    }
                 });
 
                 //add to item compounds

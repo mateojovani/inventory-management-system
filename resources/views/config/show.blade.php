@@ -1,11 +1,11 @@
-@extends('en.layouts.master')
+@extends('layouts.master')
 
 @section('title')
-    Configure System
+    {{trans('title.configure')}}
 @endsection
 
 @section('sources_top')
-    @include('en.layouts._sources_tbl_top')
+    @include('layouts._sources_tbl_top')
 @endsection
 
 @section('cf')
@@ -18,9 +18,9 @@
             <div class="panel">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="panel-title col-sm-8">Configure Items</div>
+                        <div class="panel-title col-sm-8">{{trans('configure.context')}}</div>
                         <div class="col-sm-4 text-right">
-                            <a href="#" id="enable" class="btn btn-default">Enable Editing</a>&nbsp;
+                            <a href="#" id="enable" class="btn btn-default">{{trans('ui.enable_btn')}}</a>&nbsp;
                         </div>
                     </div>
                 </div>
@@ -31,10 +31,10 @@
                     <div role="tabpanel">
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" class="active"><a href="#tab-category" role="tab" data-toggle="tab">Categories</a></li>
-                            <li role="presentation"><a href="#tab-unity" role="tab" data-toggle="tab">Unity</a></li>
-                            <li role="presentation"><a href="#tab-type" role="tab" data-toggle="tab">Types</a></li>
-                            <li role="presentation"><a href="#tab-vat" role="tab" data-toggle="tab">VAT</a></li>
+                            <li role="presentation" class="active"><a href="#tab-category" role="tab" data-toggle="tab">{{trans('configure.tabs.categories')}}</a></li>
+                            <li role="presentation"><a href="#tab-unity" role="tab" data-toggle="tab">{{trans('configure.tabs.unity')}}</a></li>
+                            <li role="presentation"><a href="#tab-type" role="tab" data-toggle="tab">{{trans('configure.tabs.types')}}</a></li>
+                            <li role="presentation"><a href="#tab-vat" role="tab" data-toggle="tab">{{trans('configure.tabs.vat')}}</a></li>
                         </ul>
                         <!-- Tab panes -->
                         <div class="tab-content">
@@ -43,19 +43,19 @@
                                     <div class="col-md-6">
                                         <div class="panel panel-white">
                                             <div class="panel-heading">
-                                                <h3 class="panel-title">Add Category</h3>
+                                                <h3 class="panel-title">{{trans('configure.categories.form.add_category')}}</h3>
                                             </div>
                                             <div class="panel-body">
                                                 <div class="form-horizontal">
                                                     <div class="form-group">
-                                                        <label for="item-code" class="col-sm-2 control-label">Category Name</label>
+                                                        <label for="item-code" class="col-sm-2 control-label">{{trans('configure.categories.form.name')}}</label>
                                                         <div class="col-sm-10">
-                                                            <input type="text" class="form-control" id="category-name" name="category-name" placeholder="Category Name">
+                                                            <input type="text" class="form-control" id="category-name" name="category-name" placeholder="{{trans('configure.categories.form.name')}}">
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label class="col-sm-2 control-label">Item Type</label>
+                                                        <label class="col-sm-2 control-label">{{trans('configure.categories.form.type')}}</label>
                                                         <div class="col-sm-10">
                                                             <select class="form-control m-b-sm" id="category-item" name="category-item">
                                                                 <option value="0">Raw Material</option>
@@ -65,7 +65,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="col-sm-offset-2 col-sm-10">
-                                                            <button type="submit" class="btn btn-success" id="cat-btn">Add</button>
+                                                            <button type="submit" class="btn btn-success" id="cat-btn">{{trans('configure.categories.form.add')}}</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -77,9 +77,9 @@
                                         <table id="cat-table" class="display table" style="width: 100%; cellspacing: 0;">
                                             <thead>
                                             <tr>
-                                                <th>Category</th>
-                                                <th>Item</th>
-                                                <th>Actions</th>
+                                                <th>{{trans('configure.categories.name')}}</th>
+                                                <th>{{trans('configure.categories.item')}}</th>
+                                                <th>{{trans('ui.datatables.actions')}}</th>
                                             </tr>
                                             </thead>
 
@@ -93,19 +93,19 @@
                                     <div class="col-md-6">
                                         <div class="panel panel-white">
                                             <div class="panel-heading">
-                                                <h3 class="panel-title">Add Unity</h3>
+                                                <h3 class="panel-title">{{trans('configure.unities.form.add_unity')}}</h3>
                                             </div>
                                             <div class="panel-body">
                                                 <div class="form-horizontal">
                                                     <div class="form-group">
-                                                        <label for="item-code" class="col-sm-2 control-label">Unity Name</label>
+                                                        <label for="item-code" class="col-sm-2 control-label">{{trans('configure.unities.form.name')}}</label>
                                                         <div class="col-sm-10">
-                                                            <input type="text" class="form-control" id="unity-name" name="category-name" placeholder="Unity Name">
+                                                            <input type="text" class="form-control" id="unity-name" name="category-name" placeholder="{{trans('configure.unities.form.name')}}">
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label class="col-sm-2 control-label">Item Type</label>
+                                                        <label class="col-sm-2 control-label">{{trans('configure.unities.form.type')}}</label>
                                                         <div class="col-sm-10">
                                                             <select class="form-control m-b-sm" id="unity-item" name="unity-item">
                                                                 <option value="0">Raw Material</option>
@@ -115,7 +115,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="col-sm-offset-2 col-sm-10">
-                                                            <button type="submit" class="btn btn-success" id="unity-btn">Add</button>
+                                                            <button type="submit" class="btn btn-success" id="unity-btn">{{trans('configure.unities.form.add')}}</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -126,9 +126,9 @@
                                         <table id="unity-table" class="display table" style="width: 100%; cellspacing: 0;">
                                             <thead>
                                             <tr>
-                                                <th>Unity</th>
-                                                <th>Item</th>
-                                                <th>Actions</th>
+                                                <th>{{trans('configure.unities.name')}}</th>
+                                                <th>{{trans('configure.unities.item')}}</th>
+                                                <th>{{trans('ui.datatables.actions')}}</th>
                                             </tr>
                                             </thead>
 
@@ -141,19 +141,19 @@
                                     <div class="col-md-6">
                                         <div class="panel panel-white">
                                             <div class="panel-heading">
-                                                <h3 class="panel-title">Add Type</h3>
+                                                <h3 class="panel-title">{{trans('configure.types.form.add_type')}}</h3>
                                             </div>
                                             <div class="panel-body">
                                                 <div class="form-horizontal">
                                                     <div class="form-group">
-                                                        <label for="item-type" class="col-sm-2 control-label">Type Name</label>
+                                                        <label for="item-type" class="col-sm-2 control-label">{{trans('configure.types.form.name')}}</label>
                                                         <div class="col-sm-10">
-                                                            <input type="text" class="form-control" id="type-name" name="type-name" placeholder="Type Name">
+                                                            <input type="text" class="form-control" id="type-name" name="type-name" placeholder="{{trans('configure.types.form.name')}}">
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label class="col-sm-2 control-label">Item Type</label>
+                                                        <label class="col-sm-2 control-label">{{trans('configure.types.form.type')}}</label>
                                                         <div class="col-sm-10">
                                                             <select class="form-control m-b-sm" id="type-item" name="type-item">
                                                                 <option value="0">Raw Material</option>
@@ -163,7 +163,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="col-sm-offset-2 col-sm-10">
-                                                            <button type="submit" class="btn btn-success" id="type-btn">Add</button>
+                                                            <button type="submit" class="btn btn-success" id="type-btn">{{trans('configure.types.form.add')}}</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -174,9 +174,9 @@
                                         <table id="type-table" class="display table" style="width: 100%; cellspacing: 0;">
                                             <thead>
                                             <tr>
-                                                <th>Type</th>
-                                                <th>Item</th>
-                                                <th>Actions</th>
+                                                <th>{{trans('configure.types.name')}}</th>
+                                                <th>{{trans('configure.types.item')}}</th>
+                                                <th>{{trans('ui.datatables.actions')}}</th>
                                             </tr>
                                             </thead>
 
@@ -189,26 +189,26 @@
                                     <div class="col-md-6">
                                         <div class="panel panel-white">
                                             <div class="panel-heading">
-                                                <h3 class="panel-title">Add VAT</h3>
+                                                <h3 class="panel-title">{{trans('configure.vat.form.add_vat')}}</h3>
                                             </div>
                                             <div class="panel-body">
                                                 <div class="form-horizontal">
                                                     <div class="form-group">
-                                                        <label for="item-code" class="col-sm-2 control-label">VAT Name</label>
+                                                        <label for="item-code" class="col-sm-2 control-label">{{trans('configure.vat.form.name')}}</label>
                                                         <div class="col-sm-10">
-                                                            <input type="text" class="form-control" id="vat-name" name="vat-name" placeholder="VAT Name">
+                                                            <input type="text" class="form-control" id="vat-name" name="vat-name" placeholder="{{trans('configure.vat.form.name')}}">
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label class="col-sm-2 control-label">VAT Value</label>
+                                                        <label class="col-sm-2 control-label">{{trans('configure.vat.form.value')}}</label>
                                                         <div class="col-sm-10">
-                                                            <input type="text" class="form-control" id="vat-value" name="vat-value" placeholder="VAT Value (ex. 0.2)">
+                                                            <input type="text" class="form-control" id="vat-value" name="vat-value" placeholder="{{trans('configure.vat.form.value_placeholder')}}">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="col-sm-offset-2 col-sm-10">
-                                                            <button type="submit" class="btn btn-success" id="vat-btn">Add</button>
+                                                            <button type="submit" class="btn btn-success" id="vat-btn">{{trans('configure.vat.form.add')}}</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -220,9 +220,9 @@
                                         <table id="vat-table" class="display table" style="width: 100%; cellspacing: 0;">
                                             <thead>
                                             <tr>
-                                                <th>VAT</th>
-                                                <th>Value</th>
-                                                <th>Actions</th>
+                                                <th>{{trans('configure.vat.name')}}</th>
+                                                <th>{{trans('configure.vat.item')}}</th>
+                                                <th>{{trans('ui.datatables.actions')}}</th>
                                             </tr>
                                             </thead>
 
@@ -298,12 +298,24 @@
                 },
                 {
                     render: function ( data, type, row ) {
-                        return "<a href='#' data-pk='"+row.id+"' class='delete-btn btn btn-sm btn-danger'>Delete</a>";
+                        return "<a href='#' data-pk='"+row.id+"' class='delete-btn btn btn-sm btn-danger'>{{trans('ui.datatables.delete')}}</a>";
                     },
                     targets: 2
                 },
                 { orderable: false, "targets": 2 }
-            ]
+            ],
+
+            language: {
+                lengthMenu: "{{trans('ui.datatables.length')}}",
+                zeroRecords: "{{trans('ui.datatables.zero_records')}}",
+                info: "{{trans('ui.datatables.info')}}",
+                infoEmpty: "{{trans('ui.datatables.info_empty')}}",
+                search: "{{trans('ui.datatables.search')}}",
+                paginate: {
+                    previous: "{{trans('ui.datatables.previous')}}",
+                    next: "{{trans('ui.datatables.next')}}"
+                }
+            }
         });
 
         //delete event
@@ -333,7 +345,7 @@
                 disabled: true,
                 validate: function(value) {
                     if($.trim(value) == '') {
-                        return 'This field is required';
+                        return "{{trans('ui.editable.required')}}";
                     }
                 },
                 success: function(response) {
@@ -361,10 +373,10 @@
                     success: function (response) {
                         if(response.status != 200)
                         {
-                            toastr.error('Category could not be added!')
+                            toastr.error(response.message)
                         }
                         else {
-                            toastr.success('Category successfully added!');
+                            toastr.success(response.message);
                             cat_tbl.draw();
                         }
                     }
@@ -419,12 +431,24 @@
                 },
                 {
                     render: function ( data, type, row ) {
-                        return "<a href='#' data-pk='"+row.id+"' class='delete-btn btn btn-sm btn-danger'>Delete</a>";
+                        return "<a href='#' data-pk='"+row.id+"' class='delete-btn btn btn-sm btn-danger'>{{trans('ui.datatables.delete')}}</a>";
                     },
                     targets: 2
                 },
                 { orderable: false, "targets": 2 }
-            ]
+            ],
+
+            language: {
+                lengthMenu: "{{trans('ui.datatables.length')}}",
+                zeroRecords: "{{trans('ui.datatables.zero_records')}}",
+                info: "{{trans('ui.datatables.info')}}",
+                infoEmpty: "{{trans('ui.datatables.info_empty')}}",
+                search: "{{trans('ui.datatables.search')}}",
+                paginate: {
+                    previous: "{{trans('ui.datatables.previous')}}",
+                    next: "{{trans('ui.datatables.next')}}"
+                }
+            }
         });
 
         //delete event
@@ -437,10 +461,10 @@
                     success: function (response) {
                         if(response.status != 200)
                         {
-                            toastr.error('Unity could not be deleted!')
+                            toastr.error(response.message)
                         }
                         else {
-                            toastr.success('Unity successfully removed!');
+                            toastr.success(response.message);
                             unity_tbl.draw();
                         }
                     }
@@ -455,7 +479,7 @@
                 disabled: true,
                 validate: function(value) {
                     if($.trim(value) == '') {
-                        return 'This field is required';
+                        return "{{trans('ui.editable.required')}}";
                     }
                 },
                 success: function(response) {
@@ -483,10 +507,10 @@
                     success: function (response) {
                         if(response.status != 200)
                         {
-                            toastr.error('Unity could not be added!')
+                            toastr.error(response.message)
                         }
                         else {
-                            toastr.success('Unity successfully added!');
+                            toastr.success(response.message);
                             unity_tbl.draw();
                         }
                     }
@@ -541,12 +565,24 @@
                 },
                 {
                     render: function ( data, type, row ) {
-                        return "<a href='#' data-pk='"+row.id+"' class='delete-btn btn btn-sm btn-danger'>Delete</a>";
+                        return "<a href='#' data-pk='"+row.id+"' class='delete-btn btn btn-sm btn-danger'>{{trans('ui.datatables.delete')}}</a>";
                     },
                     targets: 2
                 },
                 { orderable: false, "targets": 2 }
-            ]
+            ],
+
+            language: {
+                lengthMenu: "{{trans('ui.datatables.length')}}",
+                zeroRecords: "{{trans('ui.datatables.zero_records')}}",
+                info: "{{trans('ui.datatables.info')}}",
+                infoEmpty: "{{trans('ui.datatables.info_empty')}}",
+                search: "{{trans('ui.datatables.search')}}",
+                paginate: {
+                    previous: "{{trans('ui.datatables.previous')}}",
+                    next: "{{trans('ui.datatables.next')}}"
+                }
+            }
         });
 
         //delete event
@@ -559,10 +595,10 @@
                     success: function (response) {
                         if(response.status != 200)
                         {
-                            toastr.error('Type could not be deleted!')
+                            toastr.error(response.message)
                         }
                         else {
-                            toastr.success('Type successfully removed!');
+                            toastr.success(response.message);
                             type_tbl.draw();
                         }
                     }
@@ -577,7 +613,7 @@
                 disabled: true,
                 validate: function(value) {
                     if($.trim(value) == '') {
-                        return 'This field is required';
+                        return "{{trans('ui.editable.required')}}";
                     }
                 },
                 success: function(response) {
@@ -605,10 +641,10 @@
                     success: function (response) {
                         if(response.status != 200)
                         {
-                            toastr.error('Type could not be added!')
+                            toastr.error(response.message)
                         }
                         else {
-                            toastr.success('Type successfully added!');
+                            toastr.success(response.message);
                             type_tbl.draw();
                         }
                     }
@@ -654,12 +690,24 @@
                 },
                 {
                     render: function ( data, type, row ) {
-                        return "<a href='#' data-pk='"+row.id+"' class='delete-btn btn btn-sm btn-danger'>Delete</a>";
+                        return "<a href='#' data-pk='"+row.id+"' class='delete-btn btn btn-sm btn-danger'>{{trans('ui.datatables.delete')}}</a>";
                     },
                     targets: 2
                 },
                 { orderable: false, "targets": 2 }
-            ]
+            ],
+
+            language: {
+                lengthMenu: "{{trans('ui.datatables.length')}}",
+                zeroRecords: "{{trans('ui.datatables.zero_records')}}",
+                info: "{{trans('ui.datatables.info')}}",
+                infoEmpty: "{{trans('ui.datatables.info_empty')}}",
+                search: "{{trans('ui.datatables.search')}}",
+                paginate: {
+                    previous: "{{trans('ui.datatables.previous')}}",
+                    next: "{{trans('ui.datatables.next')}}"
+                }
+            }
         });
 
         //delete event
@@ -672,10 +720,10 @@
                     success: function (response) {
                         if(response.status != 200)
                         {
-                            toastr.error('VAT could not be deleted!')
+                            toastr.error(response.message)
                         }
                         else {
-                            toastr.success('VAT successfully removed!');
+                            toastr.success(response.message);
                             vat_tbl.draw();
                         }
                     }
@@ -689,7 +737,7 @@
                 disabled: true,
                 validate: function(value) {
                     if($.trim(value) == '') {
-                        return 'This field is required';
+                        return "{{trans('ui.editable.required')}}";
                     }
                 },
                 success: function(response) {
@@ -717,10 +765,10 @@
                     success: function (response) {
                         if(response.status != 200)
                         {
-                            toastr.error('VAT could not be added!')
+                            toastr.error(response.message)
                         }
                         else {
-                            toastr.success('VAT successfully added!');
+                            toastr.success(response.message);
                             vat_tbl.draw();
                         }
                     }
