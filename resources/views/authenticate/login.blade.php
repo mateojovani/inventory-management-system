@@ -3,7 +3,7 @@
 <head>
 
   <!-- Title -->
-  <title>Inventory | Register</title>
+  <title>Inventory | Login</title>
 
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <meta charset="UTF-8">
@@ -22,6 +22,7 @@
   <link href="assets/plugins/waves/waves.min.css" rel="stylesheet" type="text/css"/>
   <link href="assets/plugins/switchery/switchery.min.css" rel="stylesheet" type="text/css"/>
   <link href="assets/plugins/3d-bold-navigation/css/style.css" rel="stylesheet" type="text/css"/>
+  <link href="assets/plugins/bootstrap-formhelpers/bootstrap-formhelpers.min.css" rel="stylesheet" type="text/css"/>
 
   <!-- Theme Styles -->
   <link href="assets/css/modern.min.css" rel="stylesheet" type="text/css"/>
@@ -55,6 +56,8 @@
             <div class="form-group">
               <input type="password" class="form-control" name="password" placeholder="Password" required>
             </div>
+            <div class="bfh-selectbox bfh-languages" data-name="lang" data-language="en_US" data-available="en_US,sq_AL" data-flags="true">
+            </div>
             <button type="submit" class="btn btn-success btn-block m-t-xs">Login</button>
             <p class="text-center m-t-xs text-sm">Do not have an account?</p>
             <a href="{{URL::asset('/register')}}" class="btn btn-default btn-block m-t-md">Create an account</a>
@@ -75,6 +78,9 @@
 <script src="assets/plugins/pace-master/pace.min.js"></script>
 <script src="assets/plugins/jquery-blockui/jquery.blockui.js"></script>
 <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/plugins/bootstrap-formhelpers/bootstrap-formhelpers.min.js"></script>
+<script src="assets/plugins/bootstrap-formhelpers/bootstrap-formhelpers-languages.js"></script>
+<script src="assets/plugins/bootstrap-formhelpers/bootstrap-formhelpers-countries.js"></script>
 <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <script src="assets/plugins/switchery/switchery.min.js"></script>
 <script src="assets/plugins/uniform/jquery.uniform.min.js"></script>
