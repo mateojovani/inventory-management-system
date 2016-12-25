@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Datasheet extends Model
 {
     protected $primaryKey = 'datasheet_id';
+    protected $table = 'datasheet';
     public $timestamps = false;
 
     protected $fillable = ['source_sheet_id',

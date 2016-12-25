@@ -92,3 +92,4 @@ Route::post('/furnishers/edit', 'FurnishersController@edit');
 
 #Entrysheet
 Route::get('/entrysheet', 'EntryController@show');
+Route::post('/entrysheet/add', 'EntryController@addEntry');

@@ -144,6 +144,11 @@ return [
         'sq' => 'Sasia u modifikua me sukses!'
     ],
 
+    '406' => [
+        'en' => 'Items added in stock!',
+        'sq' => 'Materialet u shtuan ne stok!'
+    ],
+
     '500' => [
         'en' => 'The action was not succesfull',
         'sq' => 'Veprimi deshtoi'

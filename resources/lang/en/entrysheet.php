@@ -15,7 +15,8 @@ return [
 
         'serial' => 'Serial No',
         'furnisher' => 'Furnisher',
-        'date' => 'Date'
+        'date' => 'Date',
+        'comment' => 'Comment'
 
     ],
 
@@ -23,14 +24,24 @@ return [
 
         'item' => 'Item',
         'total_no_vat' => 'Total no VAT',
+        'discount' => 'Discount (%)',
+        'total' => 'Total',
+        'vat' => 'Vat'
+    ],
+
+    'total' => [
+
+        'total' => 'Total',
         'discount' => 'Discount',
-        'total' => 'Total'
+        'grand' => 'Grand Total'
     ],
 
     'tooltip' => [
 
         'add' => 'Add Item'
     ],
+
+    'submit' => 'Submit'
 
 
 

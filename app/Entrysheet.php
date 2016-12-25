@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Entrysheet extends Model
 {
     protected $primaryKey = 'entrysheet_id';
+    protected $table = 'entrysheet';
     public $timestamps = false;
 
     protected $fillable = ['id_furnisher',

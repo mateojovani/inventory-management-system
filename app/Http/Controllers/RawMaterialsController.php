@@ -118,7 +118,7 @@ class RawMaterialsController extends Controller
                     ->leftJoin('itemtype', 'items.id_itemtype', '=', 'itemtype.itemtype_id')
                     ->leftJoin('itemvat', 'items.id_vat', '=', 'itemvat.itemvat_id')
                     ->leftJoin('itemquantity_instock', 'items.Item_id', '=', 'itemquantity_instock.id_item')
-                    ->select('items.item_code as code', 'items.Item_name as item', 'itemcategory.Itemcategory_name as category', 'itemunity.Itemunity_name as unity', 'items.item_price as price', 'itemtype.itemtype_name as type', 'itemvat.itemvat_name as vat', 'items.Item_id as id', 'itemquantity_instock.quantity as quantity')
+                    ->select('items.item_code as code', 'items.Item_name as item', 'itemcategory.Itemcategory_name as category', 'itemunity.Itemunity_name as unity', 'items.item_price as price', 'itemtype.itemtype_name as type', 'itemvat.itemvat_name as vat', 'itemvat.vat_value as vatValue', 'items.Item_id as id', 'itemquantity_instock.quantity as quantity')
                     ->where('items.is_product', '0')
                     ->where('items.deleted', '0')
                     ->where(function($query) use ($request){
@@ -140,7 +140,7 @@ class RawMaterialsController extends Controller
                     ->leftJoin('itemtype', 'items.id_itemtype', '=', 'itemtype.itemtype_id')
                     ->leftJoin('itemvat', 'items.id_vat', '=', 'itemvat.itemvat_id')
                     ->leftJoin('itemquantity_instock', 'items.Item_id', '=', 'itemquantity_instock.id_item')
-                    ->select('items.item_code as code', 'items.Item_name as item', 'itemcategory.Itemcategory_name as category', 'itemunity.Itemunity_name as unity', 'items.item_price as price', 'itemtype.itemtype_name as type', 'itemvat.itemvat_name as vat', 'items.Item_id as id', 'itemquantity_instock.quantity as quantity')
+                    ->select('items.item_code as code', 'items.Item_name as item', 'itemcategory.Itemcategory_name as category', 'itemunity.Itemunity_name as unity', 'items.item_price as price', 'itemtype.itemtype_name as type', 'itemvat.itemvat_name as vat','itemvat.vat_value as vatValue', 'items.Item_id as id', 'itemquantity_instock.quantity as quantity')
                     ->where('items.is_product', '0')
                     ->where('items.deleted', '0')
                     ->whereNotIn('Item_id', $unWantedKeys)

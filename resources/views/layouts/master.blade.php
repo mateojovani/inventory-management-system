@@ -14,6 +14,11 @@
     @yield('sources_top')
     <style>
         .custom-input{padding: 5px; margin-right: 5px}
+        .no-padding {
+            padding: 0 !important;
+            margin: 0 !important;
+            margin-bottom: 5px !important;
+        }
     </style>
 
 </head>
