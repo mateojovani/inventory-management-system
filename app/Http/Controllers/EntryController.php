@@ -84,7 +84,7 @@ class EntryController extends Controller
                     $audit['id_record'] = $recordsItemsStock->Itemquantity_instock_id;
                     $audit['updated_field'] = 'quantity';
                     $audit['old_value'] = $old_value;
-                    $audit['new_value'] = $recordsItemsStock->quantity + $old_value;
+                    $audit['new_value'] = intval($recordsItemsStock->quantity) + intval($old_value);
                     $audit['updated_description'] = "ItemStock update";
                     MainController::audit($audit);
                 }
@@ -99,6 +99,77 @@ class EntryController extends Controller
             }
 
             return getResponse(200, 406);
+        }
+    }
+
+    public function showGRID()
+    {
+        return view('entrysheet.showGRID');
+    }
+
+    public function grid(Request $request)
+    {
+        if($request->ajax())
+        {
+            //show grid
+            $records = Entrysheet::where('deleted', '0')->count();
+
+            $start = $request->start;
+            $length = $request->length;
+
+            #server order
+            if($request->order[0]['column'] != '')
+            {
+                if($request->order[0]['column'] == '0')
+                    $orderBy = 'serial';
+                else if($request->order[0]['column'] == '1')
+                    $orderBy = 'comment';
+                else if($request->order[0]['column'] == '2')
+                    $orderBy = 'date';
+
+                else $orderBy = '';
+
+                $dir = $request->order[0]['dir'];
+            }
+            else
+            {
+                $orderBy = '';
+                $dir = 'desc';
+            }
+
+            #server search
+            if($request->search['value'] != '')
+            {
+                $items = DB::table('entrysheet')
+                    ->select('serial_number as serial', 'comment', 'document_date as date', 'entrysheet_id as id')
+                    ->where('deleted', '0')
+                    ->where(function($query) use ($request){
+                        $query->where('serial_number', 'like', '%'.$request->search['value'].'%');
+                        $query->orWhere('comment', 'like', '%'.$request->search['value'].'%');
+                    })
+                    ->offset($start)->limit($length+$start)
+                    ->orderBy($orderBy, $dir)
+                    ->get();
+                $records = $items->count();
+            }
+            else
+            {
+                $items = DB::table('entrysheet')
+                    ->select('serial_number as serial', 'comment', 'document_date as date', 'entrysheet_id as id')
+                    ->where('deleted', '0')
+                    ->offset($start)->limit($length+$start)
+                    ->orderBy($orderBy, $dir)
+                    ->get();
+            }
+
+            $json_data = array(
+                "draw"            => $request->draw,
+                "recordsTotal"    => $records,
+                "recordsFiltered" => $records,
+                "data"            => $items
+            );
+            return $json_data;
+
         }
     }
 }

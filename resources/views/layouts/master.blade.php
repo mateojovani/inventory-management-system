@@ -95,8 +95,12 @@
                 <li @yield('fu')>
                     <a href="{{URL::asset('/furnishers')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-sort-by-attributes-alt"></span><p>{{trans('ui.side_menu.furnishers')}}</p></a>
                 </li>
-                <li @yield('en')>
-                    <a href="{{URL::asset('/entrysheet')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-list-alt"></span><p>{{trans('ui.side_menu.entrysheet')}}</p></a>
+                <li @yield('en') class="droplink">
+                    <a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-list-alt"></span><p>{{trans('ui.side_menu.entrysheet')}}</p><span class="arrow"></span></a>
+                    <ul class="sub-menu">
+                        <li><a href="{{URL::asset('/entrysheet')}}">{{trans('ui.side_menu.new_entry')}}</a></li>
+                        <li><a href="{{URL::asset('/entrysheet/grid')}}">{{trans('ui.side_menu.show_grid')}}</a></li>
+                    </ul>
                 </li>
             </ul>
         </div><!-- Page Sidebar Inner -->

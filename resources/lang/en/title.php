@@ -17,5 +17,6 @@ return [
     'materials' => 'Raw Materials',
     'profile' => 'Profile',
     'entrysheet' => 'Entry Sheet',
+    'entrysheetGRID' => 'Entry sheets'
 
 ];

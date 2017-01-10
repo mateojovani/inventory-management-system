@@ -17,5 +17,6 @@ return [
     'materials' => 'Materialet',
     'profile' => 'Profili',
     'entrysheet' => 'Flet&euml; Hyrje',
+    'entrysheetGRID' => 'Flet&euml; Hyrje'
 
 ];

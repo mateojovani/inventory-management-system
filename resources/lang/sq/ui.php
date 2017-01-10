@@ -17,7 +17,9 @@ return [
         'configure' => 'Konfigurime',
         'clients' => 'Klient&euml;t',
         'furnishers' => 'Prodhuesit',
-        'entrysheet' => 'Flet&euml; Hyrje'
+        'entrysheet' => 'Flet&euml; Hyrje',
+        'new_entry' => 'Hyrje e re',
+        'show_grid' => 'Hyrjet'
 
     ],
 

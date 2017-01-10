@@ -17,7 +17,9 @@ return [
         'configure' => 'Configure',
         'clients' => 'Clients',
         'furnishers' => 'Furnishers',
-        'entrysheet' => 'EntrySheet'
+        'entrysheet' => 'EntrySheet',
+        'new_entry' => 'New Entry',
+        'show_grid' => 'Show Grid'
 
     ],
 

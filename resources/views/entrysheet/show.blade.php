@@ -9,7 +9,7 @@
 @endsection
 
 @section('en')
-    class='active'
+    class='droplink active'
 @endsection
 
 @section('main')
