@@ -95,3 +95,12 @@ Route::get('/entrysheet', 'EntryController@show');
 Route::get('/entrysheet/grid', 'EntryController@showGRID');
 Route::post('/entrysheet/add', 'EntryController@addEntry');
 Route::post('/entrysheet/grid', 'EntryController@grid');
+
+#Report
+Route::get('/report/entrysheets', 'ReportController@showEntrysReport');
+Route::post('/report/entrysheets', 'ReportController@entrysReport');
+Route::get('/report/entrysheet/{id}', 'ReportController@showEntryReport');
+Route::post('/report/entrysheet', 'ReportController@entryReport');
+
+#Files
+Route::get('/file/report/entrysheet/{file}', 'MainController@getEntryReport');

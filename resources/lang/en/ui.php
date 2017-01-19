@@ -19,7 +19,10 @@ return [
         'furnishers' => 'Furnishers',
         'entrysheet' => 'EntrySheet',
         'new_entry' => 'New Entry',
-        'show_grid' => 'Show Grid'
+        'show_grid' => 'Show Grid',
+        'reports' => 'Reports',
+        'entrysheet_report' => 'Entrysheet report',
+
 
     ],
 
@@ -31,6 +34,7 @@ return [
         'delete' => 'Delete',
         'config' => 'Config',
         'select' => 'Select',
+        'report' => 'Report',
 
         'length' => 'Show _MENU_ records per page',
         'zero_records' => 'There are no records to display',

@@ -154,6 +154,11 @@ return [
         'sq' => 'Veprimi deshtoi'
     ],
 
+    '501' => [
+        'en' => 'The report failed!',
+        'sq' => 'Raporti deshtoi!'
+    ],
+
     //validation
 
     'required' => [

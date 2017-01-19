@@ -24,11 +24,11 @@
                     <div class="row">
                         <div class="col-md-2">
                             <h4>{{trans('entrysheet.head.serial')}}</h4>
-                            <input type="text" class="form-control" id="serial" name="serial-no" value="15451545" disabled>
+                            <input type="text" class="form-control" id="serial" name="serial-no" value="{{$serial}}" disabled>
                         </div>
                         <div class="col-md-3">
                             <h4>{{trans('entrysheet.head.date')}}</h4>
-                            <input type="text" class="form-control" id="date" name="date" value="">
+                            <input type="text" class="form-control flatpickr" id="date" name="date">
                         </div>
                         <div class="col-md-7">
                             <h4>{{trans('entrysheet.head.comment')}}</h4>
@@ -152,18 +152,12 @@
     <script>
         $('#total-container').hide();
         //date
-        var datetime = null,
-                date = null;
-
-        var update = function () {
-            date = moment(new Date());
-            datetime.val(date.format('ddd, D/MM/YYYY, h:mm:ss a'));
-        };
-
-        datetime = $('#date');
-        update();
-        setInterval(update, 1000);
-
+        flatpickr(".flatpickr", {
+            enableTime: true,
+            altInput: true,
+            defaultDate: Date.now(),
+            altFormat: "F j, Y h:i K"
+        });
 
         //keys of selected records
         var keyArray = [];
@@ -483,7 +477,7 @@
                         }
                         else{
                             toastr.success(response.message);
-                            window.location.href = "{{URL::asset('/entrysheet')}}";
+                            window.location.href = "{{URL::asset('/entrysheet/grid')}}";
                         }
                     }
                 });

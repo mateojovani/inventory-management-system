@@ -19,7 +19,9 @@ return [
         'furnishers' => 'Prodhuesit',
         'entrysheet' => 'Flet&euml; Hyrje',
         'new_entry' => 'Hyrje e re',
-        'show_grid' => 'Hyrjet'
+        'show_grid' => 'Hyrjet',
+        'reports' => 'Raportet',
+        'entrysheet_report' => 'Raport Flet&euml; Hyrje',
 
     ],
 
@@ -31,6 +33,7 @@ return [
         'delete' => 'Fshi',
         'config' => 'Konfiguro',
         'select' => 'Zgjidh',
+        'report' => 'Raport',
 
         'length' => '_MENU_ rekorde p&euml;r faqe',
         'zero_records' => 'Nuk ka rekorde p&euml;r t&euml; paraqitur',

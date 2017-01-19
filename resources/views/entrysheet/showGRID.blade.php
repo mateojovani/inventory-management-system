@@ -17,16 +17,16 @@
         <div class="col-md-12">
             <div class="panel">
                 <div class="panel-body">
-                        <div class="panel-title">Entrysheets</div><hr>
+                        <div class="panel-title"> {{trans('entrysheet.grid_context')}}</div><hr>
 
                         <div class="table-responsive">
                             <table id="entrysheet-table" class="display table" style="width: 100%; cellspacing: 0;">
                                 <thead>
                                 <tr>
-                                    <th>Entrysheet</th>
-                                    <th>Comment</th>
-                                    <th>Date</th>
-                                    <th>Actions</th>
+                                    <th>{{trans('entrysheet.head.serial')}}</th>
+                                    <th>{{trans('entrysheet.head.comment')}}</th>
+                                    <th>{{trans('entrysheet.head.date')}}</th>
+                                    <th>{{trans('ui.datatables.actions')}}</th>
                                 </tr>
                                 </thead>
 
@@ -56,7 +56,10 @@
             columnDefs: [
                 {
                     render: function ( data, type, row ) {
-                        return "<a href='#' data-serial='"+row.serial+"' " +
+                        return  "<a href='#' onclick='goToReport("+row.id+")' "+
+                                "class='raport-btn btn btn-sm btn-default'>{{trans('ui.datatables.report')}}</a>"+
+                                " <a href='#' data-pk='"+row.id+"' " +
+                                "data-serial='"+row.serial+"' " +
                                 "data-comment='"+row.comment+"' " +
                                 "data-date='"+row.date+"' " +
                                 "class='delete-btn btn btn-sm btn-danger'>{{trans('ui.datatables.delete')}}</a>";
@@ -78,6 +81,11 @@
                 }
             }
         });
+
+        function goToReport(id)
+        {
+            location.href = '{{URL::asset('/report/entrysheet').'/'}}'+id;
+        }
 
     </script>
 @endsection

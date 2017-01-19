@@ -11,6 +11,10 @@ return [
 
     'context' => 'Entry Sheet',
 
+    'grid_context' => 'Entry Sheet Grid',
+
+    'report' => 'Entry Sheet Report',
+
     'head' => [
 
         'serial' => 'Serial No',

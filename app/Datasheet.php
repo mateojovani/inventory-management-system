@@ -15,11 +15,11 @@ class Datasheet extends Model
         'id_item',
         'item_price',
         'quantity',
-        'total_no_vat',
-        'total_vat',
-        'total_with_vat',
-        'total_for_interes',
-        'sconto',
+        'subtotal_no_vat',
+        'subtotal_vat',
+        'subtotal_with_vat',
+        'subtotal_for_interes',
+        'subdiscount',
         'deleted'
         ];
 }

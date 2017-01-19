@@ -16,6 +16,7 @@
 <link href="{{URL::asset('assets/plugins/bootstrap-datepicker/css/datepicker3.css')}}" rel="stylesheet" type="text/css"/>
 <link href="{{URL::asset('assets/plugins/toastr/toastr.min.css')}}" rel="stylesheet" type="text/css"/>
 <link href="{{URL::asset('assets/plugins/bootstrap-formhelpers/bootstrap-formhelpers.min.css')}}" rel="stylesheet" type="text/css"/>
+<link href="{{URL::asset('assets/plugins/flatpickr/flatpickr.min.css')}}" rel="stylesheet" type="text/css"/>
 
 
 <!-- Theme Styles -->
@@ -47,6 +48,8 @@
 <script src="{{URL::asset('assets/plugins/datatables/js/jquery.datatables.min.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/x-editable/bootstrap3-editable/js/bootstrap-editable.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/flatpickr/flatpickr.min.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/pdfobject/pdfobject.min.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/typeahead/typeahead.bundle.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/toastr/toastr.min.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/jquery-ui/jquery-ui.min.js')}}"></script>

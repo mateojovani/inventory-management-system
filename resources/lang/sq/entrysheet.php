@@ -11,6 +11,10 @@ return [
 
     'context' => 'Flet&euml; Hyrje',
 
+    'grid_context' => 'Flet&euml; Hyrjet',
+
+    'report' => 'Raport Flet&euml; Hyrje',
+
     'head' => [
 
         'serial' => 'Nr Serial',

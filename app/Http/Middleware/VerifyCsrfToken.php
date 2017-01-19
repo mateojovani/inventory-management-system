@@ -21,6 +21,7 @@ class VerifyCsrfToken extends BaseVerifier
         '/clients/*',
         '/furnishers/*',
         '/entrysheet/*',
+        '/report/*',
         '/profile',
         '/login'
     ];

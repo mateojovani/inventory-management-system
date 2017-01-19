@@ -20,8 +20,9 @@ class EntryController extends Controller
     {
         $furnisher = Furnisher::first();
         $date = date('d-m-Y');
+        $serial = intval(microtime(true));
 
-        return view('entrysheet.show')->with(['furnisher'=>$furnisher, 'date'=>$date]);
+        return view('entrysheet.show')->with(['furnisher'=>$furnisher, 'date'=>$date, 'serial'=>$serial]);
     }
 
     public function addEntry(Request $request)
@@ -31,8 +32,7 @@ class EntryController extends Controller
             $entrysheet = new Entrysheet();
             $entrysheet->id_furnisher = 0;
             $entrysheet->serial_number = $request->serial;
-            //$entrysheet->document_date = $request->date;
-            $entrysheet->document_date = date("Y-m-d H:i:s");
+            $entrysheet->document_date = $request->date;
             $entrysheet->id_user = Auth::user()->User_id;
             $entrysheet->total_no_vat = $request->tnv;
             $entrysheet->total_vat = $request->tv;
@@ -62,11 +62,11 @@ class EntryController extends Controller
                     $datasheet->item_price = $item['price'];
                     $datasheet->quantity = $item['quantity'];
                     $datasheet->id_item = $item['id'];
-                    $datasheet->total_no_vat= $item['tnv'];
-                    $datasheet->total_vat = $item['tv'];
-                    $datasheet->total_with_vat = $item['twv'];
-                    $datasheet->total_for_interes = 0;
-                    $datasheet->discount = $item['discount'];
+                    $datasheet->subtotal_no_vat= $item['tnv'];
+                    $datasheet->subtotal_vat = $item['tv'];
+                    $datasheet->subtotal_with_vat = $item['twv'];
+                    $datasheet->subtotal_for_interes = 0;
+                    $datasheet->subdiscount = $item['discount'];
                     $datasheet->deleted = 0;
                     $datasheet->save();
 
@@ -94,8 +94,8 @@ class EntryController extends Controller
             catch(\Exception $e)
             {
                 DB::rollBack();
-                return $e;
-                //return getResponse(500, 500);
+                //return $e;
+                return getResponse(500, 500);
             }
 
             return getResponse(200, 406);
@@ -133,7 +133,7 @@ class EntryController extends Controller
             }
             else
             {
-                $orderBy = '';
+                $orderBy = 'id';
                 $dir = 'desc';
             }
 
@@ -154,6 +154,7 @@ class EntryController extends Controller
             }
             else
             {
+
                 $items = DB::table('entrysheet')
                     ->select('serial_number as serial', 'comment', 'document_date as date', 'entrysheet_id as id')
                     ->where('deleted', '0')

@@ -160,4 +160,14 @@ class MainController extends Controller
         return false;
     }
 
+    public function getEntryReport($file)
+    {
+        $destination = base_path() . '/storage/app/reports/pdf/entrysheet/' . $file;
+
+        return \Response::make(\File::get($destination), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="'.$file.'"'
+        ]);
+    }
+
 }
