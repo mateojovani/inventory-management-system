@@ -4,18 +4,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | entrysheet.show.blade.php
+    | outputsheet.show.blade.php
     |--------------------------------------------------------------------------
     |
     */
 
-    'context' => 'Entry Sheet',
+    'context' => 'OutPut Sheet',
 
-    'grid_context' => 'Entry Sheet Grid',
+    'grid_context' => 'OutPut Sheet Grid',
 
     'report' =>[
 
-        'title' => 'Entry Sheet Report',
+        'title' => 'OutPut Sheet Report',
         'start_date' => 'Start Date',
         'end_date' => 'End Date',
         'generate' => 'Generate'
@@ -26,7 +26,7 @@ return [
     'head' => [
 
         'serial' => 'Serial No',
-        'furnisher' => 'Furnisher',
+        'client' => 'Client',
         'date' => 'Date',
         'comment' => 'Comment'
 

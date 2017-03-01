@@ -56,11 +56,36 @@ class ProductsController extends Controller
         return $itemvats;
     }
 
+    public function getRawMaterials(Request $request)
+    {
+        if($request->ajax())
+        {
+            $product_id = $request->id;
+
+            $this->sql = "select i.Item_id as id, itemcompound.quantity as icq, itemquantity_instock.quantity as isq
+                          FROM items i
+                          join itemcompound on itemcompound.id_item_rawmaterial = i.Item_id and itemcompound.deleted = 0
+                          join itemquantity_instock on itemquantity_instock.id_item = i.Item_id and itemquantity_instock.deleted = 0
+                          where itemcompound.id_item_product = :id";
+
+
+            $items = DB::select($this->sql, [":id"=>$product_id]);
+
+            return $items;
+        }
+
+    }
+
     public function showGrid(Request $request)
     {
         if($request->ajax())
         {
-            $records = Item::where('is_product', '1')->where('deleted', '0')->count();
+            //show partial grid
+            if($request->has('selected'))
+                $unWantedKeys = explode(',', $request->selected);
+            else $unWantedKeys = [];
+
+            $records = Item::where('is_product', '1')->where('deleted', '0')->whereNotIn('Item_id', $unWantedKeys)->count();
 
             $start = $request->start;
             $length = $request->length;
@@ -101,7 +126,7 @@ class ProductsController extends Controller
                     ->leftJoin('itemtype', 'items.id_itemtype', '=', 'itemtype.itemtype_id')
                     ->leftJoin('itemvat', 'items.id_vat', '=', 'itemvat.itemvat_id')
                     ->leftJoin('itemquantity_instock', 'items.Item_id', '=', 'itemquantity_instock.id_item')
-                    ->select('items.item_code as code', 'items.Item_name as item', 'itemcategory.Itemcategory_name as category', 'itemunity.Itemunity_name as unity', 'items.item_price as price', 'itemtype.itemtype_name as type', 'itemvat.itemvat_name as vat', 'items.Item_id as id', 'itemquantity_instock.quantity as quantity')
+                    ->select('items.item_code as code', 'items.Item_name as item', 'itemcategory.Itemcategory_name as category', 'itemunity.Itemunity_name as unity', 'items.item_price as price', 'itemtype.itemtype_name as type', 'itemvat.itemvat_name as vat', 'itemvat.vat_value as vatValue', 'items.Item_id as id', 'itemquantity_instock.quantity as quantity')
                     ->where('items.is_product', '1')
                     ->where('items.deleted', '0')
                     ->where(function($query) use ($request){
@@ -110,6 +135,7 @@ class ProductsController extends Controller
                         $query->orWhere('items.item_code', 'like', '%'.$request->search['value'].'%');
 
                     })
+                    ->whereNotIn('Item_id', $unWantedKeys)
                     ->offset($start)->limit($length+$start)
                     ->orderBy($orderBy, $dir)
                     ->get();
@@ -123,9 +149,10 @@ class ProductsController extends Controller
                     ->leftJoin('itemtype', 'items.id_itemtype', '=', 'itemtype.itemtype_id')
                     ->leftJoin('itemvat', 'items.id_vat', '=', 'itemvat.itemvat_id')
                     ->leftJoin('itemquantity_instock', 'items.Item_id', '=', 'itemquantity_instock.id_item')
-                    ->select('items.item_code as code', 'items.Item_name as item', 'itemcategory.Itemcategory_name as category', 'itemunity.Itemunity_name as unity', 'items.item_price as price', 'itemtype.itemtype_name as type', 'itemvat.itemvat_name as vat', 'items.Item_id as id', 'itemquantity_instock.quantity as quantity')
+                    ->select('items.item_code as code', 'items.Item_name as item', 'itemcategory.Itemcategory_name as category', 'itemunity.Itemunity_name as unity', 'items.item_price as price', 'itemtype.itemtype_name as type', 'itemvat.itemvat_name as vat', 'itemvat.vat_value as vatValue', 'items.Item_id as id', 'itemquantity_instock.quantity as quantity')
                     ->where('items.is_product', '1')
                     ->where('items.deleted', '0')
+                    ->whereNotIn('Item_id', $unWantedKeys)
                     ->offset($start)->limit($length+$start)
                     ->orderBy($orderBy, $dir)
                     ->get();
@@ -163,7 +190,6 @@ class ProductsController extends Controller
 
                 $dir = $request->order[0]['dir'];
                 $order = $orderBy." ".$dir;
-                //print_r($order);
             }
             else
             {

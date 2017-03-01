@@ -102,6 +102,13 @@
                         <li><a href="{{URL::asset('/entrysheet/grid')}}">{{trans('ui.side_menu.show_grid')}}</a></li>
                     </ul>
                 </li>
+                <li @yield('ou') class="droplink">
+                    <a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-th-list"></span><p>{{trans('ui.side_menu.outputsheet')}}</p><span class="arrow"></span></a>
+                    <ul class="sub-menu">
+                        <li><a href="{{URL::asset('/outputsheet')}}">{{trans('ui.side_menu.new_out')}}</a></li>
+                        <li><a href="{{URL::asset('/outputsheet/grid')}}">{{trans('ui.side_menu.show_grid_out')}}</a></li>
+                    </ul>
+                </li>
                 <li @yield('rp') class="droplink">
                     <a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-file"></span><p>{{trans('ui.side_menu.reports')}}</p><span class="arrow"></span></a>
                     <ul class="sub-menu">

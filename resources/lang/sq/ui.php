@@ -20,6 +20,9 @@ return [
         'entrysheet' => 'Flet&euml; Hyrje',
         'new_entry' => 'Hyrje e re',
         'show_grid' => 'Hyrjet',
+        'outputsheet' => 'Flet&euml; Dalje',
+        'new_out' => 'Dalje e re',
+        'show_grid_out' => 'Daljet',
         'reports' => 'Raportet',
         'entrysheet_report' => 'Raport Flet&euml; Hyrje',
 

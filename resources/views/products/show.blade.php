@@ -153,6 +153,35 @@
         </div>
     </div>
     <script>
+        //keys of selected records
+        var keyArray = [];
+        var url = "{{URL::asset('/grid/raw-materials')}}";
+
+        function tableURL(key, action)
+        {
+            if(action == 'push')
+                keyArray.push(key);
+            else  keyArray.splice(keyArray.indexOf(key), 1);
+            return url+"?selected="+keyArray;
+        }
+
+        function selectedMaterials(pk)
+        {
+            keyArray = [];
+            $.ajax({
+                url: "{{URL::asset('/product/raw-materials/get')}}",
+                type: "POST",
+                data: {id: pk},
+                success: function (response) {
+                    response.forEach(function(item, index){
+                        keyArray.push(item.id);
+                    });
+
+                    rm_tbl.ajax.url("{{URL::asset('/grid/raw-materials')}}"+"?selected="+keyArray).load();
+                }
+            });
+        }
+
         //config hide
         $("#new-row").hide();
 
@@ -268,7 +297,7 @@
             bProcessing: true,
             serverSide: true,
             ajax: {
-                url: "{{URL::asset('/grid/raw-materials')}}",
+                url: url,
                 type: "post"
             },
 
@@ -427,6 +456,8 @@
 
                 $('#item-modal').modal('toggle');
                 $("#new-row").show();
+                rm_tbl.ajax.url(tableURL(pk, 'push'));
+                rm_tbl.draw();
             });
         });
 
@@ -436,7 +467,8 @@
             $(this).click(function () {
                 $("#config-modal").modal('toggle');
                 $("#product").val($(this).attr('data-pk'));
-                //console.log($("#product").val());
+                selectedMaterials($(this).attr('data-pk'));
+
                 var config_table = $('#config-table').DataTable({
                     bProcessing: true,
                     serverSide: true,
@@ -528,6 +560,8 @@
                                 }
                                 else {
                                     toastr.success(response.message);
+                                    rm_tbl.ajax.url(tableURL($(this).attr('data-pk'), 'remove'));
+                                    rm_tbl.draw();
                                     config_table.draw();
                                 }
                             }

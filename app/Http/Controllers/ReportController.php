@@ -27,6 +27,8 @@ class ReportController extends Controller
     {
         if($request->ajax())
         {
+            $start = $request->start;
+            $end = $request->end;
 
             $jasperPHP = new JasperPHP;
             $source = base_path() . '/storage/app/reports/entrysheets.jasper';
@@ -38,7 +40,7 @@ class ReportController extends Controller
                     $source ,
                     $destination,
                     array('pdf'),
-                    array(),
+                    array("dateBegin"=>$start, "dateEnd"=>$end),
                     $this->conn
                 )->execute();
 

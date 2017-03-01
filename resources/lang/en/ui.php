@@ -20,6 +20,9 @@ return [
         'entrysheet' => 'EntrySheet',
         'new_entry' => 'New Entry',
         'show_grid' => 'Show Grid',
+        'outputsheet' => 'OutputSheet',
+        'new_out' => 'New Output',
+        'show_grid_out' => 'Show Grid',
         'reports' => 'Reports',
         'entrysheet_report' => 'Entrysheet report',
 

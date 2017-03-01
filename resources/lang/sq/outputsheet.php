@@ -4,18 +4,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | entrysheet.show.blade.php
+    | outputsheet.show.blade.php
     |--------------------------------------------------------------------------
     |
     */
 
-    'context' => 'Flet&euml; Hyrje',
+    'context' => 'Flet&euml; Dalje',
 
-    'grid_context' => 'Flet&euml; Hyrjet',
+    'grid_context' => 'Flet&euml; Dalje',
 
     'report' =>[
 
-        'title' => 'Raport Flet&euml; Hyrje',
+        'title' => 'Raport Flet&euml; Dalje',
         'start_date' => 'Dat&euml; Fillimi',
         'end_date' => 'Dat&euml; P&euml;rfundimi',
         'generate' => 'Gjenero'
@@ -25,7 +25,7 @@ return [
     'head' => [
 
         'serial' => 'Nr Serial',
-        'furnisher' => 'Prodhuesi',
+        'client' => 'Klienti',
         'date' => 'Data',
         'comment' => 'Koment'
 

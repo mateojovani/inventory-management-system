@@ -106,7 +106,7 @@
             toastr.error(response.message)
           }
           else {
-             location.href = "/";
+             location.href = "{{URL::asset('/')}}";
           }
         }
       });

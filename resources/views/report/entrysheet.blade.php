@@ -65,7 +65,7 @@
         <div class="col-md-12">
             <div class="panel">
                 <div class="panel-body">
-                    <div class="panel-title"> {{trans('entrysheet.report')}}</div>
+                    <div class="panel-title"> {{trans('entrysheet.report.title')}}</div>
                     <hr>
                     <div id='wait' class="spinningCircle"></div>
                     <div id="report">
@@ -87,7 +87,7 @@
         $.ajax({
             url: "{{URL::asset('/report/entrysheet')}}",
             type: "POST",
-            data: "{{$id}}",
+            data: {id: "{{$id}}"},
             success: function (response)
             {
                 if(response == 200)

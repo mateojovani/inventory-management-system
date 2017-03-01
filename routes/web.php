@@ -69,6 +69,7 @@ Route::post('/products/edit', 'ProductsController@edit');
 Route::post('/products/delete', 'ProductsController@delete');
 Route::post('/grid/products', 'ProductsController@showGrid');
 Route::post('/grid/product/raw-materials', 'ProductsController@showGridForProduct');
+Route::post('/product/raw-materials/get', 'ProductsController@getRawMaterials');
 Route::post('/product/raw-materials/delete', 'ProductsController@deleteRawMaterials');
 
 Route::get('/products/categories', 'ProductsController@getCategories');
@@ -95,6 +96,13 @@ Route::get('/entrysheet', 'EntryController@show');
 Route::get('/entrysheet/grid', 'EntryController@showGRID');
 Route::post('/entrysheet/add', 'EntryController@addEntry');
 Route::post('/entrysheet/grid', 'EntryController@grid');
+
+#Outputsheet
+Route::get('/outputsheet', 'OutController@show');
+Route::get('/outputsheet/grid', 'OutController@showGRID');
+Route::post('/outputsheet/add', 'OutController@addEntry');
+Route::post('/outputsheet/grid', 'OutController@grid');
+Route::post('/outputsheet/control', 'OutController@control');
 
 #Report
 Route::get('/report/entrysheets', 'ReportController@showEntrysReport');

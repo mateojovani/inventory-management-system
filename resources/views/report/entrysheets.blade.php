@@ -65,9 +65,26 @@
         <div class="col-md-12">
             <div class="panel">
                 <div class="panel-body">
-                    <div class="panel-title"> {{trans('entrysheet.report')}}</div>
+                    <div class="panel-title"> {{trans('entrysheet.report.title')}}</div>
                     <hr>
-                    <div id='wait' class="spinningCircle"></div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h4>{{trans('entrysheet.report.start_date')}}</h4>
+                            <input type="text" class="form-control flatpickr" id="start_date" name="date">
+                        </div>
+                        <div class="col-md-3">
+                            <h4>{{trans('entrysheet.report.end_date')}}</h4>
+                            <input type="text" class="form-control flatpickr" id="end_date" name="date">
+                        </div>
+                        <div class="col-md-3">
+                            <br><br>
+                            <a href="#" onclick='generate()' class="btn btn-success">{{trans('entrysheet.report.generate')}}</a>
+                        </div>
+
+                    </div>
+
+                    <hr>
+                    <div id='wait' class="spinningCircle" style="display: none"></div>
                     <div id="report">
                     </div>
 
@@ -77,30 +94,42 @@
     </div>
 
     <script>
-        $(document).ajaxStart(function(){
-            $("#wait").css("display", "block");
-        });
-        $(document).ajaxComplete(function(){
-            $("#wait").css("display", "none");
+        //date
+        flatpickr(".flatpickr", {
+            altInput: true,
+            altFormat: "F j, Y "
         });
 
-        $.ajax({
-            url: "{{URL::asset('/report/entrysheets')}}",
-            type: "POST",
-            success: function (response)
-            {
-                if(response == 200)
+        function generate()
+        {
+            $(document).ajaxStart(function(){
+                $("#wait").css("display", "block");
+            });
+            $(document).ajaxComplete(function(){
+                $("#wait").css("display", "none");
+            });
+
+            $.ajax({
+                url: "{{URL::asset('/report/entrysheets')}}",
+                type: "POST",
+                data: {'start': $('#start_date').val(), 'end': $('#end_date').val()},
+                success: function (response)
                 {
-                    var options = {
-                        width: "100%",
-                        height: "600px"
-                    };
-                    PDFObject.embed('{{URL::asset('/file/report/entrysheet').'/entrysheets.pdf'}}', "#report", options);
+                    if(response == 200)
+                    {
+                        var options = {
+                            width: "100%",
+                            height: "600px"
+                        };
+                        PDFObject.embed('{{URL::asset('/file/report/entrysheet').'/entrysheets.pdf'}}', "#report", options);
+                    }
+                    else
+                        toastr.error(response.message);
                 }
-                else
-                    toastr.error(response.message);
-            }
-        });
+            });
+        }
+
+
 
     </script>
 @endsection

@@ -18,6 +18,7 @@ return [
     'materials' => 'Materialet',
     'profile' => 'Profili',
     'entrysheet' => 'Flet&euml; Hyrje',
+    'outputsheet' => 'Flet&euml; Dalje',
     'entrysheetGRID' => 'Flet&euml; Hyrje',
     'report' => 'Raport'
 

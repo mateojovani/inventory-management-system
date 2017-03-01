@@ -18,6 +18,7 @@ return [
     'materials' => 'Raw Materials',
     'profile' => 'Profile',
     'entrysheet' => 'Entry Sheet',
+    'outputsheet' => 'Output Sheet',
     'entrysheetGRID' => 'Entry sheets',
     'report' => 'Report'
 
