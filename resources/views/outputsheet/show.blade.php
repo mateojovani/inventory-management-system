@@ -164,6 +164,8 @@
         var keyArray = [];
         var url = "{{URL::asset('/grid/products')}}";
 
+        var selectedProducts = [];
+
         function tableURL(key, action)
         {
             if(action == 'push')
@@ -287,11 +289,21 @@
                 url: "{{URL::asset('/outputsheet/control')}}",
                 type: "POST",
                 dataType: "json",
-                data: {id: pk},
+                data: {id: pk, products: selectedProducts},
                 success: function(data)
                 {
+                    if(data > 0)
+                    {
+                        selectedProducts.push({id: pk, quantity: quantity});
+                        updateGrid(pk, code, name, category, unity, type, price, vat, vatValue, quantity, vatAplied, total, data);
+                    }
+                    else
+                    {
+                        $('#item-modal').modal('toggle');
+                        toastr.error("error");
+                    }
 
-                    updateGrid(pk, code, name, category, unity, type, price, vat, vatValue, quantity, vatAplied, total, data);
+
                 }
             });
 
@@ -317,7 +329,7 @@
                 var quantity = 1;
                 var vatAplied = price*quantity*vatValue;
                 vatAplied = vatAplied.toFixed(2);
-                var total = parseFloat(vatAplied) +  parseFloat(price);
+                var total = parseFloat(vatAplied) + parseFloat(price);
 
                 //check
                 check(pk, code, name, category, unity, type, price, vat, vatValue, quantity, vatAplied, total);
@@ -343,6 +355,13 @@
                 updateTotal();
                 //update items array
                 updateItem(-1, pk);
+                selectedProducts.forEach(function(item, index){
+                    if(item.id == pk)
+                    {
+                        selectedProducts.splice(index, 1);
+                        return false;
+                    }
+                });
 
                 products_tbl.ajax.url(tableURL(pk, 'remove'));
                 products_tbl.draw();
@@ -370,6 +389,14 @@
                 updateTotal();
                 //update items array
                 updateItem(1, pk, item_price, quantity, (total_no_vat*discount).toFixed(2), (vatAplied*discount).toFixed(2), _discount, (total*discount).toFixed(2));
+
+                selectedProducts.forEach(function(item){
+                    if(item.id == pk)
+                    {
+                        item.quantity = quantity;
+                        return false;
+                    }
+                })
 
             });
         });

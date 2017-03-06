@@ -29,7 +29,8 @@ class OutController extends Controller
     {
         if($request->ajax())
         {
-            $product_id = $request->id;
+            $productLeft = [];
+            $itemsArr = [];
 
             $sql = "select i.Item_id as id, itemcompound.quantity as icq, itemquantity_instock.quantity as isq
                           FROM items i
@@ -37,21 +38,40 @@ class OutController extends Controller
                           join itemquantity_instock on itemquantity_instock.id_item = i.Item_id and itemquantity_instock.deleted = 0
                           where itemcompound.id_item_product = :id";
 
+            $thisProductItems = DB::select($sql, [":id"=>$request->id]);
 
-            $items = DB::select($sql, [":id"=>$product_id]);
-
-            $productLeft = [];
-            foreach ($items as $item)
+            //if any products
+            $products = $request->products;
+            if(!empty($products))
+            foreach ($products as $product)
             {
-                if($item->icq > $item->isq)
-                    return -1;
-                else
+                $items = DB::select($sql, [":id"=>$product['id']]);
+
+                foreach ($items as $item)
                 {
-                    $productLeft[] = intval($item->isq/$item->icq);
+                    if(empty($itemsArr[$item->id]))
+                        $itemsArr[$item->id] = $item->isq;
+
+                    $quantityLeft = $itemsArr[$item->id] - (intval($product['quantity'])*$item->icq);
+                    $itemsArr[$item->id] = $quantityLeft;
                 }
+
+            }
+
+            foreach ($thisProductItems as $item)
+            {
+                if(empty($itemsArr[$item->id]))
+                    $itemsArr[$item->id] = $item->isq;
+
+                $left = intval($itemsArr[$item->id]/$item->icq);
+                if($left < 1)
+                    return -1;
+
+                $productLeft[] = $left;
             }
 
             return min($productLeft);
+
         }
 
     }
