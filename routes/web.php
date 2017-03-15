@@ -100,7 +100,7 @@ Route::post('/entrysheet/grid', 'EntryController@grid');
 #Outputsheet
 Route::get('/outputsheet', 'OutController@show');
 Route::get('/outputsheet/grid', 'OutController@showGRID');
-Route::post('/outputsheet/add', 'OutController@addEntry');
+Route::post('/outputsheet/add', 'OutController@addOut');
 Route::post('/outputsheet/grid', 'OutController@grid');
 Route::post('/outputsheet/control', 'OutController@control');
 

@@ -159,6 +159,10 @@ return [
         'sq' => 'Raporti deshtoi!'
     ],
 
+    '502' => [
+        'en' => 'Product unavailable!',
+        'sq' => 'Produkt i padisponueshem!'
+    ],
     //validation
 
     'required' => [

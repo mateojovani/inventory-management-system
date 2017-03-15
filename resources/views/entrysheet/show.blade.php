@@ -268,10 +268,10 @@
                             "<input type='hidden'  class='vatValueInput' value='"+vatValue+"'>"+
                         "</div>"+
                         "<div class='col-md-1 no-padding quantity'>"+
-                            "<input type='number' class='form-control item-quantity' name='item-quantity' value='1'>"+
+                            "<input type='number' class='form-control item-quantity' min='1' name='item-quantity' value='1'>"+
                         "</div>"+
                         "<div class='col-md-1 no-padding discount'>"+
-                            "<input type='number' class='form-control item-discount' name='item-discount' value='0'>"+
+                            "<input type='number' class='form-control item-discount' name='item-discount' min='0' max='99'value='0'>"+
                         "</div>"+
                         "<div class='col-md-1 total_no_vat-wrapper no-padding'>"+
                             "<input type='text' class='form-control item-total_no_vat' name='item-total_no_vat' value='"+price+"' disabled>"+
@@ -323,6 +323,8 @@
         //calculations
         $('.item-quantity').livequery(function () {
             $(this).on('keyup change', function () {
+                if($(this).val() < $(this).attr('min'))
+                    $(this).val($(this).attr('min'));
                 var pk = $(this).parent().parent().children('#item-pk').val();
                 var quantity = $(this).val();
                 var _discount = $(this).parent().parent().children('.discount').children('.item-discount').val();
@@ -345,6 +347,10 @@
         });
         $('.item-discount').livequery(function () {
             $(this).on('keyup change', function () {
+                if($(this).val() > 99)
+                    $(this).val(99);
+                if($(this).val() < 0)
+                    $(this).val(0);
                 var pk = $(this).parent().parent().children('#item-pk').val();
                 var _discount = $(this).val();
                 var discount = 1 - parseFloat(_discount*0.01);

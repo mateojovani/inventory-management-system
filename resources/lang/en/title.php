@@ -19,6 +19,7 @@ return [
     'profile' => 'Profile',
     'entrysheet' => 'Entry Sheet',
     'outputsheet' => 'Output Sheet',
+    'outputsheetGRID' => 'OutPut sheets',
     'entrysheetGRID' => 'Entry sheets',
     'report' => 'Report'
 

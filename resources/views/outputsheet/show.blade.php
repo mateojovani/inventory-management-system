@@ -8,7 +8,7 @@
     @include('layouts._sources_tbl_top')
 @endsection
 
-@section('en')
+@section('ou')
     class='droplink active'
 @endsection
 
@@ -257,10 +257,10 @@
                     "<input type='hidden'  class='vatValueInput' value='"+vatValue+"'>"+
                     "</div>"+
                     "<div class='col-md-1 no-padding quantity'>"+
-                    "<input type='number' class='form-control item-quantity' name='item-quantity' value='1' max="+data+">"+
+                    "<input type='number' class='form-control item-quantity' name='item-quantity' min='1' value='1' max="+data+">"+
                     "</div>"+
                     "<div class='col-md-1 no-padding discount'>"+
-                    "<input type='number' class='form-control item-discount' name='item-discount' value='0'>"+
+                    "<input type='number' class='form-control item-discount' name='item-discount' min='0' max='99' value='0'>"+
                     "</div>"+
                     "<div class='col-md-1 total_no_vat-wrapper no-padding'>"+
                     "<input type='text' class='form-control item-total_no_vat' name='item-total_no_vat' value='"+price+"' disabled>"+
@@ -300,7 +300,8 @@
                     else
                     {
                         $('#item-modal').modal('toggle');
-                        toastr.error("error");
+                        $('.last-quantity').last().prop('disabled', false);
+                        toastr.error("{{getResponse(200, 502)['message']}}");
                     }
 
 
@@ -350,6 +351,7 @@
                 }
 
                 $('#container .row-wrapper .plus_btn').last().show();
+                $('.last-quantity').last().prop('disabled', false);
 
                 //update total section
                 updateTotal();
@@ -371,6 +373,11 @@
         //calculations
         $('.item-quantity').livequery(function () {
             $(this).on('keyup change', function () {
+                if(parseFloat($(this).val()) > parseFloat($(this).attr('max')))
+                    $(this).val($(this).attr('max'));
+                if($(this).val() < $(this).attr('min'))
+                    $(this).val($(this).attr('min'));
+
                 var pk = $(this).parent().parent().children('#item-pk').val();
                 var quantity = $(this).val();
                 var _discount = $(this).parent().parent().children('.discount').children('.item-discount').val();
@@ -403,6 +410,11 @@
 
         $('.item-discount').livequery(function () {
             $(this).on('keyup change', function () {
+                if($(this).val() > 99)
+                    $(this).val(99);
+                if($(this).val() < 0)
+                    $(this).val(0);
+
                 var pk = $(this).parent().parent().children('#item-pk').val();
                 var _discount = $(this).val();
                 var discount = 1 - parseFloat(_discount*0.01);
@@ -525,7 +537,7 @@
                 data.items = items;
 
                 $.ajax({
-                    url: "{{URL::asset('/entrysheet/add')}}",
+                    url: "{{URL::asset('/outputsheet/add')}}",
                     type: "POST",
                     data: data,
                     success: function (response) {
@@ -535,11 +547,12 @@
                         }
                         else{
                             toastr.success(response.message);
-                            window.location.href = "{{URL::asset('/entrysheet/grid')}}";
+                            window.location.href = "{{URL::asset('/outputsheet/grid')}}";
                         }
                     }
                 });
             });
         });
+
     </script>
 @endsection

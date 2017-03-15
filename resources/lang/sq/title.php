@@ -19,6 +19,7 @@ return [
     'profile' => 'Profili',
     'entrysheet' => 'Flet&euml; Hyrje',
     'outputsheet' => 'Flet&euml; Dalje',
+    'outputsheetGRID' => 'Flet&euml; Daljet',
     'entrysheetGRID' => 'Flet&euml; Hyrje',
     'report' => 'Raport'
 
