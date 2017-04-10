@@ -125,8 +125,8 @@ class ProductsController extends Controller
                     ->leftJoin('itemunity', 'items.id_itemunity', '=', 'itemunity.Itemunity_id')
                     ->leftJoin('itemtype', 'items.id_itemtype', '=', 'itemtype.itemtype_id')
                     ->leftJoin('itemvat', 'items.id_vat', '=', 'itemvat.itemvat_id')
-                    ->leftJoin('itemquantity_instock', 'items.Item_id', '=', 'itemquantity_instock.id_item')
-                    ->select('items.item_code as code', 'items.Item_name as item', 'itemcategory.Itemcategory_name as category', 'itemunity.Itemunity_name as unity', 'items.item_price as price', 'itemtype.itemtype_name as type', 'itemvat.itemvat_name as vat', 'itemvat.vat_value as vatValue', 'items.Item_id as id', 'itemquantity_instock.quantity as quantity')
+                    //->leftJoin('itemquantity_instock', 'items.Item_id', '=', 'itemquantity_instock.id_item')
+                    ->select('items.item_code as code', 'items.Item_name as item', 'itemcategory.Itemcategory_name as category', 'itemunity.Itemunity_name as unity', 'items.item_price as price', 'itemtype.itemtype_name as type', 'itemvat.itemvat_name as vat', 'itemvat.vat_value as vatValue', 'items.Item_id as id')
                     ->where('items.is_product', '1')
                     ->where('items.deleted', '0')
                     ->where(function($query) use ($request){
@@ -148,8 +148,8 @@ class ProductsController extends Controller
                     ->leftJoin('itemunity', 'items.id_itemunity', '=', 'itemunity.Itemunity_id')
                     ->leftJoin('itemtype', 'items.id_itemtype', '=', 'itemtype.itemtype_id')
                     ->leftJoin('itemvat', 'items.id_vat', '=', 'itemvat.itemvat_id')
-                    ->leftJoin('itemquantity_instock', 'items.Item_id', '=', 'itemquantity_instock.id_item')
-                    ->select('items.item_code as code', 'items.Item_name as item', 'itemcategory.Itemcategory_name as category', 'itemunity.Itemunity_name as unity', 'items.item_price as price', 'itemtype.itemtype_name as type', 'itemvat.itemvat_name as vat', 'itemvat.vat_value as vatValue', 'items.Item_id as id', 'itemquantity_instock.quantity as quantity')
+                    //->leftJoin('itemquantity_instock', 'items.Item_id', '=', 'itemquantity_instock.id_item')
+                    ->select('items.item_code as code', 'items.Item_name as item', 'itemcategory.Itemcategory_name as category', 'itemunity.Itemunity_name as unity', 'items.item_price as price', 'itemtype.itemtype_name as type', 'itemvat.itemvat_name as vat', 'itemvat.vat_value as vatValue', 'items.Item_id as id')
                     ->where('items.is_product', '1')
                     ->where('items.deleted', '0')
                     ->whereNotIn('Item_id', $unWantedKeys)
@@ -205,6 +205,7 @@ class ProductsController extends Controller
 
 
             $items = DB::select($this->sql, [":id"=>$product_id]);
+
             $records = count($items);
 
 
@@ -230,11 +231,17 @@ class ProductsController extends Controller
         return view('products.add')->with($data);
     }
 
+    public function showConfig($id)
+    {
+        return view('products.config')->with(['id'=>$id]);
+    }
+
     public function postAdd(Request $request)
     {
         $response = [];
         $response['status'] = 200;
         $response['message'] = "Product added successfuly!";
+
         $data = $request->all();
 
         //validation
@@ -257,6 +264,11 @@ class ProductsController extends Controller
             return $response;
         }
 
+        //check for unique code
+        $result = Item::where('item_code', $data['code'])->where('deleted', 0)->count();
+        if($result > 0)
+            return getResponse(500, 507);
+
         $item = new Item();
         $item->item_code = $data['code'];
         $item->Item_name = $data['name'];
@@ -275,6 +287,7 @@ class ProductsController extends Controller
             DB::table('itemquantity_instock')
                 ->insert(['id_item'=>$item->Item_id, 'id_stockroom'=>1, 'id_furnisher'=>1, 'quantity'=>$data['quantity']]);
             DB::commit();
+            $response['id'] = $item->Item_id;
         }
         catch(\Exception $e)
         {

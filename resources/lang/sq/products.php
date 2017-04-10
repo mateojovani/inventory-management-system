@@ -14,6 +14,7 @@ return [
     'form' => [
 
         'add_product' => 'Shto Produkt',
+        'configure_product' => 'Konfiguro Produkt',
         'code' => 'Kodi i Produktit',
         'name' => 'Emri',
         'price' => '&Ccedil;mimi',

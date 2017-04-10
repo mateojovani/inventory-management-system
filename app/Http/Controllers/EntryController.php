@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-use App\Entrysheet, App\Datasheet, App\Furnisher;
+use App\Entrysheet, App\Datasheet, App\Furnisher, App\Item;
 
 class EntryController extends Controller
 {
@@ -170,6 +170,95 @@ class EntryController extends Controller
                 "data"            => $items
             );
             return $json_data;
+
+        }
+    }
+
+    public function delete(Request $request)
+    {
+        if($request->ajax())
+        {
+            $id = $request->id;
+            $datasheets = Datasheet::where('source_sheet_id', $id)
+                ->where('deleted', 0)
+                ->get();
+
+            DB::beginTransaction();
+
+            try
+            {
+                foreach ($datasheets as $datasheet)
+                {
+                    #fetch items
+                    $items = DB::table('itemquantity_instock')
+                        ->where('id_item', $datasheet->id_item)
+                        ->where('deleted', 0)
+                        ->get();
+                    $quantity = 0;
+                    foreach($items as $item)
+                    {
+                        $quantity += intval($item->quantity);
+                    }
+
+                    if($quantity < $datasheet->quantity)
+                    {
+                        return getResponse(500, 500);
+                    }
+                }
+
+                Entrysheet::where('entrysheet_id', $id)
+                    ->update(['deleted' => 1]);
+                //Audit
+                $audit = [];
+                $audit['updated_table'] = 'entrysheet';
+                $audit['id_record'] = $id;
+                $audit['updated_field'] = 'deleted';
+                $audit['old_value'] = 0;
+                $audit['new_value'] = 1;
+                $audit['updated_description'] = "Entrysheet Delete";
+                MainController::audit($audit);
+
+                Datasheet::where('source_sheet_id', $id)
+                    ->update(['deleted' => 1]);
+
+                foreach ($datasheets as $datasheet)
+                {
+                    #fetch items
+                    $items = DB::table('itemquantity_instock')
+                        ->where('id_item', $datasheet->id_item)
+                        ->where('deleted', 0);
+
+                    $items->update(['quantity'=> $items->first()->quantity - $datasheet->quantity]);
+
+                    //Audit
+                    $audit = [];
+                    $audit['updated_table'] = 'itemquantity_instock';
+                    $audit['id_record'] = $items->first()->Itemquantity_instock_id;
+                    $audit['updated_field'] = 'quantity';
+                    $audit['old_value'] = $items->first()->quantity + $datasheet->quantity;
+                    $audit['new_value'] =$items->first()->quantity;
+                    $audit['updated_description'] = "ItemStock update from entrysheet rollback";
+                    MainController::audit($audit);
+
+                    $audit = [];
+                    $audit['updated_table'] = 'datasheet';
+                    $audit['id_record'] = $datasheet->datasheet_id;
+                    $audit['updated_field'] = 'deleted';
+                    $audit['old_value'] = 0;
+                    $audit['new_value'] = 1;
+                    $audit['updated_description'] = "Datasheet Delete";
+                    MainController::audit($audit);
+                }
+
+                DB::commit();
+            }
+            catch(\Exception $e)
+            {
+                DB::rollBack();
+                return getResponse(500, 500);
+            }
+
+            return getResponse(200, 508);
 
         }
     }

@@ -173,6 +173,16 @@ return [
     'digits_between' => [
         'en' => 'The :attribute must be between :min - :max.',
         'sq' => ':attribute duhet te jete midis :min - :max.'
+    ],
+
+    '507' => [
+        'en' => 'Item Code must be unique!',
+        'sq' => 'Kodi i materialit/produktit duhet te jete unik!'
+    ],
+
+    '508' => [
+        'en' => 'Successfully rolled back and cancelled the invoice',
+        'sq' => 'Fatura u anullua me sukses'
     ]
 
 ];

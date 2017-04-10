@@ -165,7 +165,7 @@ class OutController extends Controller
                     $audit['id_record'] = $recordsItemsStock->Itemquantity_instock_id;
                     $audit['updated_field'] = 'quantity';
                     $audit['old_value'] = $old_value;
-                    $audit['new_value'] = intval($recordsItemsStock->quantity) + intval($old_value);
+                    $audit['new_value'] = intval($recordsItemsStock->quantity);
                     $audit['updated_description'] = "ItemStock update";
                     MainController::audit($audit);
                 }
@@ -251,6 +251,104 @@ class OutController extends Controller
                 "data"            => $items
             );
             return $json_data;
+
+        }
+    }
+
+    public function delete(Request $request)
+    {
+        if($request->ajax())
+        {
+            $id = $request->id;
+            $datasheets = Datasheet::where('source_sheet_id', $id)
+                ->where('deleted', 0)
+                ->get();
+
+            DB::beginTransaction();
+
+            try
+            {
+
+                Outputsheet::where('outsheet_id', $id)
+                    ->update(['deleted' => 1]);
+                //Audit
+                $audit = [];
+                $audit['updated_table'] = 'outputsheet';
+                $audit['id_record'] = $id;
+                $audit['updated_field'] = 'deleted';
+                $audit['old_value'] = 0;
+                $audit['new_value'] = 1;
+                $audit['updated_description'] = "Outputsheet Delete";
+                MainController::audit($audit);
+
+                Datasheet::where('source_sheet_id', $id)
+                    ->update(['deleted' => 1]);
+
+                foreach ($datasheets as $datasheet)
+                {
+                    #fetch items
+                    $items = DB::table('itemquantity_instock')
+                        ->where('id_item', $datasheet->id_item)
+                        ->where('deleted', 0);
+
+                    $items->update(['quantity'=> $items->first()->quantity - $datasheet->quantity]);
+
+                    //Audit
+                    $audit = [];
+                    $audit['updated_table'] = 'itemquantity_instock';
+                    $audit['id_record'] = $items->first()->Itemquantity_instock_id;
+                    $audit['updated_field'] = 'quantity';
+                    $audit['old_value'] = $items->first()->quantity + $datasheet->quantity;
+                    $audit['new_value'] =$items->first()->quantity;
+                    $audit['updated_description'] = "ItemStock update from outputsheet rollback";
+                    MainController::audit($audit);
+
+                    #fetch rawmaterials
+                    $rawitems = DB::table('itemcompound')
+                        ->where('id_item_product', $datasheet->id_item)
+                        ->where('deleted', 0)
+                        ->get();
+                    foreach ($rawitems as $rawitem)
+                    {
+                        $q = DB::table('itemquantity_instock')
+                            ->where('id_item', $rawitem->id_item_rawmaterial)
+                            ->where('deleted', 0)
+                            ->first()->quantity;
+                        DB::table('itemquantity_instock')
+                            ->where('id_item', $rawitem->id_item_rawmaterial)
+                            ->where('deleted', 0)
+                            ->update(['quantity'=> $q + $rawitem->quantity*$datasheet->quantity]);
+
+                        //Audit
+                        $audit = [];
+                        $audit['updated_table'] = 'itemquantity_instock';
+                        $audit['id_record'] = $items->first()->Itemquantity_instock_id;
+                        $audit['updated_field'] = 'quantity';
+                        $audit['old_value'] = $q;
+                        $audit['new_value'] = $q + $rawitem->quantity*$datasheet->quantity;
+                        $audit['updated_description'] = "ItemStock update from outputsheet rollback";
+                        MainController::audit($audit);
+                    }
+
+                    $audit = [];
+                    $audit['updated_table'] = 'datasheet';
+                    $audit['id_record'] = $datasheet->datasheet_id;
+                    $audit['updated_field'] = 'deleted';
+                    $audit['old_value'] = 0;
+                    $audit['new_value'] = 1;
+                    $audit['updated_description'] = "Datasheet Delete";
+                    MainController::audit($audit);
+                }
+
+                DB::commit();
+            }
+            catch(\Exception $e)
+            {
+                DB::rollBack();
+                return getResponse(500, 500);
+            }
+
+            return getResponse(200, 508);
 
         }
     }

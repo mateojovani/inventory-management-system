@@ -89,12 +89,12 @@
                 <li @yield('cf')>
                     <a href="{{URL::asset('/configure')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-wrench"></span><p>{{trans('ui.side_menu.configure')}}</p></a>
                 </li>
-                <li @yield('cl')>
+                {{--<li @yield('cl')>
                     <a href="{{URL::asset('/clients')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>{{trans('ui.side_menu.clients')}}</p></a>
                 </li>
                 <li @yield('fu')>
                     <a href="{{URL::asset('/furnishers')}}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-sort-by-attributes-alt"></span><p>{{trans('ui.side_menu.furnishers')}}</p></a>
-                </li>
+                </li>--}}
                 <li @yield('en') class="droplink">
                     <a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-list-alt"></span><p>{{trans('ui.side_menu.entrysheet')}}</p><span class="arrow"></span></a>
                     <ul class="sub-menu">

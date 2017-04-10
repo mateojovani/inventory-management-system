@@ -64,6 +64,7 @@ Route::get('/raw-materials/vat', 'RawMaterialsController@getVAT');
 #Products
 Route::get('/products', 'ProductsController@show');
 Route::get('/products/add', 'ProductsController@showAdd');
+Route::get('/products/config/{id}', 'ProductsController@showConfig');
 Route::post('/products/add', 'ProductsController@postAdd');
 Route::post('/products/edit', 'ProductsController@edit');
 Route::post('/products/delete', 'ProductsController@delete');
@@ -77,6 +78,7 @@ Route::get('/products/unities', 'ProductsController@getUnities');
 Route::get('/products/types', 'ProductsController@getTypes');
 Route::get('/products/vat', 'ProductsController@getVAT');
 
+/*
 #Clients
 Route::get('/clients', 'ClientsController@show');
 Route::post('/grid/clients', 'ClientsController@showGrid');
@@ -90,12 +92,14 @@ Route::post('/grid/furnishers', 'FurnishersController@showGrid');
 Route::post('/furnishers/add', 'FurnishersController@add');
 Route::post('/furnishers/delete', 'FurnishersController@delete');
 Route::post('/furnishers/edit', 'FurnishersController@edit');
+*/
 
 #Entrysheet
 Route::get('/entrysheet', 'EntryController@show');
 Route::get('/entrysheet/grid', 'EntryController@showGRID');
 Route::post('/entrysheet/add', 'EntryController@addEntry');
 Route::post('/entrysheet/grid', 'EntryController@grid');
+Route::post('/entrysheet/delete', 'EntryController@delete');
 
 #Outputsheet
 Route::get('/outputsheet', 'OutController@show');
@@ -103,6 +107,7 @@ Route::get('/outputsheet/grid', 'OutController@showGRID');
 Route::post('/outputsheet/add', 'OutController@addOut');
 Route::post('/outputsheet/grid', 'OutController@grid');
 Route::post('/outputsheet/control', 'OutController@control');
+Route::post('/outputsheet/delete', 'OutController@delete');
 
 #Report
 Route::get('/report/entrysheets', 'ReportController@showEntrysReport');

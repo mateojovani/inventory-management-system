@@ -37,6 +37,24 @@
         </div>
     </div>
 
+    <!--delete modal-->
+    <div id="delete-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p>{{trans('ui.delete_confirm')}}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id='confirm-delete-btn' data-dismiss="modal">{{trans('ui.yes')}}</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     <script>
         var tbl = $('#entrysheet-table').DataTable({
             bProcessing: true,
@@ -87,6 +105,29 @@
             location.href = '{{URL::asset('/report/outputsheet').'/'}}'+id;
         }
 
+        //delete event
+        $('#entrysheet-table .delete-btn').livequery(function() {
+            $(this).unbind().click(function () {
+                $('#delete-modal').modal('show');
+                var pk = $(this).attr('data-pk');
+                $('#confirm-delete-btn').unbind().click(function() {
+                    $.ajax({
+                        url: "{{URL::asset('/outputsheet/delete')}}",
+                        type: "POST",
+                        data: {id: pk},
+                        success: function (response) {
+                            if (response.status != 200) {
+                                toastr.error(response.message)
+                            }
+                            else {
+                                toastr.success(response.message);
+                                tbl.draw();
+                            }
+                        }
+                    });
+                });
+            });
+        });
     </script>
 @endsection
 

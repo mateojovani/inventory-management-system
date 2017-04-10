@@ -52,7 +52,10 @@ return [
 
         'required' => 'Kjo fushe eshte e detyruar'
 
-    ]
+    ],
+
+    'delete_confirm' => 'Deshironi te fshini kete njesi?',
+    'yes' => 'Po'
 
 
 ];

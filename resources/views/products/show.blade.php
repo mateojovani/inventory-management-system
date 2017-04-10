@@ -42,7 +42,6 @@
                                 <th>{{trans('products.table.price')}}</th>
                                 <th>{{trans('products.table.type')}}</th>
                                 <th>{{trans('products.table.vat')}}</th>
-                                <th>{{trans('products.table.quantity')}}</th>
                                 <th>{{trans('ui.datatables.actions')}}</th>
                             </tr>
                             </thead>
@@ -55,7 +54,6 @@
                                 <th>{{trans('products.table.price')}}</th>
                                 <th>{{trans('products.table.type')}}</th>
                                 <th>{{trans('products.table.vat')}}</th>
-                                <th>{{trans('products.table.quantity')}}</th>
                                 <th>{{trans('ui.datatables.actions')}}</th>
                             </tr>
                             </tfoot>
@@ -152,6 +150,24 @@
             </div>
         </div>
     </div>
+
+    <!--delete modal-->
+    <div id="delete-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <p>{{trans('ui.delete_confirm')}}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id='confirm-delete-btn' data-dismiss="modal">{{trans('ui.yes')}}</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
     <script>
         //keys of selected records
         var keyArray = [];
@@ -202,7 +218,6 @@
                 { "data": "price" },
                 { "data": "type" },
                 { "data": "vat" },
-                { "data": "quantity" },
                 { "data": "id" }
             ],
             columnDefs: [
@@ -275,9 +290,9 @@
                         return "<a href='#' data-pk='"+row.id+"' class='config-btn btn btn-sm btn-default'>{{trans('ui.datatables.config')}}</a> "+
                                 "<a href='#' data-pk='"+row.id+"' class='delete-btn btn btn-sm btn-danger'>{{trans('ui.datatables.delete')}}</a>";
                     },
-                    targets: 8
+                    targets: 7
                 },
-                { orderable: false, "targets": 8 }
+                { orderable: false, "targets": 7 }
             ],
 
             language: {
@@ -405,20 +420,23 @@
         //delete event
         $('#table .delete-btn').livequery(function() {
             $(this).unbind().click(function () {
-                $.ajax({
-                    url: "{{URL::asset('/products/delete')}}",
-                    type: "POST",
-                    data: {pk: $(this).attr('data-pk')},
-                    success: function (response) {
-                        if(response.status != 200)
-                        {
-                            toastr.error(response.message)
+                $('#delete-modal').modal('show');
+                var pk = $(this).attr('data-pk');
+                $('#confirm-delete-btn').unbind().click(function() {
+                    $.ajax({
+                        url: "{{URL::asset('/products/delete')}}",
+                        type: "POST",
+                        data: {pk: pk},
+                        success: function (response) {
+                            if (response.status != 200) {
+                                toastr.error(response.message)
+                            }
+                            else {
+                                toastr.success(response.message);
+                                tbl.draw();
+                            }
                         }
-                        else {
-                            toastr.success(response.message);
-                            tbl.draw();
-                        }
-                    }
+                    });
                 });
             });
         });

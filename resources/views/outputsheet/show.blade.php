@@ -136,7 +136,6 @@
                                 <th>{{trans('products.table.type')}}</th>
                                 <th>{{trans('products.table.vat')}}</th>
                                 <th>vat-value</th>
-                                <th>{{trans('products.table.quantity')}}</th>
                                 <th>{{trans('ui.datatables.actions')}}</th>
                             </tr>
                             </thead>
@@ -191,7 +190,6 @@
                 { "data": "type" },
                 { "data": "vat" },
                 { "data": "vatValue" },
-                { "data": "quantity" },
                 { "data": "id" }
             ],
             columnDefs: [
@@ -209,9 +207,9 @@
                                 "data-quantity='"+row.quantity+"' " +
                                 "class='select-btn btn btn-sm btn-danger'>{{trans('ui.datatables.select')}}</a>";
                     },
-                    targets: 9
+                    targets: 8
                 },
-                { orderable: false, "targets": 9 },
+                { orderable: false, "targets": 8 },
                 { targets: 7, visible: false }
             ],
 

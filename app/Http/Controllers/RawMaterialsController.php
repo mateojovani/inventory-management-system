@@ -195,6 +195,11 @@ class RawMaterialsController extends Controller
             return $response;
         }
 
+        //check for unique code
+        $result = Item::where('item_code', $data['code'])->where('deleted', 0)->count();
+        if($result > 0)
+            return getResponse(500, 507);
+
         $item = new Item();
         $item->item_code = $data['code'];
         $item->Item_name = $data['name'];
@@ -342,57 +347,63 @@ class RawMaterialsController extends Controller
         {
             $item = Item::find($request->pk);
 
-            DB::transaction(function () use ($item, $request)
+            DB::beginTransaction();
+
+            try
             {
-                try
+                $old_value = 0;
+                $item->update(["deleted" => 1]);
+                //Audit
+                $audit = [];
+                $audit['updated_table'] = 'items';
+                $audit['updated_field'] = 'deleted';
+                $audit['id_record'] = $item->Item_id;
+                $audit['old_value'] = $old_value;
+                $audit['new_value'] = $item->deleted;
+                $audit['updated_description'] = "Item delete";
+                MainController::audit($audit);
+
+                //check itemcompounds
+                $itemcompounds = DB::table('itemcompound')
+                    ->where('id_item_rawmaterial', $request->pk)
+                    ->where('deleted', 0);
+                $recordsItemcompounds = count($itemcompounds->get());
+                if($recordsItemcompounds > 0)
                 {
-                    $old_value = 0;
-                    $item->update(["deleted" => 1]);
-                    //Audit
-                    $audit = [];
-                    $audit['updated_table'] = 'items';
-                    $audit['updated_field'] = 'deleted';
-                    $audit['id_record'] = $item->Item_id;
-                    $audit['old_value'] = $old_value;
-                    $audit['new_value'] = $item->deleted;
-                    $audit['updated_description'] = "Item delete";
+                    DB::rollBack();
+                    return getResponse(500, 142);
+                }
+
+                /*$itemcompounds->update(['deleted' => 1]);
+                //Itemcompounds Audit
+                $audit['updated_table'] = 'itemcompound';
+                foreach ($recordsItemcompounds as $item)
+                {
+                    $audit['id_record'] = $item->itemcompound_id;
+                     MainController::audit($audit);
+                }*/
+
+                //delete stock
+                $itemsStock = DB::table('itemquantity_instock')
+                    ->where('id_item', $request->pk)
+                    ->where('deleted', 0);
+                $recordsItemsStock = $itemsStock->get();
+                $itemsStock->update(['deleted' => 1]);
+                //ItemsStock Audit
+                $audit['updated_table'] = 'itemquantity_instock';
+                foreach ($recordsItemsStock as $item)
+                {
+                    $audit['id_record'] = $item->Itemquantity_instock_id;
                     MainController::audit($audit);
-
-                    //delete itemcompounds
-                    $itemcompounds = DB::table('itemcompound')
-                        ->where('id_item_rawmaterial', $request->pk)
-                        ->where('deleted', 0);
-                    $recordsItemcompounds = $itemcompounds->get();
-                    $itemcompounds->update(['deleted' => 1]);
-                    //Itemcompounds Audit
-                    $audit['updated_table'] = 'itemcompound';
-                    foreach ($recordsItemcompounds as $item)
-                    {
-                        $audit['id_record'] = $item->itemcompound_id;
-                        MainController::audit($audit);
-                    }
-
-                    //delete stock
-                    $itemsStock = DB::table('itemquantity_instock')
-                        ->where('id_item', $request->pk)
-                        ->where('deleted', 0);
-                    $recordsItemsStock = $itemsStock->get();
-                    $itemsStock->update(['deleted' => 1]);
-                    //ItemsStock Audit
-                    $audit['updated_table'] = 'itemquantity_instock';
-                    foreach ($recordsItemsStock as $item)
-                    {
-                        $audit['id_record'] = $item->Itemquantity_instock_id;
-                        MainController::audit($audit);
-                    }
                 }
-                catch(\Exception $e)
-                {
-                   return getResponse(500, 500);
-                }
+            }
+            catch(\Exception $e)
+            {
+                DB::rollBack();
+                return getResponse(500, 500);
+            }
 
-            });
-
+            DB::commit();
             return getResponse(200, 402);
         }
     }
@@ -415,19 +426,19 @@ class RawMaterialsController extends Controller
                 getResponse(500, 141);
             }
 
-            DB::transaction(function () use ($request)
+            DB::beginTransaction();
+            try
             {
-                try
-                {
-                    DB::table('itemcompound')
-                        ->insert(['id_item_product'=> $request->product, 'id_item_rawmaterial'=> $request->pk, 'quantity'=> $request->quantity]);
-                }
-                catch (\Exception $e)
-                {
-                   return getResponse(500, 500);
-                }
-            });
+                DB::table('itemcompound')
+                    ->insert(['id_item_product'=> $request->product, 'id_item_rawmaterial'=> $request->pk, 'quantity'=> $request->quantity]);
+            }
+            catch (\Exception $e)
+            {
+                DB::rollBack();
+                return getResponse(500, 500);
+            }
 
+            DB::commit();
             return getResponse(200, 403);
         }
     }

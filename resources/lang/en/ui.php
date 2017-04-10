@@ -53,7 +53,10 @@ return [
 
         'required' => 'This field is required'
 
-    ]
+    ],
+
+    'delete_confirm' => 'Do you wish to delete this item?',
+    'yes' => 'Ok'
 
 
 ];

@@ -124,7 +124,7 @@
                         }
                         else{
                             toastr.success(response.message);
-                            window.location.href = "{{URL::asset('/products')}}";
+                            window.location.href = "{{URL::asset('/products/config/')}}/"+response.id;
                         }
                     }
                 });

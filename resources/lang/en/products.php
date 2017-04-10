@@ -14,6 +14,7 @@ return [
     'form' => [
 
         'add_product' => 'Add Product',
+        'configure_product' => 'Configure Product',
         'code' => 'Item Code',
         'name' => 'Item Name',
         'price' => 'Price',
