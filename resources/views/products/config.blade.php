@@ -93,10 +93,12 @@
                         </div>
                     </div>
 
+                    <a class="btn btn-success" style="float: right;" href="{{URL::asset('/products')}}">Vazhdo</a>
                 </div>
             </div>
         </div>
     </div>
+
     <script>
         //keys of selected records
         var keyArray = [];
