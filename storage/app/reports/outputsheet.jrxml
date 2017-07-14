@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="newContracts" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="823f05d8-e0ab-4d44-b143-190e100d0044">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="newContracts" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d61ceb5f-84b8-488e-8e39-a51a8146c604">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -13,39 +13,74 @@
 		<defaultValueExpression><![CDATA["Ky raport u printua nga: "]]></defaultValueExpression>
 	</parameter>
 	<parameter name="report_title" class="java.lang.String">
-		<defaultValueExpression><![CDATA["Flete Hyrje"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["Flete Dalje"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="entrysheet_id" class="java.lang.String">
-		<defaultValueExpression><![CDATA[12]]></defaultValueExpression>
+	<parameter name="outputsheet_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA["1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="outputsheet" class="java.lang.String">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT i.item_code,i.Item_name,d.item_price,d.quantity,
 u.User_name,e.document_date,e.`comment`,e.serial_number,e.total_no_vat,e.total_with_vat,e.total_vat,
 d.id_item,d.subtotal_no_vat,d.subtotal_vat,d.subtotal_with_vat,d.subdiscount
--- select d.*
- FROM inv.`entrysheet` e
-join inv.datasheet d on d.source_sheet_id=e.entrysheet_id and d.source_sheet_name='entrysheet' and d.deleted=0
+
+ FROM inv.`outputsheet` e
+join inv.datasheet d on d.source_sheet_id=e.outsheet_id and d.source_sheet_name='outputsheet' and d.deleted=0
 join inv.users u on u.User_id=e.id_user
 join inv.items i on i.Item_id=d.id_item
-where e.deleted=0 and d.deleted=0 and e.entrysheet_id=$P{entrysheet_id}
+where e.deleted=0 and d.deleted=0 and e.outsheet_id=$P{outputsheet_id}
 group by d.datasheet_id;]]>
 	</queryString>
-	<field name="item_code" class="java.lang.Integer"/>
-	<field name="Item_name" class="java.lang.String"/>
-	<field name="item_price" class="java.math.BigDecimal"/>
-	<field name="quantity" class="java.math.BigDecimal"/>
-	<field name="User_name" class="java.lang.String"/>
-	<field name="document_date" class="java.sql.Timestamp"/>
-	<field name="comment" class="java.lang.String"/>
-	<field name="serial_number" class="java.lang.Integer"/>
-	<field name="total_no_vat" class="java.math.BigDecimal"/>
-	<field name="total_with_vat" class="java.math.BigDecimal"/>
-	<field name="total_vat" class="java.math.BigDecimal"/>
-	<field name="id_item" class="java.lang.Integer"/>
-	<field name="subtotal_no_vat" class="java.math.BigDecimal"/>
-	<field name="subtotal_vat" class="java.math.BigDecimal"/>
-	<field name="subtotal_with_vat" class="java.math.BigDecimal"/>
-	<field name="subdiscount" class="java.math.BigDecimal"/>
+	<field name="item_code" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Item_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="item_price" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="quantity" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="User_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="document_date" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="comment" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="serial_number" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_no_vat" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_with_vat" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_vat" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id_item" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="subtotal_no_vat" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="subtotal_vat" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="subtotal_with_vat" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="subdiscount" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<variable name="subtotal_no_vat_1" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{subtotal_no_vat}*100/(100-$F{subdiscount})]]></variableExpression>
 	</variable>
@@ -70,18 +105,18 @@ group by d.datasheet_id;]]>
 	<title>
 		<band height="93" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="555" height="20" uuid="61fef43b-8cf5-4321-b8f9-7ab090ba6ce1"/>
+				<reportElement x="0" y="0" width="555" height="20" uuid="1d69d67f-2dc2-4160-bf3c-01f03244119f"/>
 				<textFieldExpression><![CDATA[$P{company_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="20" width="555" height="20" uuid="01eec48d-3c4f-4e31-877b-53d34f5da1ff"/>
+				<reportElement x="0" y="20" width="555" height="20" uuid="61f72271-cd41-4579-b983-85ff39e4c82b"/>
 				<textElement textAlignment="Center">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{report_title}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="26" y="48" width="99" height="20" uuid="8a426a08-926d-42d3-b8dd-c533c927142c"/>
+				<reportElement x="26" y="48" width="99" height="20" uuid="846038c3-5d7c-4e81-9d0b-7a53b0d1831b"/>
 				<box rightPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Serif" isBold="true"/>
@@ -89,7 +124,7 @@ group by d.datasheet_id;]]>
 				<text><![CDATA[Data:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="125" y="48" width="105" height="20" uuid="fb231231-f27b-446e-bcc6-ce2316f48c94"/>
+				<reportElement x="125" y="48" width="105" height="20" uuid="5cda27bc-6f44-47d9-adef-00f69fe8e6bd"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -101,7 +136,7 @@ group by d.datasheet_id;]]>
 				<textFieldExpression><![CDATA[$F{document_date}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="68" width="125" height="20" uuid="406fbfb8-47c9-40dc-9dba-87c76dd77186"/>
+				<reportElement x="0" y="68" width="125" height="20" uuid="bb673d95-8440-48b3-9593-cd274fa5f044"/>
 				<box rightPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Serif" isBold="true"/>
@@ -109,7 +144,7 @@ group by d.datasheet_id;]]>
 				<text><![CDATA[Ka kryer veprimin:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="125" y="68" width="105" height="20" uuid="03bb102b-4911-4e91-bcc5-cee110d70a4c"/>
+				<reportElement x="125" y="68" width="105" height="20" uuid="d6e2234c-973e-4fa5-963f-5b8c92ccc195"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -121,7 +156,7 @@ group by d.datasheet_id;]]>
 				<textFieldExpression><![CDATA[$F{User_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="386" y="48" width="169" height="40" uuid="819cbea5-fb86-49fd-b462-1aa85c6d8fe5">
+				<reportElement x="386" y="48" width="169" height="40" uuid="63420c3e-cc95-4128-9016-254a66678649">
 					<printWhenExpression><![CDATA[$F{comment}.isEmpty()!= true]]></printWhenExpression>
 				</reportElement>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
@@ -137,7 +172,7 @@ group by d.datasheet_id;]]>
 				<textFieldExpression><![CDATA[$F{comment}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="230" y="48" width="83" height="20" uuid="e558858e-9f6d-44d6-86de-3ab981185156"/>
+				<reportElement x="230" y="48" width="83" height="20" uuid="39e93c3f-502a-48d8-adca-97c859c0df39"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -148,7 +183,7 @@ group by d.datasheet_id;]]>
 				<text><![CDATA[Numri Serial :]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="313" y="48" width="73" height="20" uuid="4a86df24-ed67-4682-8fe6-cd13fc5077f5"/>
+				<reportElement x="313" y="48" width="73" height="20" uuid="f8294043-1c78-4f0a-9ef6-8bbd2ad0c93f"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -164,12 +199,12 @@ group by d.datasheet_id;]]>
 	<pageHeader>
 		<band height="22" splitType="Stretch">
 			<textField>
-				<reportElement x="386" y="1" width="169" height="21" uuid="d0cf1ecd-3337-49fe-b8f4-294233f3198c"/>
+				<reportElement x="386" y="1" width="169" height="21" uuid="2347a4e9-72e0-4992-99a7-c6d5e085ff15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$P{name_surname}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="313" y="1" width="73" height="21" uuid="347b3111-c69a-455f-a73e-6847a18174d9"/>
+				<reportElement x="313" y="1" width="73" height="21" uuid="2c64109f-5576-49cd-a90d-f5cccb3798b2"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
@@ -181,7 +216,7 @@ group by d.datasheet_id;]]>
 	<columnHeader>
 		<band height="22">
 			<staticText>
-				<reportElement x="26" y="1" width="99" height="20" uuid="0fa71866-560d-43d5-b6b4-072c98c3f7d9"/>
+				<reportElement x="26" y="1" width="99" height="20" uuid="bb8d2371-4cef-47fd-960d-fb0e8f404671"/>
 				<box leftPadding="2">
 					<topPen lineWidth="0.25"/>
 					<leftPen lineWidth="0.25"/>
@@ -192,7 +227,7 @@ group by d.datasheet_id;]]>
 				<text><![CDATA[Artikulli]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="125" y="1" width="76" height="20" uuid="6784185c-a11a-4792-9562-142ffa1c9aa4"/>
+				<reportElement x="125" y="1" width="76" height="20" uuid="32288314-be76-4e5b-8c9e-79eed8d21526"/>
 				<box leftPadding="2">
 					<topPen lineWidth="0.25"/>
 					<leftPen lineWidth="0.25"/>
@@ -203,7 +238,7 @@ group by d.datasheet_id;]]>
 				<text><![CDATA[Kodi artikullit]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="201" y="1" width="40" height="20" uuid="34e0b0bd-d607-4c0d-a567-d21e8512e7b2"/>
+				<reportElement x="201" y="1" width="40" height="20" uuid="48b0d57c-a628-45e2-b624-b54848788a9d"/>
 				<box leftPadding="2">
 					<topPen lineWidth="0.25"/>
 					<leftPen lineWidth="0.25"/>
@@ -214,7 +249,7 @@ group by d.datasheet_id;]]>
 				<text><![CDATA[Cmimi]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="313" y="1" width="73" height="20" uuid="bdeeb3c1-1cbe-4727-b508-858532dd0718"/>
+				<reportElement x="313" y="1" width="73" height="20" uuid="2168106c-407f-4b4e-9cad-5d3c824698d2"/>
 				<box leftPadding="2">
 					<topPen lineWidth="0.25"/>
 					<leftPen lineWidth="0.25"/>
@@ -225,10 +260,11 @@ group by d.datasheet_id;]]>
 				<text><![CDATA[Totali pa tvsh]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="459" y="1" width="96" height="20" uuid="4d4974a9-db13-4837-a217-939da401ddfe"/>
+				<reportElement x="459" y="1" width="96" height="20" uuid="b4f339db-120a-4b0f-b72e-381361558e47"/>
 				<box leftPadding="2">
 					<topPen lineWidth="0.25"/>
 					<leftPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.1"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Serif" size="8" isBold="true"/>
@@ -236,7 +272,7 @@ group by d.datasheet_id;]]>
 				<text><![CDATA[Totali me TVSH]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="386" y="1" width="73" height="20" uuid="742d138f-828d-4747-ad47-eac7d688dd2d"/>
+				<reportElement x="386" y="1" width="73" height="20" uuid="6b290881-5655-4608-b4bf-033dcfdadd9a"/>
 				<box leftPadding="2">
 					<topPen lineWidth="0.25"/>
 					<leftPen lineWidth="0.25"/>
@@ -247,7 +283,7 @@ group by d.datasheet_id;]]>
 				<text><![CDATA[TVSH]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="241" y="1" width="40" height="20" uuid="b26959bf-93ab-4a90-8eeb-69a7863e9b84"/>
+				<reportElement x="241" y="1" width="40" height="20" uuid="9aa4707e-1d40-4458-9a49-3c49ecaa79f2"/>
 				<box leftPadding="2">
 					<topPen lineWidth="0.25"/>
 					<leftPen lineWidth="0.25"/>
@@ -258,7 +294,7 @@ group by d.datasheet_id;]]>
 				<text><![CDATA[Sasia]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="281" y="1" width="32" height="20" uuid="c859518d-d2d2-40fa-867a-ebaaabdae46a"/>
+				<reportElement x="281" y="1" width="32" height="20" uuid="7139fc4c-5ff8-4933-bd18-ec4dac195c62"/>
 				<box leftPadding="2">
 					<topPen lineWidth="0.25"/>
 					<leftPen lineWidth="0.25"/>
@@ -273,7 +309,7 @@ group by d.datasheet_id;]]>
 	<detail>
 		<band height="21" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="1" width="26" height="20" uuid="0d049f67-a3ad-4fa7-8352-fe97ca3af21d"/>
+				<reportElement x="0" y="1" width="26" height="20" uuid="cf6294b5-01f9-4e73-9fc3-b05088b1968d"/>
 				<box>
 					<pen lineWidth="0.1"/>
 					<topPen lineWidth="0.1"/>
@@ -285,7 +321,7 @@ group by d.datasheet_id;]]>
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="26" y="1" width="99" height="20" uuid="5510d008-d348-4010-b4a3-0d844b20bd07"/>
+				<reportElement x="26" y="1" width="99" height="20" uuid="352ef03a-bbaf-4df4-a6b5-e5dd3e705ba0"/>
 				<box>
 					<pen lineWidth="0.1"/>
 					<topPen lineWidth="0.1"/>
@@ -297,7 +333,7 @@ group by d.datasheet_id;]]>
 				<textFieldExpression><![CDATA[$F{Item_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="125" y="1" width="76" height="20" uuid="d9554ea0-3925-4306-bc3c-8d31deeaf5f7"/>
+				<reportElement x="125" y="1" width="76" height="20" uuid="0301bb2a-8b2e-4b3e-b8c0-1a6b64684652"/>
 				<box>
 					<pen lineWidth="0.1"/>
 					<topPen lineWidth="0.1"/>
@@ -309,7 +345,7 @@ group by d.datasheet_id;]]>
 				<textFieldExpression><![CDATA[$F{item_code}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="201" y="1" width="40" height="20" uuid="d266ebd5-f5c6-4ab9-9b93-3e532bdf637e"/>
+				<reportElement x="201" y="1" width="40" height="20" uuid="143fa88a-bbda-45dd-a663-20ba44812144"/>
 				<box>
 					<pen lineWidth="0.1"/>
 					<topPen lineWidth="0.1"/>
@@ -321,7 +357,7 @@ group by d.datasheet_id;]]>
 				<textFieldExpression><![CDATA[$F{item_price}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="241" y="1" width="40" height="20" uuid="bd4f2777-46c6-4024-9ec2-ed60d6f71edf"/>
+				<reportElement x="241" y="1" width="40" height="20" uuid="3140e9cb-0063-49cb-ab31-87a689077f90"/>
 				<box>
 					<pen lineWidth="0.1"/>
 					<topPen lineWidth="0.1"/>
@@ -333,7 +369,7 @@ group by d.datasheet_id;]]>
 				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
-				<reportElement x="281" y="1" width="32" height="20" uuid="d35a4ce0-ab35-43aa-91f8-4d6cc8e314e4"/>
+				<reportElement x="281" y="1" width="32" height="20" uuid="2cecb9a0-08f0-468c-8b71-80b1a2ece796"/>
 				<box>
 					<pen lineWidth="0.1"/>
 					<topPen lineWidth="0.1"/>
@@ -345,7 +381,7 @@ group by d.datasheet_id;]]>
 				<textFieldExpression><![CDATA[$F{subdiscount}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="313" y="1" width="73" height="20" uuid="dd6f8e29-75e8-4f72-85af-46becf75b371"/>
+				<reportElement x="313" y="1" width="73" height="20" uuid="e56148ff-80ca-4bc9-9999-b6d3aaa89b8c"/>
 				<box>
 					<pen lineWidth="0.1"/>
 					<topPen lineWidth="0.1"/>
@@ -357,7 +393,7 @@ group by d.datasheet_id;]]>
 				<textFieldExpression><![CDATA[$F{subtotal_no_vat}*100/(100-$F{subdiscount})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="386" y="1" width="73" height="20" uuid="142ecc0e-b23e-448b-a077-7242f03d13c7"/>
+				<reportElement x="386" y="1" width="73" height="20" uuid="e5a14357-ef47-46c4-8ed4-71bc0c72b0ce"/>
 				<box>
 					<pen lineWidth="0.1"/>
 					<topPen lineWidth="0.1"/>
@@ -369,7 +405,7 @@ group by d.datasheet_id;]]>
 				<textFieldExpression><![CDATA[$F{subtotal_vat}*100/(100-$F{subdiscount})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="459" y="1" width="96" height="20" uuid="dac1cd29-15ac-42ab-a597-6c135d405fac"/>
+				<reportElement x="459" y="1" width="96" height="20" uuid="5a1238f0-e131-4af4-8610-00910ff990ed"/>
 				<box>
 					<pen lineWidth="0.1"/>
 					<topPen lineWidth="0.1"/>
@@ -385,29 +421,29 @@ group by d.datasheet_id;]]>
 	<pageFooter>
 		<band height="22" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="313" height="20" uuid="887a2ac3-c8a4-41a3-b685-d2ee55a2d735"/>
+				<reportElement x="0" y="0" width="313" height="20" uuid="757ab54d-e9e1-41dc-9356-8877c2cb859d"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{bottom_message}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="313" y="0" width="73" height="20" uuid="88730edc-a207-467e-b74a-711f4c7452d4"/>
+				<reportElement x="313" y="0" width="73" height="20" uuid="8b2cde4d-5c85-45dc-9b45-42dbca0c1429"/>
 				<textElement textAlignment="Right"/>
 				<text><![CDATA[Faqe]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="421" y="0" width="38" height="20" uuid="cd41348f-0df5-488d-abe8-b314039fd9bf"/>
+				<reportElement x="421" y="0" width="38" height="20" uuid="73b4d260-c836-4ddb-bb44-59ecd970833f"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[nga]]></text>
 			</staticText>
 			<textField evaluationTime="Report">
-				<reportElement x="459" y="0" width="96" height="20" uuid="6ecbcdfd-efa0-49d6-ab5b-dee2fc1cdf9e"/>
+				<reportElement x="459" y="0" width="96" height="20" uuid="6820dcec-8e39-442a-8e84-8c0a2180d515"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="386" y="0" width="35" height="20" uuid="6bfc2cb7-9984-4fbb-bc4b-427695c7ee15"/>
+				<reportElement x="386" y="0" width="35" height="20" uuid="50fadc5d-48fa-46d3-b84e-c1aac7e414c0"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
@@ -416,7 +452,7 @@ group by d.datasheet_id;]]>
 	<summary>
 		<band height="74">
 			<staticText>
-				<reportElement x="241" y="0" width="72" height="20" uuid="a12fc82f-8951-46b2-a4aa-e6e7667bc955"/>
+				<reportElement x="241" y="0" width="72" height="20" uuid="91b7c211-8921-444c-ba94-dfa172657c72"/>
 				<box>
 					<pen lineWidth="0.1"/>
 					<topPen lineWidth="0.1"/>
@@ -430,7 +466,7 @@ group by d.datasheet_id;]]>
 				<text><![CDATA[Totali]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="313" y="0" width="73" height="20" uuid="d1957b75-c1e5-45a7-9106-3caaac591437"/>
+				<reportElement x="313" y="0" width="73" height="20" uuid="831f37b4-e5d6-43cd-9cbc-c2921e9fdfbd"/>
 				<box>
 					<pen lineWidth="0.1"/>
 					<topPen lineWidth="0.1"/>
@@ -442,7 +478,7 @@ group by d.datasheet_id;]]>
 				<textFieldExpression><![CDATA[$V{subtotal_no_vat_1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="386" y="0" width="73" height="20" uuid="4a6c444e-d535-46f5-9777-9d70725ab9fa"/>
+				<reportElement x="386" y="0" width="73" height="20" uuid="50923b80-c6ce-4d88-9630-154c53f11904"/>
 				<box>
 					<pen lineWidth="0.1"/>
 					<topPen lineWidth="0.1"/>
@@ -454,7 +490,7 @@ group by d.datasheet_id;]]>
 				<textFieldExpression><![CDATA[$V{subtotal_vat_1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="459" y="0" width="96" height="20" uuid="8b04bf4d-cf03-4dbb-863a-bb6e52185287"/>
+				<reportElement x="459" y="0" width="96" height="20" uuid="a6356a95-84e5-4da7-afc7-b3c05fac39e9"/>
 				<box>
 					<pen lineWidth="0.1"/>
 					<topPen lineWidth="0.1"/>
@@ -466,7 +502,7 @@ group by d.datasheet_id;]]>
 				<textFieldExpression><![CDATA[$V{subtotal_with_vat_1}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="241" y="54" width="72" height="20" uuid="a263403f-8ceb-4fdc-9b30-95fde92727c1"/>
+				<reportElement x="241" y="54" width="72" height="20" uuid="89607fc5-1fe9-4f02-916d-143dda26b026"/>
 				<box>
 					<pen lineWidth="0.1"/>
 					<topPen lineWidth="0.1"/>
@@ -480,7 +516,7 @@ group by d.datasheet_id;]]>
 				<text><![CDATA[Grand Total]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="241" y="20" width="72" height="20" uuid="af3a0e89-b86b-4050-a01f-1f941377926c"/>
+				<reportElement x="241" y="20" width="72" height="20" uuid="ae7accb3-19ed-4ed7-89ce-f50b5a6cbbed"/>
 				<box>
 					<pen lineWidth="0.1"/>
 					<topPen lineWidth="0.1"/>
@@ -494,7 +530,7 @@ group by d.datasheet_id;]]>
 				<text><![CDATA[Discount]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="313" y="54" width="73" height="20" uuid="998cac62-114c-4e00-ae94-80302d043858"/>
+				<reportElement x="313" y="54" width="73" height="20" uuid="75960717-95fd-4ad3-a7dc-6f749a18704d"/>
 				<box>
 					<pen lineWidth="0.1"/>
 					<topPen lineWidth="0.1"/>
@@ -506,7 +542,7 @@ group by d.datasheet_id;]]>
 				<textFieldExpression><![CDATA[$F{total_no_vat}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="386" y="54" width="73" height="20" uuid="c0828386-1c61-4194-ab08-ba6e3003e835"/>
+				<reportElement x="386" y="54" width="73" height="20" uuid="9dadb3ca-c48e-4132-87cb-a4fb3747af6a"/>
 				<box>
 					<pen lineWidth="0.1"/>
 					<topPen lineWidth="0.1"/>
@@ -518,7 +554,7 @@ group by d.datasheet_id;]]>
 				<textFieldExpression><![CDATA[$F{total_vat}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="459" y="54" width="96" height="20" uuid="6e011474-52c2-4530-a651-5855da4fac0d"/>
+				<reportElement x="459" y="54" width="96" height="20" uuid="0ad6913e-ed2c-4c87-a008-20d093db4ea1"/>
 				<box>
 					<pen lineWidth="0.1"/>
 					<topPen lineWidth="0.1"/>
@@ -530,7 +566,7 @@ group by d.datasheet_id;]]>
 				<textFieldExpression><![CDATA[$F{total_with_vat}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="313" y="20" width="73" height="20" uuid="cac8ab5d-0555-45b7-879a-ecd100bfc1f3"/>
+				<reportElement x="313" y="20" width="73" height="20" uuid="b90cfee5-77d3-4377-90ad-aad5c72f79d0"/>
 				<box>
 					<pen lineWidth="0.1"/>
 					<topPen lineWidth="0.1"/>
@@ -542,7 +578,7 @@ group by d.datasheet_id;]]>
 				<textFieldExpression><![CDATA[$V{discount_total_no_vat}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="386" y="20" width="73" height="20" uuid="c4589b3b-c6ce-4881-8f02-c1207245405e"/>
+				<reportElement x="386" y="20" width="73" height="20" uuid="83ad3441-d9ae-41fa-a889-c12811bf97a2"/>
 				<box>
 					<pen lineWidth="0.1"/>
 					<topPen lineWidth="0.1"/>
@@ -554,7 +590,7 @@ group by d.datasheet_id;]]>
 				<textFieldExpression><![CDATA[$V{discount_total_vat}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="459" y="20" width="96" height="20" uuid="dc77ef98-ef2d-4d1f-8ca2-82a1e6134189"/>
+				<reportElement x="459" y="20" width="96" height="20" uuid="b3a1298a-f9d4-44b8-9069-2977d331cb91"/>
 				<box>
 					<pen lineWidth="0.1"/>
 					<topPen lineWidth="0.1"/>
@@ -570,7 +606,7 @@ group by d.datasheet_id;]]>
 	<noData>
 		<band height="50">
 			<staticText>
-				<reportElement x="125" y="15" width="261" height="20" uuid="1cb9c2f9-39a8-4444-98a0-78b243d7161b"/>
+				<reportElement x="125" y="15" width="261" height="20" uuid="76b9991d-c730-42da-8b39-f3070e2b5cc6"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Filtrimi nuk solli Rezultat]]></text>
 			</staticText>

@@ -115,5 +115,11 @@ Route::post('/report/entrysheets', 'ReportController@entrysReport');
 Route::get('/report/entrysheet/{id}', 'ReportController@showEntryReport');
 Route::post('/report/entrysheet', 'ReportController@entryReport');
 
+Route::get('/report/outsheets', 'ReportController@showOutsReport');
+Route::post('/report/outsheets', 'ReportController@outsReport');
+Route::get('/report/outputsheet/{id}', 'ReportController@showOutReport');
+Route::post('/report/outputsheet', 'ReportController@outReport');
+
 #Files
 Route::get('/file/report/entrysheet/{file}', 'MainController@getEntryReport');
+Route::get('/file/report/outputsheet/{file}', 'MainController@getOutReport');

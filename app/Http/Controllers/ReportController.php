@@ -91,4 +91,77 @@ class ReportController extends Controller
 
     }
 
+    public function showOutsReport()
+    {
+        return view('report.outsheets');
+    }
+
+    public function outsReport(Request $request)
+    {
+        if($request->ajax())
+        {
+            $start = $request->start;
+            $end = $request->end;
+
+            $jasperPHP = new JasperPHP;
+            $source = base_path() . '/storage/app/reports/outputsheets.jasper';
+            $destination = base_path() . '/storage/app/reports/pdf/outputsheet/outputsheets';
+
+            try
+            {
+                $jasperPHP->process(
+                    $source ,
+                    $destination,
+                    array('pdf'),
+                    array("dateBegin"=>$start, "dateEnd"=>$end),
+                    $this->conn
+                )->execute();
+
+            }
+            catch (\Exception $e)
+            {
+                return getResponse(500, 501);
+            }
+
+            return 200;
+        }
+
+    }
+
+    public function showOutReport($id)
+    {
+        return view('report.outsheet')->with(['id'=>$id]);
+    }
+
+    public function outReport(Request $request)
+    {
+        if($request->ajax())
+        {
+            $id = $request->id;
+
+            $jasperPHP = new JasperPHP;
+            $source = base_path() . '/storage/app/reports/outputsheet.jasper';
+            $destination = base_path() . '/storage/app/reports/pdf/outputsheet/outputsheet_'.$id;
+
+            try
+            {
+                $jasperPHP->process(
+                    $source ,
+                    $destination,
+                    array('pdf'),
+                    array('outputsheet_id'=>$id),
+                    $this->conn
+                )->execute();
+
+            }
+            catch (\Exception $e)
+            {
+                return getResponse(500, 501);
+            }
+
+            return 200;
+        }
+
+    }
+
 }

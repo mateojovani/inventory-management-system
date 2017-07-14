@@ -113,6 +113,7 @@
                     <a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-file"></span><p>{{trans('ui.side_menu.reports')}}</p><span class="arrow"></span></a>
                     <ul class="sub-menu">
                         <li><a href="{{URL::asset('/report/entrysheets')}}">{{trans('ui.side_menu.entrysheet_report')}}</a></li>
+                        <li><a href="{{URL::asset('/report/outsheets')}}">{{trans('ui.side_menu.outsheet_report')}}</a></li>
                     </ul>
                 </li>
             </ul>

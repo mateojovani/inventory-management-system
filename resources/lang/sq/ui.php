@@ -25,7 +25,7 @@ return [
         'show_grid_out' => 'Daljet',
         'reports' => 'Raportet',
         'entrysheet_report' => 'Raport Flet&euml; Hyrje',
-
+        'outsheet_report' => 'Raport Flet&euml; Daljeje',
     ],
 
     'enable_btn' => 'Lejo Editimin',

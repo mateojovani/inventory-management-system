@@ -25,7 +25,7 @@ return [
         'show_grid_out' => 'Show Grid',
         'reports' => 'Reports',
         'entrysheet_report' => 'Entrysheet report',
-
+        'outsheet_report' => 'Outsheet report',
 
     ],
 
