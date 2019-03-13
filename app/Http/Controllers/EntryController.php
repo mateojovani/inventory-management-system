@@ -94,7 +94,7 @@ class EntryController extends Controller
             catch(\Exception $e)
             {
                 DB::rollBack();
-                //return $e;
+                // return $e->getMessage();
                 return getResponse(500, 500);
             }
 

@@ -46,7 +46,7 @@ class RawMaterialsController extends Controller
         $sql = 'select Itemunity_name as text, Itemunity_id as value from itemunity
                       where is_for_product = 0 and deleted = 0';
         $unities = DB::select($sql);
-        
+
         return $unities;
     }
 
