@@ -47,6 +47,45 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 |
 */
 
+//helpers
+if (! function_exists('getResponse')) {
+
+    function getResponse($status, $key = null)
+    {
+        $lang = session('lang');
+
+        $response = [];
+        $response['status'] = $status;
+
+        if(is_null($key)) $response['message'] = '';
+        else
+            $response['message'] = config('responses.'.$key.'.'.$lang);
+
+        return $response;
+    }
+}
+
+#Slightly modified translator
+if (! function_exists('trans')) {
+
+    function trans($param)
+    {
+        $param = explode(".", $param);
+        $lang = session('lang');
+
+        $langFile = \File::getRequire(base_path().'/resources/lang/'.$lang.'/'.$param[0].'.php');
+        $index = $langFile;
+
+        foreach ($param as $key => $paramValue)
+        {
+            if($key == 0) continue;
+            $index = $index[$param[$key]];
+        }
+        return $index;
+
+    }
+}
+
 $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
 $response = $kernel->handle(

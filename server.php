@@ -18,43 +18,4 @@ if ($uri !== '/' && file_exists(__DIR__.'/public'.$uri)) {
     return false;
 }
 
-//helpers
-if (! function_exists('getResponse')) {
-
-    function getResponse($status, $key = null)
-    {
-        $lang = session('lang');
-
-        $response = [];
-        $response['status'] = $status;
-
-        if(is_null($key)) $response['message'] = '';
-        else
-            $response['message'] = config('responses.'.$key.'.'.$lang);
-
-        return $response;
-    }
-}
-
-#Slightly modified translator
-if (! function_exists('trans')) {
-
-    function trans($param)
-    {
-        $param = explode(".", $param);
-        $lang = session('lang');
-
-        $langFile = \File::getRequire(base_path().'/resources/lang/'.$lang.'/'.$param[0].'.php');
-        $index = $langFile;
-
-        foreach ($param as $key => $paramValue)
-        {
-            if($key == 0) continue;
-            $index = $index[$param[$key]];
-        }
-        return $index;
-
-    }
-}
-
 require_once __DIR__.'/public/index.php';
